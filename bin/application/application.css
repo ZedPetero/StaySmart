@@ -1,0 +1,184 @@
+/* Container */
+.landing-page-container1 {
+    -fx-background-color: rgba(255, 255, 255, 1);
+    -fx-pref-width: 100%;
+    -fx-pref-height: 750px;
+}
+
+/* Landing Page Background */
+.landing-page-landing-page {
+    -fx-background-color: rgba(255, 255, 255, 1);
+    -fx-pref-width: 100%;
+    -fx-pref-height: 750px;
+}
+
+/* Hero Image (image8) */
+.landing-page-image8 {
+    /* Positioning handled in FXML */
+}
+
+/* Background Circle (E11) */
+.landing-page-e11 {
+    /* Positioning handled in FXML */
+}
+
+/* Decorative Image (E12) */
+.landing-page-e12 {
+    /* Positioning handled in FXML */
+}
+
+/* Navigation Text Styles */
+.landing-page-text10 {
+    -fx-font-family: 'Outfit';
+    -fx-font-size: 20px;
+    -fx-font-weight: 400;
+    -fx-text-fill: rgba(18, 90, 139, 1);
+}
+
+.landing-page-text11 {
+    -fx-font-family: 'Outfit';
+    -fx-font-size: 20px;
+    -fx-font-weight: 400;
+    -fx-text-fill: rgba(18, 90, 139, 1);
+}
+
+.landing-page-text12 {
+    -fx-font-family: 'Outfit';
+    -fx-font-size: 20px;
+    -fx-font-weight: 400;
+    -fx-text-fill: rgba(18, 90, 139, 1);
+}
+
+.landing-page-text14 {
+    -fx-font-family: 'Outfit';
+    -fx-font-size: 20px;
+    -fx-font-weight: 400;
+    -fx-text-fill: rgba(18, 90, 139, 1);
+}
+
+/* Most Viewed Section */
+.landing-page-hero1 {
+    /* Positioning handled in FXML */
+}
+
+.landing-page-text13 {
+    -fx-font-family: 'Outfit';
+    -fx-font-size: 41px;
+    -fx-font-weight: 700;
+    -fx-text-fill: rgba(18, 90, 139, 1);
+}
+
+/* Buttons */
+.landing-page-button1 {
+    -fx-background-color: rgba(140, 139, 218, 0);
+    -fx-border-color: rgba(18, 90, 139, 1);
+    -fx-border-width: 1px;
+    -fx-border-radius: 83px;
+    -fx-background-radius: 83px;
+    -fx-text-fill: rgba(18, 90, 139, 1);
+    -fx-font-family: 'Outfit';
+    -fx-font-size: 16px;
+    -fx-font-weight: 700;
+    -fx-padding: 12px 24px;
+    -fx-min-width: 139px;
+    -fx-pref-height: 50px;
+    -fx-cursor: hand;
+}
+
+.landing-page-button2 {
+    -fx-background-color: rgba(18, 90, 139, 1);
+    -fx-border-color: rgba(140, 139, 218, 1);
+    -fx-border-width: 1px;
+    -fx-border-radius: 83px;
+    -fx-background-radius: 83px;
+    -fx-text-fill: rgba(255, 255, 255, 1);
+    -fx-font-family: 'Outfit';
+    -fx-font-size: 16px;
+    -fx-font-weight: 700;
+    -fx-padding: 12px 24px;
+    -fx-min-width: 139px;
+    -fx-pref-height: 50px;
+    -fx-cursor: hand;
+}
+
+.landing-page-button3 {
+    -fx-background-color: rgba(18, 90, 139, 1);
+    -fx-text-fill: rgba(255, 255, 255, 1);
+    -fx-font-family: 'Outfit';
+    -fx-font-size: 16px;
+    -fx-font-weight: 700;
+    -fx-border-radius: 37px;
+    -fx-background-radius: 37px;
+    -fx-pref-width: 322px;
+    -fx-pref-height: 74px;
+    -fx-cursor: hand;
+}
+
+/* Home Icon Background */
+.landing-page-rectangle8 {
+    /* Positioning handled in FXML */
+}
+
+/* Home Icon */
+.landing-page-home {
+    /* Positioning handled in FXML */
+}
+
+/* Body Text */
+.landing-page-text17 {
+    -fx-font-family: 'Outfit';
+    -fx-font-size: 16px;
+    -fx-font-weight: 400;
+    -fx-fill: rgba(0, 0, 0, 1);
+    -fx-text-alignment: center;
+}
+
+/* Hero Text Section */
+.landing-page-hero2 {
+    /* Positioning handled in FXML */
+}
+
+.landing-page-text18 {
+    -fx-font-family: 'Outfit';
+    -fx-font-size: 64px;
+    -fx-font-weight: 700;
+    -fx-fill: rgba(18, 90, 139, 1);
+    -fx-line-spacing: 20px;
+}
+
+/* Logo Group */
+.landing-page-group29 {
+    /* Positioning handled in FXML */
+}
+
+.landing-page-image7 {
+    /* Positioning handled in FXML */
+}
+
+.landing-page-text23 {
+    -fx-font-family: 'Outfit';
+    -fx-font-size: 28px;
+    -fx-font-weight: 700;
+    -fx-text-fill: rgba(18, 90, 139, 1);
+}
+
+/* SUBHEADER class */
+.SUBHEADER {
+    -fx-font-family: 'Outfit';
+    -fx-font-size: 16px;
+    -fx-font-weight: 400;
+}
+
+/* BodyText class */
+.BodyText {
+    -fx-font-family: 'Outfit';
+    -fx-font-size: 16px;
+    -fx-font-weight: 400;
+}
+
+/* H1 class */
+.H1 {
+    -fx-font-family: 'Outfit';
+    -fx-font-size: 64px;
+    -fx-font-weight: 700;
+}

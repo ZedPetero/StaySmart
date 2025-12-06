@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="application.HomepageController"
+            prefWidth="1200" prefHeight="750"
+            stylesheets="@application.css">
+
+    <!-- Background Images -->
+    <ImageView fx:id="bgCircle" layoutX="-400" layoutY="-400"
+               fitWidth="735" fitHeight="700" opacity="0.55"
+               image="@images/BG_CIRCLE.png"/>
+    <ImageView fx:id="heroImage" layoutX="720" layoutY="75"
+               fitWidth="657" fitHeight="657"
+               image="@images/HERO.png"/>
+
+    <!-- Navigation -->
+    <Label text="Home" layoutX="556" layoutY="57" styleClass="nav-label"/>
+    <Label text="Pricing" layoutX="683" layoutY="58" styleClass="nav-label"/>
+    <Label text="Contact" layoutX="799" layoutY="58" styleClass="nav-label"/>
+    <Label text="About us" layoutX="912" layoutY="57" styleClass="nav-label"/>
+
+    <Button fx:id="loginButton" text="Log in"
+            layoutX="1029" layoutY="46" prefWidth="139" prefHeight="50"
+            styleClass="landing-page-button2"
+            onAction="#onLoginButtonClick"/>
+    <Button fx:id="signupButton" text="Sign up"
+            layoutX="1183" layoutY="46" prefWidth="139" prefHeight="50"
+            styleClass="landing-page-button1"
+            onAction="#onSignupButtonClick"/>
+
+    <!-- Logo -->
+    <ImageView fx:id="logoRect" layoutX="191" layoutY="54"
+               fitWidth="43" fitHeight="39"
+               image="@images/image8.png"/>
+    <ImageView fx:id="homeIcon" layoutX="197" layoutY="59"
+               fitWidth="30" fitHeight="30"
+               image="@images/image7.png"/>
+
+    <!-- Hero Text -->
+    <Label fx:id="welcomeText" layoutX="191" layoutY="231" text="Simplify your Boarding House"
+           wrapText="true" styleClass="landing-page-text18"/>
+
+    <!-- Get Started Button -->
+    <Button text="Get Started Today" layoutX="191" layoutY="524" prefWidth="322" prefHeight="74"
+            styleClass="landing-page-button3"/>
+
+    <!-- Bottom Info -->
+    <Label text="Lorem ipsum dolor sit amet, consectetur adipiscing elit"
+           layoutX="425" layoutY="600" styleClass="landing-page-text17"/>
+</AnchorPane>

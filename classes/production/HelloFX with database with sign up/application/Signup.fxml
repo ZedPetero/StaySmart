@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="application.SignupController"
+            prefWidth="450.0" prefHeight="500.0"
+            stylesheets="@application.css">
+
+    <children>
+        <VBox alignment="CENTER" spacing="20.0"
+              AnchorPane.topAnchor="20.0"
+              AnchorPane.leftAnchor="20.0"
+              AnchorPane.rightAnchor="20.0"
+              AnchorPane.bottomAnchor="20.0">
+
+            <children>
+                <!-- Title -->
+                <Label text="Create Account" styleClass="title-label">
+                    <font>
+                        <Font size="24.0" />
+                    </font>
+                </Label>
+
+                <!-- Signup form -->
+                <VBox spacing="15.0" styleClass="card" alignment="CENTER_LEFT">
+                    <padding>
+                        <Insets top="20.0" right="20.0" bottom="20.0" left="20.0" />
+                    </padding>
+
+                    <children>
+                        <!-- Role Selection -->
+                        <Label text="Select Role:" style="-fx-font-weight: bold; -fx-font-size: 14px;"/>
+                        <HBox spacing="20.0" alignment="CENTER_LEFT">
+                            <children>
+                                <RadioButton fx:id="adminRadio" text="Admin/Landlord" />
+                                <RadioButton fx:id="userRadio" text="User/Client" />
+                            </children>
+                        </HBox>
+
+                        <!-- Form fields -->
+                        <GridPane hgap="10.0" vgap="15.0">
+                            <columnConstraints>
+                                <ColumnConstraints percentWidth="35.0"/>
+                                <ColumnConstraints percentWidth="65.0"/>
+                            </columnConstraints>
+
+                            <Label text="Username:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                            <TextField fx:id="usernameField" promptText="Enter username"
+                                       GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                            <Label text="Password:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                            <PasswordField fx:id="passwordField" promptText="Enter password"
+                                           GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                            <Label text="Contact Number:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                            <TextField fx:id="contactField" promptText="Enter contact number"
+                                       GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                        </GridPane>
+
+                        <!-- Buttons -->
+                        <HBox spacing="10.0" alignment="CENTER_RIGHT">
+                            <children>
+                                <Button fx:id="backButton" text="Back" onAction="#onBack"/>
+                                <Button fx:id="signupButton" text="Sign Up" 
+                                        onAction="#onSignup" defaultButton="true"
+                                        style="-fx-background-color: #28a745; -fx-text-fill: white;"/>
+                            </children>
+                        </HBox>
+
+                    </children>
+                </VBox>
+
+                <!-- Login redirect -->
+                <HBox alignment="CENTER" spacing="5.0">
+                    <children>
+                        <Label text="Already have an account?"/>
+                        <Button text="Log In" styleClass="link-button" 
+                                onAction="#onBack"/>
+                    </children>
+                </HBox>
+
+            </children>
+
+        </VBox>
+    </children>
+
+</AnchorPane>
