@@ -13,7 +13,6 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         // Load the custom font before creating the scene
         Font.loadFont(getClass().getResource("/application/fonts/Outfit-Regular.ttf").toExternalForm(), 14);
-
         // Load the homepage
         Parent root = FXMLLoader.load(getClass().getResource("Homepage.fxml"));
         Scene scene = new Scene(root, 1400, 750); // Explicit size

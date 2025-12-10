@@ -57,4 +57,40 @@ public class MainAppController implements Initializable {
         alert.setContentText("Role-based login system with JavaFX and MySQL");
         alert.showAndWait();
     }
+
+
+    @FXML
+    private void showOverview() {
+        // Add your overview logic here
+    }
+
+    @FXML
+    private void showProperties() {
+        // Add your properties logic here
+    }
+
+    @FXML
+    private void showTenants() {
+        // Add your tenants logic here
+    }
+
+    @FXML
+    private void showApplications() {
+        // Add your applications logic here
+    }
+
+    @FXML
+    private void showMessages() {
+        // Add your messages logic here
+    }
+
+    @FXML
+    private void showSettings() {
+        // Add your settings logic here
+    }
+
+    @FXML
+    private void addProperty() {
+        // Add your add property logic here
+    }
 }

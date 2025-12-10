@@ -1,0 +1,166 @@
+/* ROOT CONTAINER */
+.LANDLORD {
+    -fx-background-color: #ffffff;
+    -fx-min-width: 1450px;
+    -fx-min-height: 790px;
+}
+
+/* LEFT SIDEBAR */
+.group {
+    -fx-background-image: url("images/Rectangle.png");
+    -fx-background-size: 100% 100%;
+}
+
+/* LOGO CONTAINER */
+.div {
+    -fx-layout-x: 49;
+    -fx-layout-y: 34;
+}
+
+.image {
+    -fx-fit-width: 64;
+    -fx-fit-height: 64;
+}
+
+/* TITLE TEXT */
+.text-wrapper {
+    -fx-font-family: "Outfit Bold";
+    -fx-font-size: 20px;
+    -fx-text-fill: #113970;
+}
+
+/* TOP BLUE BAR */
+.rectangle {
+    -fx-background-color: #d5ebf9;
+    -fx-border-color: black;
+}
+
+/* WELCOME MESSAGE */
+.welcome-message {
+    -fx-spacing: 6.7;
+    -fx-font-family: "Outfit";
+}
+
+.text-wrapper-2 {
+    -fx-font-family: "Outfit Bold";
+    -fx-font-size: 28px;
+    -fx-text-fill: #000;
+}
+
+.here-s-what-s {
+    -fx-font-family: "Outfit Medium";
+    -fx-font-size: 18px;
+    -fx-text-fill: #000000A8;
+}
+
+/* BLUE BUTTON */
+.rectangle-2 {
+    -fx-background-color: #1f57da;
+    -fx-background-radius: 24;
+}
+
+.text-wrapper-3 {
+    -fx-font-family: "Outfit SemiBold";
+    -fx-font-size: 25px;
+    -fx-text-fill: #ffffff;
+}
+
+/* NOTIFICATION */
+.rectangle-3 {
+    -fx-background-color: #2058da;
+    -fx-background-radius: 10;
+}
+
+.text-wrapper-4 {
+    -fx-font-family: "Outfit Regular";
+    -fx-font-size: 48px;
+    -fx-text-fill: #ffffff;
+}
+
+.text-wrapper-5 {
+    -fx-font-family: "Outfit SemiBold";
+    -fx-font-size: 25px;
+    -fx-text-fill: #ffffff;
+}
+
+/* MAIN CARDS */
+.rectangle-4,
+.rectangle-6,
+.rectangle-8 {
+    -fx-background-color: #dcedf8;
+    -fx-background-radius: 20;
+}
+
+.rectangle-10 {
+    -fx-background-color: #f7d9c1;
+    -fx-background-radius: 10;
+}
+
+.rectangle-5,
+.rectangle-7,
+.rectangle-9,
+.rectangle-12 {
+    -fx-background-color: #c3dbfc;
+    -fx-background-radius: 10;
+}
+
+.rectangle-13 {
+    -fx-background-color: #9ef0a3;
+    -fx-background-radius: 10;
+}
+
+.text-wrapper-6,
+.text-wrapper-10,
+.text-wrapper-13,
+.text-wrapper-16 {
+    -fx-font-family: "Outfit Medium";
+    -fx-font-size: 15px;
+    -fx-text-fill: #3da953;
+}
+
+.text-wrapper-7,
+.text-wrapper-11,
+.text-wrapper-14,
+.text-wrapper-17 {
+    -fx-font-family: "Outfit Medium";
+    -fx-font-size: 30px;
+    -fx-text-fill: #000000;
+}
+
+/* SMALL TEXT DETAILS */
+.p,
+.text-wrapper-8,
+.text-wrapper-9,
+.text-wrapper-12,
+.text-wrapper-15,
+.text-wrapper-18,
+.text-wrapper-19,
+.text-wrapper-20,
+.text-wrapper-21,
+.text-wrapper-22 {
+    -fx-font-family: "Outfit Regular";
+    -fx-font-size: 15px;
+    -fx-text-fill: #000;
+}
+
+/* RIGHT PANEL */
+.group-8 .text-wrapper-24 {
+    -fx-font-size: 20px;
+    -fx-text-fill: #2b0bfb;
+}
+
+.group-8 .text-wrapper-25 {
+    -fx-font-size: 25px;
+    -fx-text-fill: #000;
+}
+
+.rectangle-14,
+.rectangle-15 {
+    -fx-background-color: #c9e2f2;
+    -fx-background-radius: 13;
+}
+
+.text-wrapper-26 {
+    -fx-font-size: 15px;
+    -fx-text-fill: #4e585f;
+}

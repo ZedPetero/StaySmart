@@ -6,6 +6,7 @@ import javafx.scene.effect.BoxBlur;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.event.ActionEvent;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.scene.Node;
 import javafx.application.Platform;
@@ -129,28 +130,40 @@ public class LoginController {
             // Close login window
             Stage currentStage = (Stage)((Node)event.getSource()).getScene().getWindow();
             currentStage.close();
-            
-            // Load main application window
-            Stage mainStage = new Stage();
-            Parent root = FXMLLoader.load(getClass().getResource("MainApp.fxml"));
+
+            // Load fonts first
+            Font.loadFont(getClass().getResourceAsStream("/fonts/Outfit-Regular.ttf"), 10);
+            Font.loadFont(getClass().getResourceAsStream("/fonts/Outfit-Medium.ttf"), 10);
+            Font.loadFont(getClass().getResourceAsStream("/fonts/Outfit-SemiBold.ttf"), 10);
+            Font.loadFont(getClass().getResourceAsStream("/fonts/Outfit-Bold.ttf"), 10);
+
+            // Then load FXML
+            Parent root = FXMLLoader.load(getClass().getResource("LandlordDashboard.fxml"));
             Scene scene = new Scene(root);
-            mainStage.setTitle("Main Application");
+
+            Stage mainStage = new Stage();
+            mainStage.setTitle("Landlord Dashboard");
+            mainStage.setMaximized(true);
+            mainStage.setFullScreen(false);
+
             // Set application icon
             try {
                 Image icon = new Image(getClass().getResource("/application/images/homeicon.png").toExternalForm());
                 mainStage.getIcons().add(icon);
             } catch (Exception e) {
-                // Icon not found, continue without it
+                // Icon not found, continue
             }
+
             mainStage.setScene(scene);
             mainStage.setResizable(true);
             mainStage.show();
-            
+
         } catch (Exception e) {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Error", "Failed to load application: " + e.getMessage());
         }
     }
+
 
     private void showAlert(Alert.AlertType type, String title, String message) {
         Platform.runLater(() -> {

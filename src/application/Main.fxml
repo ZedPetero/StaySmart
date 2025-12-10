@@ -89,10 +89,10 @@
             <HBox styleClass="remember-me" spacing="8">
                 <CheckBox fx:id="rememberCheck" styleClass="rectangle-3"/>
                 <Label text="Remember your password" styleClass="text-wrapper-7"/>
-            </HBox>
-            <Region HBox.hgrow="ALWAYS"/>
+                </HBox>
+                                <Region HBox.hgrow="ALWAYS"/>
             <Button text="Forgot password" styleClass="text-wrapper-9" onAction="#onForgot"/>
-        </HBox>
+                        </HBox>
 
         <!-- Sign in button -->
         <Button fx:id="loginButton" text="Sign in" styleClass="group-5" onAction="#onLogin"
@@ -106,7 +106,7 @@
         <HBox styleClass="don-t-have-an" spacing="5" alignment="CENTER">
             <Label text="Don't have an account? " styleClass="span"/>
             <Hyperlink text="Sign up now" styleClass="text-wrapper-8" onAction="#onSignupClick"/>
-        </HBox>
-    </VBox>
+                        </HBox>
+                </VBox>
 
 </AnchorPane>
