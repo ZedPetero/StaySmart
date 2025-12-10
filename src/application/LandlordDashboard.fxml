@@ -3,8 +3,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.scene.shape.*?>
+<?import javafx.geometry.Insets?>
 
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
@@ -12,10 +11,10 @@
             stylesheets="@LandlordDashboard.css"
             styleClass="LANDLORD">
 
-    <!-- Vertical sidebar rectangle -->
+    <!-- Sidebar -->
     <Pane layoutX="0" layoutY="0" prefWidth="250" prefHeight="1024" styleClass="group"/>
 
-    <!-- Logo + Smart Stay on top of sidebar -->
+    <!-- Sidebar Logo -->
     <HBox layoutX="20" layoutY="20" spacing="10" alignment="CENTER_LEFT" styleClass="div">
         <ImageView fx:id="logoImage" styleClass="image"
                    fitWidth="64" fitHeight="64"
@@ -27,7 +26,7 @@
         <Label text="SMART STAY" styleClass="text-wrapper"/>
     </HBox>
 
-    <!-- Sidebar menu items -->
+    <!-- Sidebar Menu -->
     <VBox layoutX="30" layoutY="120" spacing="20">
         <Label text="Overview" styleClass="menu-item"/>
         <Label text="Tenants" styleClass="menu-item"/>
@@ -37,72 +36,118 @@
         <Label text="My Properties" styleClass="menu-item-bold"/>
     </VBox>
 
-    <!-- Welcome Text -->
-    <VBox layoutX="300" layoutY="80" spacing="5" styleClass="welcome-message">
+    <!-- Top Header Bar -->
+    <AnchorPane layoutX="250" layoutY="0" prefWidth="1190" prefHeight="80" styleClass="top-header">
+        <Label text="Landlord" layoutX="20" layoutY="25" styleClass="header-text"/>
+        <StackPane layoutX="1050" layoutY="15" prefWidth="120" prefHeight="50">
+            <Pane styleClass="add-property-btn"/>
+            <HBox alignment="CENTER" spacing="5">
+                <padding>
+                    <Insets top="0" right="0" bottom="0" left="0"/>
+                </padding>
+                <Label text="+" styleClass="add-property-plus"/>
+                <Label text="Add Property" styleClass="add-property-text"/>
+            </HBox>
+        </StackPane>
+    </AnchorPane>
+
+    <!-- Welcome Message -->
+    <VBox layoutX="300" layoutY="100" spacing="5" styleClass="welcome-message">
         <Label text="Hello Landlord!" styleClass="text-wrapper-2"/>
         <Label text="Here's what's happening with your properties today." wrapText="true" styleClass="here-s-what-s"/>
     </VBox>
 
-    <!-- Add Property Button -->
-    <AnchorPane layoutX="300" layoutY="170">
-        <Pane prefWidth="180" prefHeight="50" styleClass="rectangle-3"/>
-        <Label text="+" layoutX="15" layoutY="10" styleClass="text-wrapper-4"/>
-        <Label text="Add Property" layoutX="50" layoutY="12" styleClass="text-wrapper-5"/>
-    </AnchorPane>
+    <!-- Cards Row -->
+    <HBox layoutX="300" layoutY="250" spacing="20">
+        <!-- New Properties -->
+        <StackPane styleClass="group-card" prefWidth="200" prefHeight="150">
+            <Pane styleClass="rectangle-4"/>
+            <Pane styleClass="rectangle-5"/>
+            <VBox alignment="TOP_LEFT" spacing="10">
+                <padding>
+                    <Insets top="20" right="20" bottom="20" left="20"/>
+                </padding>
+                <Label text="8" styleClass="text-wrapper-7"/>
+                <Label text="+2 this month" styleClass="text-wrapper-6"/>
+            </VBox>
+        </StackPane>
 
-    <!-- Group: New Properties This Month -->
-    <AnchorPane layoutX="300" layoutY="250" styleClass="group-card">
-        <Pane styleClass="rectangle-4"/>
-        <Pane styleClass="rectangle-5"/>
-        <Label text="+2 this month" layoutX="30" layoutY="60" styleClass="text-wrapper-6"/>
-        <Label text="8" layoutX="30" layoutY="20" styleClass="text-wrapper-7"/>
-    </AnchorPane>
+        <!-- Active Tenants / Total Properties -->
+        <StackPane styleClass="group-card" prefWidth="200" prefHeight="150">
+            <Pane styleClass="rectangle-6"/>
+            <Pane styleClass="rectangle-7"/>
+            <VBox alignment="TOP_LEFT" spacing="10">
+                <padding>
+                    <Insets top="20" right="20" bottom="20" left="20"/>
+                </padding>
+                <Label text="Active Tenants" styleClass="text-wrapper-8"/>
+                <Label text="Total Properties" styleClass="text-wrapper-9"/>
+                <Label text="24" styleClass="text-wrapper-11"/>
+                <Label text="89% occupancy" styleClass="text-wrapper-10"/>
+            </VBox>
+        </StackPane>
 
-    <!-- Group: Active Tenants + Total Properties -->
-    <AnchorPane layoutX="520" layoutY="250" styleClass="group-card">
-        <Pane styleClass="rectangle-6"/>
-        <Pane styleClass="rectangle-7"/>
-        <Label text="Active Tenants" layoutX="20" layoutY="20" styleClass="text-wrapper-8"/>
-        <Label text="Total Properties" layoutX="20" layoutY="70" styleClass="text-wrapper-9"/>
-        <Label text="89% occupancy" layoutX="20" layoutY="120" styleClass="text-wrapper-10"/>
-        <Label text="24" layoutX="160" layoutY="70" styleClass="text-wrapper-11"/>
-    </AnchorPane>
+        <!-- Monthly Revenue -->
+        <StackPane styleClass="group-card" prefWidth="200" prefHeight="150">
+            <Pane styleClass="rectangle-8"/>
+            <Pane styleClass="rectangle-9"/>
+            <VBox alignment="TOP_LEFT" spacing="10">
+                <padding>
+                    <Insets top="20" right="20" bottom="20" left="20"/>
+                </padding>
+                <Label text="Monthly Revenue" styleClass="text-wrapper-12"/>
+                <Label text="+12% from last month" styleClass="text-wrapper-13"/>
+                <Label text="₱84,600" styleClass="text-wrapper-14"/>
+            </VBox>
+        </StackPane>
 
-    <!-- Group: Monthly Revenue -->
-    <AnchorPane layoutX="760" layoutY="250" styleClass="group-card">
-        <Pane styleClass="rectangle-8"/>
-        <Pane styleClass="rectangle-9"/>
-        <Label text="Monthly Revenue" layoutX="20" layoutY="20" styleClass="text-wrapper-12"/>
-        <Label text="+12% from last month" layoutX="20" layoutY="60" styleClass="text-wrapper-13"/>
-        <Label text="₱84,600" layoutX="20" layoutY="100" styleClass="text-wrapper-14"/>
-    </AnchorPane>
+        <!-- Pending Applications -->
+        <StackPane styleClass="group-card" prefWidth="200" prefHeight="150">
+            <Pane styleClass="rectangle-8"/>
+            <Pane styleClass="rectangle-10"/>
+            <VBox alignment="TOP_LEFT" spacing="10">
+                <padding>
+                    <Insets top="20" right="20" bottom="20" left="20"/>
+                </padding>
+                <Label text="Pending Applications" styleClass="text-wrapper-15"/>
+                <Label text="3 new today" styleClass="text-wrapper-16"/>
+                <Label text="5" styleClass="text-wrapper-17"/>
+            </VBox>
+        </StackPane>
+    </HBox>
 
-    <!-- Group: Pending Applications -->
-    <AnchorPane layoutX="1000" layoutY="250" styleClass="group-card">
-        <Pane styleClass="rectangle-8"/>
-        <Pane styleClass="rectangle-10"/>
-        <Label text="Pending Applications" layoutX="20" layoutY="20" styleClass="text-wrapper-15"/>
-        <Label text="3 new today" layoutX="20" layoutY="60" styleClass="text-wrapper-16"/>
-        <Label text="5" layoutX="20" layoutY="100" styleClass="text-wrapper-17"/>
-    </AnchorPane>
-
-    <!-- Group: Recent Activity -->
-    <AnchorPane layoutX="300" layoutY="430" prefWidth="500" prefHeight="250" styleClass="group-8">
+    <!-- Recent Activity -->
+    <StackPane layoutX="300" layoutY="430" prefWidth="700" prefHeight="250" styleClass="group-8">
         <Pane styleClass="rectangle-11"/>
         <Pane styleClass="rectangle-12"/>
         <Pane styleClass="rectangle-13"/>
-        <Label text="Recent Activity" layoutX="20" layoutY="10" styleClass="text-wrapper-24"/>
-        <Label text="New Application from Shayne Digo" layoutX="20" layoutY="70" styleClass="text-wrapper-25"/>
-        <Label text="Payment received from Pete Petero" layoutX="20" layoutY="140" styleClass="text-wrapper-18"/>
-        <Label text="Cozy Student Room" layoutX="280" layoutY="70" styleClass="text-wrapper-19"/>
-        <Label text="Modern Boarding House" layoutX="280" layoutY="140" styleClass="text-wrapper-20"/>
-        <Label text="2 hours ago" layoutX="420" layoutY="70" styleClass="text-wrapper-21"/>
-        <Label text="6 hours ago" layoutX="420" layoutY="140" styleClass="text-wrapper-22"/>
-    </AnchorPane>
+        <VBox spacing="20">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+            <Label text="Recent Activity" styleClass="text-wrapper-24"/>
+            <HBox spacing="50">
+                <VBox spacing="10">
+                    <Label text="New Application from Shayne Digo" styleClass="text-wrapper-25"/>
+                    <Label text="Payment received from Pete Petero" styleClass="text-wrapper-18"/>
+                </VBox>
+                <VBox spacing="10">
+                    <Label text="Cozy Student Room" styleClass="text-wrapper-19"/>
+                    <Label text="Modern Boarding House" styleClass="text-wrapper-20"/>
+                </VBox>
+                <VBox spacing="10">
+                    <Label text="2 hours ago" styleClass="text-wrapper-21"/>
+                    <Label text="6 hours ago" styleClass="text-wrapper-22"/>
+                </VBox>
+            </HBox>
+        </VBox>
+    </StackPane>
 
-    <!-- Example nodes for rectangle-14, rectangle-15, text-wrapper-26 -->
-    <Pane layoutX="850" layoutY="700" prefWidth="100" prefHeight="50" styleClass="rectangle-14"/>
-    <Pane layoutX="1000" layoutY="700" prefWidth="100" prefHeight="50" styleClass="rectangle-15"/>
-    <Label text="Extra Info" layoutX="850" layoutY="760" styleClass="text-wrapper-26"/>
+    <!-- Extra Info -->
+    <HBox layoutX="300" layoutY="700" spacing="20">
+        <Pane prefWidth="100" prefHeight="50" styleClass="rectangle-14"/>
+        <Pane prefWidth="100" prefHeight="50" styleClass="rectangle-15"/>
+        <Label text="Extra Info" styleClass="text-wrapper-26"/>
+    </HBox>
 
 </AnchorPane>
