@@ -59,31 +59,20 @@
     -fx-text-fill: #ffffff;
 }
 
-/* If you use the ImageView in FXML, these Region styles can be ignored,
-   but we keep them for the "More Icon" which is still a Region. */
-.icon-overview, .icon-properties, .icon-applications, .icon-tenants, .icon-message, .icon-settings {
-    -fx-background-color: #c9e2f2;
-    -fx-min-width: 20px;
-    -fx-min-height: 20px;
-}
-.menu-item-active .icon-overview {
-    -fx-background-color: #ffffff;
-}
-
 /* ============================================== */
-/* 3. TOP HEADER (Stretching and Content Positioning) */
+/* 3. TOP HEADER (Final, Aligned Stretch) */
 /* ============================================== */
 
 /* The StackPane Container (Used to stretch background past VBox edges) */
 .header-background-container {
     -fx-alignment: top-left;
     -fx-hgrow: ALWAYS;
+    -fx-padding: 0 0 20px 0;
 
-    /* PULL LEFT: Pull the container left by the content's desired left margin (50px). */
+    /* FIX 1: PULL LEFT (To touch sidebar). Pull the container left by 50px. */
     -fx-translate-x: -50px;
 
-    /* PULL RIGHT: Re-add the 50px right padding back to the container to force stretch to the right edge.
-       Keeps 20px bottom margin for spacing. */
+    /* FIX 2: PULL RIGHT (To stretch to window edge). Compensate for the VBox's removed right padding. */
     -fx-padding: 0 50px 20px 0;
     -fx-max-width: 10000;
 }
@@ -101,9 +90,9 @@
 
 /* HBox containing LandLord and Add Property */
 .top-header-bar {
-    /* ADD LEFT PADDING: 50px left padding compensates for the -50px translate-x on the parent container.
-       Right padding is handled by the container's 50px padding. */
-    -fx-padding: 20px 50px 20px 50px;
+    /* FIX 3: Add ONLY the left 50px padding to counteract the -50px translate-x on the container.
+       This aligns the content properly with the 50px margin of elements below. */
+    -fx-padding: 20px 0 20px 50px;
     -fx-alignment: center-left;
     -fx-spacing: 20px;
 }
@@ -215,19 +204,6 @@
     -fx-text-fill: #3da953;
 }
 
-.stat-icon-properties, .stat-icon-tenants, .stat-icon-revenue {
-    -fx-background-color: #c3dbfc;
-    -fx-background-radius: 8px;
-    -fx-min-width: 40px;
-    -fx-min-height: 40px;
-}
-.stat-icon-applications {
-    -fx-background-color: #f7d9c1;
-    -fx-background-radius: 8px;
-    -fx-min-width: 40px;
-    -fx-min-height: 40px;
-}
-
 /* ============================================== */
 /* 6. BOTTOM PANELS (COLOR & ALIGNMENT FIXES) */
 /* ============================================== */
@@ -283,19 +259,6 @@
     -fx-font-size: 12px;
     -fx-text-fill: #777777;
     -fx-alignment: center-right;
-}
-
-.activity-icon-application {
-    -fx-background-color: #c3dbfc;
-    -fx-background-radius: 8px;
-    -fx-min-width: 30px;
-    -fx-min-height: 30px;
-}
-.activity-icon-payment {
-    -fx-background-color: #9ef0a3;
-    -fx-background-radius: 8px;
-    -fx-min-width: 30px;
-    -fx-min-height: 30px;
 }
 
 /* --- Property Status List --- */
