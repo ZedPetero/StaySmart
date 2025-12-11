@@ -1,166 +1,342 @@
-/* ROOT CONTAINER */
-.LANDLORD {
-    -fx-background-color: #ffffff;
-    -fx-min-width: 1450px;
-    -fx-min-height: 790px;
+/* ============================================== */
+/* 1. ROOT & GENERAL LAYOUT */
+/* ============================================== */
+
+/* Main content area background (light grey/off-white) */
+.main-content {
+    -fx-background-color: #f0f4f9;
 }
 
-/* LEFT SIDEBAR */
-.group {
-    -fx-background-image: url("images/Rectangle.png");
-    -fx-background-size: 100% 100%;
+/* Base text color for the entire app */
+.root {
+    -fx-font-family: "Outfit";
+    -fx-font-size: 16px;
 }
 
-/* LOGO CONTAINER */
-.div {
-    -fx-layout-x: 49;
-    -fx-layout-y: 34;
+/* ============================================== */
+/* 2. LEFT SIDEBAR */
+/* ============================================== */
+
+.sidebar {
+    -fx-background-color: #113970;
+    -fx-min-width: 250px;
+    -fx-padding: 30px 20px;
+    -fx-spacing: 30px;
 }
 
-.image {
-    -fx-fit-width: 64;
-    -fx-fit-height: 64;
-}
-
-/* TITLE TEXT */
-.text-wrapper {
+.logo-text {
     -fx-font-family: "Outfit Bold";
     -fx-font-size: 20px;
-    -fx-text-fill: #113970;
+    -fx-text-fill: #ffffff;
 }
 
-/* TOP BLUE BAR */
-.rectangle {
-    -fx-background-color: #d5ebf9;
-    -fx-border-color: black;
+/* Menu Item: General Style */
+.menu-item {
+    -fx-padding: 10px 15px;
+    -fx-cursor: hand;
+    -fx-background-radius: 8px;
+    -fx-spacing: 15px;
 }
 
-/* WELCOME MESSAGE */
-.welcome-message {
-    -fx-spacing: 6.7;
-    -fx-font-family: "Outfit";
+.menu-text {
+    -fx-font-family: "Outfit Regular";
+    -fx-font-size: 16px;
+    -fx-text-fill: #c9e2f2;
 }
 
-.text-wrapper-2 {
+/* Menu Item: Active (Overview) */
+.menu-item-active {
+    -fx-padding: 10px 15px;
+    -fx-background-color: #3b74df;
+    -fx-background-radius: 8px;
+    -fx-cursor: default;
+    -fx-spacing: 15px;
+}
+
+.menu-text-active {
+    -fx-font-family: "Outfit SemiBold";
+    -fx-font-size: 16px;
+    -fx-text-fill: #ffffff;
+}
+
+.icon-overview, .icon-properties, .icon-applications, .icon-tenants, .icon-message, .icon-settings {
+    -fx-background-color: #c9e2f2;
+    -fx-min-width: 20px;
+    -fx-min-height: 20px;
+}
+.menu-item-active .icon-overview {
+    -fx-background-color: #ffffff;
+}
+
+/* ============================================== */
+/* 3. TOP HEADER (Stretches from edge to edge) */
+/* ============================================== */
+
+/* The StackPane Container - Fills the VBox width */
+.header-background-container {
+    -fx-alignment: top-left;
+    -fx-hgrow: ALWAYS;
+    -fx-padding: 0 0 20px 0; /* Only vertical padding is needed */
+    -fx-translate-x: 0; /* No complex offsets needed */
+}
+
+/* Background Rectangle (Region) - Fills the StackPane */
+.header-background-rectangle {
+    -fx-background-color: #dcedf8;
+    -fx-min-height: 80px;
+    -fx-max-height: 80px;
+    -fx-padding: 0;
+    -fx-translate-x: 0;
+    -fx-min-width: 100%;
+}
+
+/* HBox containing LandLord and Add Property */
+.top-header-bar {
+    /* Re-apply the 50px padding to the HBox content */
+    -fx-padding: 20px 50px;
+    -fx-alignment: center-left;
+    -fx-spacing: 20px;
+}
+
+/* Landlord Text Box - Matches Add Property Button */
+.header-title-box {
+    -fx-background-color: #1f57da;
+    -fx-background-radius: 24;
+    -fx-padding: 10px 20px;
+    -fx-alignment: center;
+}
+
+.header-title {
+    -fx-font-family: "Outfit SemiBold";
+    -fx-font-size: 20px;
+    -fx-text-fill: #ffffff;
+}
+
+/* Add Property Button */
+.add-property-button {
+    -fx-background-color: #1f57da;
+    -fx-background-radius: 24;
+    -fx-padding: 10px 20px;
+    -fx-cursor: hand;
+}
+
+.add-property-plus {
+    -fx-font-family: "Outfit Bold";
+    -fx-font-size: 20px;
+    -fx-text-fill: #ffffff;
+}
+
+.add-property-text {
+    -fx-font-family: "Outfit SemiBold";
+    -fx-font-size: 16px;
+    -fx-text-fill: #ffffff;
+}
+
+/* ============================================== */
+/* 4. WELCOME MESSAGE (FIXED PADDING) */
+/* ============================================== */
+
+/* Add 50px padding to the VBox containing the welcome message */
+.center > VBox > VBox:nth-child(2) {
+    -fx-padding: 0 50px 0 50px;
+}
+
+.welcome-title {
     -fx-font-family: "Outfit Bold";
     -fx-font-size: 28px;
     -fx-text-fill: #000;
 }
 
-.here-s-what-s {
+.welcome-subtitle {
     -fx-font-family: "Outfit Medium";
     -fx-font-size: 18px;
     -fx-text-fill: #000000A8;
 }
 
-/* BLUE BUTTON */
-.rectangle-2 {
-    -fx-background-color: #1f57da;
-    -fx-background-radius: 24;
+/* ============================================== */
+/* 5. STATISTICS CARDS (FIXED PADDING) */
+/* ============================================== */
+
+/* Add 50px padding to the HBox containing the cards */
+.cards-row {
+    -fx-padding: 0 50px 0 50px;
+    -fx-spacing: 20px;
+    -fx-alignment: CENTER_LEFT;
 }
 
-.text-wrapper-3 {
-    -fx-font-family: "Outfit SemiBold";
-    -fx-font-size: 25px;
-    -fx-text-fill: #ffffff;
+.stat-card, .stat-card-pending {
+    -fx-min-width: 250px;
+    -fx-min-height: 150px;
+    -fx-padding: 20px;
+    -fx-background-radius: 20px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 5);
 }
 
-/* NOTIFICATION */
-.rectangle-3 {
-    -fx-background-color: #2058da;
-    -fx-background-radius: 10;
-}
-
-.text-wrapper-4 {
-    -fx-font-family: "Outfit Regular";
-    -fx-font-size: 48px;
-    -fx-text-fill: #ffffff;
-}
-
-.text-wrapper-5 {
-    -fx-font-family: "Outfit SemiBold";
-    -fx-font-size: 25px;
-    -fx-text-fill: #ffffff;
-}
-
-/* MAIN CARDS */
-.rectangle-4,
-.rectangle-6,
-.rectangle-8 {
+.stat-card {
     -fx-background-color: #dcedf8;
-    -fx-background-radius: 20;
 }
 
-.rectangle-10 {
+.stat-card-pending {
     -fx-background-color: #f7d9c1;
-    -fx-background-radius: 10;
 }
 
-.rectangle-5,
-.rectangle-7,
-.rectangle-9,
-.rectangle-12 {
-    -fx-background-color: #c3dbfc;
-    -fx-background-radius: 10;
+.stat-value {
+    -fx-font-family: "Outfit Medium";
+    -fx-font-size: 38px;
+    -fx-text-fill: #000000;
 }
 
-.rectangle-13 {
-    -fx-background-color: #9ef0a3;
-    -fx-background-radius: 10;
+.stat-label {
+    -fx-font-family: "Outfit Regular";
+    -fx-font-size: 16px;
+    -fx-text-fill: #000000;
+    -fx-padding: 10px 0 0 0;
 }
 
-.text-wrapper-6,
-.text-wrapper-10,
-.text-wrapper-13,
-.text-wrapper-16 {
+.stat-change {
+    -fx-font-family: "Outfit Medium";
+    -fx-font-size: 15px;
+    -fx-text-fill: #555555;
+}
+
+.stat-change-positive {
     -fx-font-family: "Outfit Medium";
     -fx-font-size: 15px;
     -fx-text-fill: #3da953;
 }
 
-.text-wrapper-7,
-.text-wrapper-11,
-.text-wrapper-14,
-.text-wrapper-17 {
-    -fx-font-family: "Outfit Medium";
-    -fx-font-size: 30px;
-    -fx-text-fill: #000000;
+.stat-icon-properties, .stat-icon-tenants, .stat-icon-revenue {
+    -fx-background-color: #c3dbfc;
+    -fx-background-radius: 8px;
+    -fx-min-width: 40px;
+    -fx-min-height: 40px;
+}
+.stat-icon-applications {
+    -fx-background-color: #f7d9c1;
+    -fx-background-radius: 8px;
+    -fx-min-width: 40px;
+    -fx-min-height: 40px;
 }
 
-/* SMALL TEXT DETAILS */
-.p,
-.text-wrapper-8,
-.text-wrapper-9,
-.text-wrapper-12,
-.text-wrapper-15,
-.text-wrapper-18,
-.text-wrapper-19,
-.text-wrapper-20,
-.text-wrapper-21,
-.text-wrapper-22 {
-    -fx-font-family: "Outfit Regular";
-    -fx-font-size: 15px;
-    -fx-text-fill: #000;
+/* ============================================== */
+/* 6. BOTTOM PANELS (FIXED PADDING) */
+/* ============================================== */
+
+/* Add 50px padding to the HBox containing the panels */
+.bottom-panels {
+    -fx-padding: 0 50px 0 50px;
+    -fx-spacing: 20px;
 }
 
-/* RIGHT PANEL */
-.group-8 .text-wrapper-24 {
+.panel-activity, .panel-status {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 20px;
+    -fx-padding: 25px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 5);
+}
+
+.panel-title {
+    -fx-font-family: "Outfit Bold";
     -fx-font-size: 20px;
-    -fx-text-fill: #2b0bfb;
+    -fx-text-fill: #113970;
 }
 
-.group-8 .text-wrapper-25 {
-    -fx-font-size: 25px;
+.view-all-link {
+    -fx-font-family: "Outfit SemiBold";
+    -fx-font-size: 14px;
+    -fx-text-fill: #1f57da;
+    -fx-cursor: hand;
+}
+
+/* --- Recent Activity List --- */
+.activity-item {
+    -fx-padding: 10px 0;
+    -fx-spacing: 15px;
+    -fx-alignment: center-left;
+}
+
+.activity-main-text {
+    -fx-font-family: "Outfit SemiBold";
+    -fx-font-size: 16px;
     -fx-text-fill: #000;
 }
 
-.rectangle-14,
-.rectangle-15 {
-    -fx-background-color: #c9e2f2;
-    -fx-background-radius: 13;
+.activity-sub-text {
+    -fx-font-family: "Outfit Regular";
+    -fx-font-size: 14px;
+    -fx-text-fill: #4e585f;
 }
 
-.text-wrapper-26 {
-    -fx-font-size: 15px;
+.activity-time-text {
+    -fx-font-family: "Outfit Regular";
+    -fx-font-size: 12px;
+    -fx-text-fill: #777777;
+    -fx-alignment: center-right;
+}
+
+.activity-icon-application {
+    -fx-background-color: #c3dbfc;
+    -fx-background-radius: 8px;
+    -fx-min-width: 30px;
+    -fx-min-height: 30px;
+}
+.activity-icon-payment {
+    -fx-background-color: #9ef0a3;
+    -fx-background-radius: 8px;
+    -fx-min-width: 30px;
+    -fx-min-height: 30px;
+}
+
+/* --- Property Status List --- */
+.status-item {
+    -fx-padding: 10px 0;
+    -fx-spacing: 15px;
+    -fx-alignment: center-left;
+}
+
+.property-name {
+    -fx-font-family: "Outfit SemiBold";
+    -fx-font-size: 16px;
+    -fx-text-fill: #000;
+}
+
+.property-tenant, .property-tenant-vacant {
+    -fx-font-family: "Outfit Regular";
+    -fx-font-size: 14px;
     -fx-text-fill: #4e585f;
+}
+
+.property-price {
+    -fx-font-family: "Outfit SemiBold";
+    -fx-font-size: 16px;
+    -fx-text-fill: #113970;
+}
+
+.occupied-tag-container, .vacant-tag-container {
+    -fx-background-radius: 15px;
+    -fx-alignment: center;
+    -fx-min-width: 80px;
+    -fx-min-height: 25px;
+    -fx-padding: 2px 8px;
+}
+
+.occupied-tag-container {
+    -fx-background-color: #9ef0a3;
+}
+
+.vacant-tag-container {
+    -fx-background-color: #f7d9c1;
+}
+
+.occupied-tag-text, .vacant-tag-text {
+    -fx-font-family: "Outfit SemiBold";
+    -fx-font-size: 12px;
+    -fx-text-fill: #113970;
+}
+
+.more-icon {
+    -fx-min-width: 20px;
+    -fx-min-height: 20px;
+    -fx-background-color: #cccccc;
+    -fx-background-radius: 50%;
 }
