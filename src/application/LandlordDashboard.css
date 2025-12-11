@@ -2,12 +2,12 @@
 /* 1. ROOT & GENERAL LAYOUT */
 /* ============================================== */
 
-/* Main content area background (light grey/off-white) */
 .main-content {
     -fx-background-color: #f0f4f9;
+    /* Ensures content starts exactly at the edges of the center pane */
+    -fx-padding: 0;
 }
 
-/* Base text color for the entire app */
 .root {
     -fx-font-family: "Outfit";
     -fx-font-size: 16px;
@@ -30,7 +30,6 @@
     -fx-text-fill: #ffffff;
 }
 
-/* Menu Item: General Style */
 .menu-item {
     -fx-padding: 10px 15px;
     -fx-cursor: hand;
@@ -44,7 +43,6 @@
     -fx-text-fill: #c9e2f2;
 }
 
-/* Menu Item: Active (Overview) */
 .menu-item-active {
     -fx-padding: 10px 15px;
     -fx-background-color: #3b74df;
@@ -60,44 +58,40 @@
 }
 
 /* ============================================== */
-/* 3. TOP HEADER (Final, Aligned Stretch) */
+/* 3. TOP HEADER (Fixed: Standard Layout) */
 /* ============================================== */
 
-/* The StackPane Container (Used to stretch background past VBox edges) */
+.header-and-welcome-wrapper {
+    -fx-spacing: 25px;
+}
+
 .header-background-container {
     -fx-alignment: top-left;
     -fx-hgrow: ALWAYS;
     -fx-padding: 0 0 20px 0;
 
-    /* FIX 1: PULL LEFT (To touch sidebar). Pull the container left by 50px. */
-    -fx-translate-x: -50px;
-
-    /* FIX 2: PULL RIGHT (To stretch to window edge). Compensate for the VBox's removed right padding. */
-    -fx-padding: 0 50px 20px 0;
-    -fx-max-width: 10000;
+    /* RESET: No translation needed because VBox padding is 0 */
+    -fx-translate-x: 0;
 }
 
-/* Background Rectangle (Region) - Fills the StackPane */
 .header-background-rectangle {
     -fx-background-color: #dcedf8;
     -fx-min-height: 80px;
     -fx-max-height: 80px;
 
+    /* RESET: Normal width filling */
+    -fx-min-width: 100%;
     -fx-padding: 0;
     -fx-translate-x: 0;
-    -fx-min-width: 100%;
 }
 
-/* HBox containing LandLord and Add Property */
 .top-header-bar {
-    /* FIX 3: Add ONLY the left 50px padding to counteract the -50px translate-x on the container.
-       This aligns the content properly with the 50px margin of elements below. */
-    -fx-padding: 20px 0 20px 50px;
+    /* PADDING: 50px on Left/Right keeps text away from sidebar and button away from edge */
+    -fx-padding: 20px 50px 20px 50px;
     -fx-alignment: center-left;
     -fx-spacing: 20px;
 }
 
-/* Landlord Text Box - Matches Add Property Button */
 .header-title-box {
     -fx-background-color: #1f57da;
     -fx-background-radius: 24;
@@ -111,7 +105,6 @@
     -fx-text-fill: #ffffff;
 }
 
-/* Add Property Button */
 .add-property-button {
     -fx-background-color: #1f57da;
     -fx-background-radius: 24;
@@ -132,11 +125,10 @@
 }
 
 /* ============================================== */
-/* 4. WELCOME MESSAGE (ALIGNED PADDING) */
+/* 4. WELCOME MESSAGE */
 /* ============================================== */
 
-/* Add 50px padding to the VBox containing the welcome message to align with other content */
-.center > VBox > VBox:nth-child(2) {
+.welcome-message-vbox {
     -fx-padding: 0 50px 0 50px;
 }
 
@@ -153,10 +145,9 @@
 }
 
 /* ============================================== */
-/* 5. STATISTICS CARDS (ALIGNED PADDING) */
+/* 5. STATISTICS CARDS */
 /* ============================================== */
 
-/* Add 50px padding to the HBox containing the cards */
 .cards-row {
     -fx-padding: 0 50px 0 50px;
     -fx-spacing: 20px;
@@ -205,17 +196,15 @@
 }
 
 /* ============================================== */
-/* 6. BOTTOM PANELS (COLOR & ALIGNMENT FIXES) */
+/* 6. BOTTOM PANELS */
 /* ============================================== */
 
-/* Add 50px padding to the HBox containing the panels */
 .bottom-panels {
     -fx-padding: 0 50px 0 50px;
     -fx-spacing: 20px;
 }
 
 .panel-activity, .panel-status {
-    /* FIX: Use the light blue background color for standardization */
     -fx-background-color: #dcedf8;
     -fx-background-radius: 20px;
     -fx-padding: 25px;
@@ -235,7 +224,6 @@
     -fx-cursor: hand;
 }
 
-/* --- Recent Activity List --- */
 .activity-item {
     -fx-padding: 10px 0;
     -fx-spacing: 15px;
@@ -261,7 +249,6 @@
     -fx-alignment: center-right;
 }
 
-/* --- Property Status List --- */
 .status-item {
     -fx-padding: 10px 0;
     -fx-spacing: 15px;
@@ -308,9 +295,17 @@
     -fx-text-fill: #113970;
 }
 
-.more-icon {
+.more-icon-text {
+    -fx-font-family: "Outfit Bold";
+    /* Font size adjusted to make the dots prominent */
+    -fx-font-size: 24px;
+    -fx-text-fill: #999999;
+    /* Center the three dots visually */
+    -fx-alignment: CENTER;
+    /* Add horizontal padding to separate it from the tags */
+    -fx-padding: 0 5px;
+    -fx-cursor: hand;
+
+    /* Ensure it aligns well vertically with the rest of the row */
     -fx-min-width: 20px;
-    -fx-min-height: 20px;
-    -fx-background-color: #cccccc;
-    -fx-background-radius: 50%;
 }

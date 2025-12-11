@@ -86,97 +86,93 @@
     <center>
         <VBox spacing="25" styleClass="main-content">
 
-            <StackPane styleClass="header-background-container">
-                <Region styleClass="header-background-rectangle"/>
+            <VBox styleClass="header-and-welcome-wrapper">
+                <StackPane styleClass="header-background-container">
+                    <Region styleClass="header-background-rectangle"/>
 
-                <HBox alignment="CENTER_LEFT" styleClass="top-header-bar">
-                    <StackPane styleClass="header-title-box">
-                        <Label text="LandLord" styleClass="header-title"/>
-                    </StackPane>
-
-                    <HBox HBox.hgrow="ALWAYS" alignment="CENTER_RIGHT">
-                        <StackPane styleClass="add-property-button">
-                            <HBox alignment="CENTER" spacing="5">
-                                <Label text="+" styleClass="add-property-plus"/>
-                                <Label text="Add Property" styleClass="add-property-text"/>
-                            </HBox>
+                    <HBox alignment="CENTER_LEFT" styleClass="top-header-bar">
+                        <StackPane styleClass="header-title-box">
+                            <Label text="LandLord" styleClass="header-title"/>
                         </StackPane>
-                    </HBox>
-                </HBox>
-            </StackPane>
 
-            <VBox spacing="10">
-                <Label text="Hello Landlord!" styleClass="welcome-title"/>
-                <Label text="Here's what's happening with your properties today." styleClass="welcome-subtitle"/>
+                        <HBox HBox.hgrow="ALWAYS" alignment="CENTER_RIGHT">
+                            <StackPane styleClass="add-property-button">
+                                <HBox alignment="CENTER" spacing="5">
+                                    <Label text="+" styleClass="add-property-plus"/>
+                                    <Label text="Add Property" styleClass="add-property-text"/>
+                                </HBox>
+                            </StackPane>
+                        </HBox>
+                    </HBox>
+                </StackPane>
+
+                <VBox spacing="10" styleClass="welcome-message-vbox">
+                    <Label text="Hello Landlord!" styleClass="welcome-title"/>
+                    <Label text="Here's what's happening with your properties today." styleClass="welcome-subtitle"/>
+                </VBox>
             </VBox>
 
             <HBox spacing="20" alignment="CENTER_LEFT" styleClass="cards-row">
-                <VBox styleClass="stat-card">
-                    <StackPane alignment="TOP_LEFT">
-                        <ImageView fitWidth="30" fitHeight="30" preserveRatio="true">
-                            <image>
-                                <Image url="@images/building.png"/>
-                            </image>
-                        </ImageView>
-                        <VBox alignment="BOTTOM_LEFT" spacing="5">
-                            <Label text="8" styleClass="stat-value"/>
-                            <Label text="Total Properties" styleClass="stat-label"/>
-                            <Label text="+2 this month" styleClass="stat-change"/>
-                        </VBox>
-                    </StackPane>
+
+                <VBox styleClass="stat-card" spacing="15">
+                    <ImageView fitWidth="30" fitHeight="30" preserveRatio="true">
+                        <image>
+                            <Image url="@images/building.png"/>
+                        </image>
+                    </ImageView>
+                    <VBox spacing="5">
+                        <Label text="8" styleClass="stat-value"/>
+                        <Label text="Total Properties" styleClass="stat-label"/>
+                        <Label text="+2 this month" styleClass="stat-change"/>
+                    </VBox>
                 </VBox>
 
-                <VBox styleClass="stat-card">
-                    <StackPane alignment="TOP_LEFT">
-                        <ImageView fitWidth="30" fitHeight="30" preserveRatio="true">
-                            <image>
-                                <Image url="@images/users.png"/>
-                            </image>
-                        </ImageView>
-                        <VBox alignment="BOTTOM_LEFT" spacing="5">
-                            <Label text="24" styleClass="stat-value"/>
-                            <Label text="Active Tenants" styleClass="stat-label"/>
-                            <Label text="89% occupancy" styleClass="stat-change-positive"/>
-                        </VBox>
-                    </StackPane>
+                <VBox styleClass="stat-card" spacing="15">
+                    <ImageView fitWidth="30" fitHeight="30" preserveRatio="true">
+                        <image>
+                            <Image url="@images/users.png"/>
+                        </image>
+                    </ImageView>
+                    <VBox spacing="5">
+                        <Label text="24" styleClass="stat-value"/>
+                        <Label text="Active Tenants" styleClass="stat-label"/>
+                        <Label text="89% occupancy" styleClass="stat-change-positive"/>
+                    </VBox>
                 </VBox>
 
-                <VBox styleClass="stat-card">
-                    <StackPane alignment="TOP_LEFT">
-                        <ImageView fitWidth="30" fitHeight="30" preserveRatio="true">
-                            <image>
-                                <Image url="@images/chat-arrow-grow.png"/>
-                            </image>
-                        </ImageView>
-                        <VBox alignment="BOTTOM_LEFT" spacing="5">
-                            <Label text="₱84,600" styleClass="stat-value"/>
-                            <Label text="Monthly Revenue" styleClass="stat-label"/>
-                            <Label text="+12% from last month" styleClass="stat-change-positive"/>
-                        </VBox>
-                    </StackPane>
+                <VBox styleClass="stat-card" spacing="15">
+                    <ImageView fitWidth="30" fitHeight="30" preserveRatio="true">
+                        <image>
+                            <Image url="@images/coins.png"/>
+                        </image>
+                    </ImageView>
+                    <VBox spacing="5">
+                        <Label text="₱84,600" styleClass="stat-value"/>
+                        <Label text="Monthly Revenue" styleClass="stat-label"/>
+                        <Label text="+12% from last month" styleClass="stat-change-positive"/>
+                    </VBox>
                 </VBox>
 
-                <VBox styleClass="stat-card-pending">
-                    <StackPane alignment="TOP_LEFT">
-                        <ImageView fitWidth="30" fitHeight="30" preserveRatio="true">
-                            <image>
-                                <Image url="@images/document-signed.png"/>
-                            </image>
-                        </ImageView>
-                        <VBox alignment="BOTTOM_LEFT" spacing="5">
-                            <Label text="5" styleClass="stat-value"/>
-                            <Label text="Pending Applications" styleClass="stat-label"/>
-                            <Label text="3 new today" styleClass="stat-change"/>
-                        </VBox>
-                    </StackPane>
+                <VBox styleClass="stat-card-pending" spacing="15">
+                    <ImageView fitWidth="30" fitHeight="30" preserveRatio="true">
+                        <image>
+                            <Image url="@images/chat-arrow-grow.png"/>
+                        </image>
+                    </ImageView>
+                    <VBox spacing="5">
+                        <Label text="5" styleClass="stat-value"/>
+                        <Label text="Pending Applications" styleClass="stat-label"/>
+                        <Label text="3 new today" styleClass="stat-change"/>
+                    </VBox>
                 </VBox>
             </HBox>
 
-            <HBox spacing="20" VBox.vgrow="ALWAYS" styleClass="bottom-panels">
+            <HBox spacing="20" styleClass="bottom-panels">
+
                 <VBox spacing="15" prefWidth="550" styleClass="panel-activity">
                     <Label text="Recent Activity" styleClass="panel-title"/>
-                    <VBox spacing="10">
-                        <HBox alignment="CENTER_LEFT" spacing="10" styleClass="activity-item">
+                    <VBox spacing="15">
+                        <HBox alignment="CENTER_LEFT" spacing="15" styleClass="activity-item">
                             <ImageView fitWidth="30" fitHeight="30" preserveRatio="true">
                                 <image>
                                     <Image url="@images/document-signed.png"/>
@@ -188,7 +184,8 @@
                             </VBox>
                             <Label text="2 hours ago" styleClass="activity-time-text"/>
                         </HBox>
-                        <HBox alignment="CENTER_LEFT" spacing="10" styleClass="activity-item">
+
+                        <HBox alignment="CENTER_LEFT" spacing="15" styleClass="activity-item">
                             <ImageView fitWidth="30" fitHeight="30" preserveRatio="true">
                                 <image>
                                     <Image url="@images/coins.png"/>
@@ -206,30 +203,40 @@
                 <VBox spacing="15" HBox.hgrow="ALWAYS" styleClass="panel-status">
                     <HBox alignment="CENTER_LEFT">
                         <Label text="Property Status" styleClass="panel-title"/>
-                        <Label text="View all" HBox.hgrow="ALWAYS" alignment="CENTER_RIGHT" styleClass="view-all-link"/>
+                        <Region HBox.hgrow="ALWAYS" /> <Label text="View all" styleClass="view-all-link"/>
                     </HBox>
-                    <VBox spacing="10">
-                        <HBox alignment="CENTER_LEFT" styleClass="status-item">
+
+                    <VBox spacing="15">
+                        <HBox alignment="CENTER_LEFT" styleClass="status-item" spacing="10">
                             <VBox HBox.hgrow="ALWAYS">
                                 <Label text="Cozy Student Room" styleClass="property-name"/>
                                 <Label text="Tenant: Aljon Macunte" styleClass="property-tenant"/>
                             </VBox>
-                            <Label text="₱2,800/mo" styleClass="property-price"/>
-                            <StackPane prefWidth="80" prefHeight="25" styleClass="occupied-tag-container">
-                                <Label text="Occupied" styleClass="occupied-tag-text"/>
-                            </StackPane>
-                            <Region prefWidth="20" prefHeight="20" styleClass="more-icon"/>
+
+                            <VBox alignment="CENTER_RIGHT" spacing="5">
+                                <Label text="₱2,800/mo" styleClass="property-price"/>
+                                <StackPane prefWidth="80" prefHeight="25" styleClass="occupied-tag-container">
+                                    <Label text="Occupied" styleClass="occupied-tag-text"/>
+                                </StackPane>
+                            </VBox>
+
+                            <Label text="..." styleClass="more-icon-text"/>
                         </HBox>
-                        <HBox alignment="CENTER_LEFT" styleClass="status-item">
+
+                        <HBox alignment="CENTER_LEFT" styleClass="status-item" spacing="10">
                             <VBox HBox.hgrow="ALWAYS">
                                 <Label text="Affordable Studio" styleClass="property-name"/>
                                 <Label text="Available for rent" styleClass="property-tenant-vacant"/>
                             </VBox>
-                            <Label text="₱4,200/mo" styleClass="property-price"/>
-                            <StackPane prefWidth="80" prefHeight="25" styleClass="vacant-tag-container">
-                                <Label text="Vacant" styleClass="vacant-tag-text"/>
-                            </StackPane>
-                            <Region prefWidth="20" prefHeight="20" styleClass="more-icon"/>
+
+                            <VBox alignment="CENTER_RIGHT" spacing="5">
+                                <Label text="₱4,200/mo" styleClass="property-price"/>
+                                <StackPane prefWidth="80" prefHeight="25" styleClass="vacant-tag-container">
+                                    <Label text="Vacant" styleClass="vacant-tag-text"/>
+                                </StackPane>
+                            </VBox>
+
+                            <Label text="..." styleClass="more-icon-text"/>
                         </HBox>
                     </VBox>
                 </VBox>
