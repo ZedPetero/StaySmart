@@ -24,35 +24,59 @@
             <HBox spacing="10" alignment="CENTER_LEFT" styleClass="logo-area">
                 <ImageView fitWidth="30" fitHeight="30" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@images/house-icon.png"/>
+                        <Image url="@images/homeicon.png"/>
                     </image>
                 </ImageView>
-                <Label text="SMART STAY" styleClass="logo-text"/>
+                <Label text="STAY SMART" styleClass="logo-text"/>
             </HBox>
 
             <VBox spacing="10" styleClass="menu-area">
                 <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-item-active">
-                    <Region prefWidth="20" prefHeight="20" styleClass="icon-overview"/>
+                    <ImageView fitWidth="20" fitHeight="20" preserveRatio="true">
+                        <image>
+                            <Image url="@images/menu-burger.png"/>
+                        </image>
+                    </ImageView>
                     <Label text="Overview" styleClass="menu-text-active"/>
                 </HBox>
                 <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-item">
-                    <Region prefWidth="20" prefHeight="20" styleClass="icon-properties"/>
+                    <ImageView fitWidth="20" fitHeight="20" preserveRatio="true">
+                        <image>
+                            <Image url="@images/building.png"/>
+                        </image>
+                    </ImageView>
                     <Label text="My Properties" styleClass="menu-text"/>
                 </HBox>
                 <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-item">
-                    <Region prefWidth="20" prefHeight="20" styleClass="icon-applications"/>
+                    <ImageView fitWidth="20" fitHeight="20" preserveRatio="true">
+                        <image>
+                            <Image url="@images/document-signed.png"/>
+                        </image>
+                    </ImageView>
                     <Label text="Applications" styleClass="menu-text"/>
                 </HBox>
                 <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-item">
-                    <Region prefWidth="20" prefHeight="20" styleClass="icon-tenants"/>
+                    <ImageView fitWidth="20" fitHeight="20" preserveRatio="true">
+                        <image>
+                            <Image url="@images/users.png"/>
+                        </image>
+                    </ImageView>
                     <Label text="Tenants" styleClass="menu-text"/>
                 </HBox>
                 <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-item">
-                    <Region prefWidth="20" prefHeight="20" styleClass="icon-message"/>
+                    <ImageView fitWidth="20" fitHeight="20" preserveRatio="true">
+                        <image>
+                            <Image url="@images/bubble-discussion.png"/>
+                        </image>
+                    </ImageView>
                     <Label text="Message" styleClass="menu-text"/>
                 </HBox>
                 <HBox alignment="CENTER_LEFT" spacing="10" styleClass="menu-item">
-                    <Region prefWidth="20" prefHeight="20" styleClass="icon-settings"/>
+                    <ImageView fitWidth="20" fitHeight="20" preserveRatio="true">
+                        <image>
+                            <Image url="@images/settings.png"/>
+                        </image>
+                    </ImageView>
                     <Label text="Settings" styleClass="menu-text"/>
                 </HBox>
             </VBox>
@@ -89,7 +113,11 @@
             <HBox spacing="20" alignment="CENTER_LEFT" styleClass="cards-row">
                 <VBox styleClass="stat-card">
                     <StackPane alignment="TOP_LEFT">
-                        <Region prefWidth="30" prefHeight="30" styleClass="stat-icon-properties"/>
+                        <ImageView fitWidth="30" fitHeight="30" preserveRatio="true">
+                            <image>
+                                <Image url="@images/building.png"/>
+                            </image>
+                        </ImageView>
                         <VBox alignment="BOTTOM_LEFT" spacing="5">
                             <Label text="8" styleClass="stat-value"/>
                             <Label text="Total Properties" styleClass="stat-label"/>
@@ -100,7 +128,11 @@
 
                 <VBox styleClass="stat-card">
                     <StackPane alignment="TOP_LEFT">
-                        <Region prefWidth="30" prefHeight="30" styleClass="stat-icon-tenants"/>
+                        <ImageView fitWidth="30" fitHeight="30" preserveRatio="true">
+                            <image>
+                                <Image url="@images/users.png"/>
+                            </image>
+                        </ImageView>
                         <VBox alignment="BOTTOM_LEFT" spacing="5">
                             <Label text="24" styleClass="stat-value"/>
                             <Label text="Active Tenants" styleClass="stat-label"/>
@@ -111,7 +143,11 @@
 
                 <VBox styleClass="stat-card">
                     <StackPane alignment="TOP_LEFT">
-                        <Region prefWidth="30" prefHeight="30" styleClass="stat-icon-revenue"/>
+                        <ImageView fitWidth="30" fitHeight="30" preserveRatio="true">
+                            <image>
+                                <Image url="@images/chat-arrow-grow.png"/>
+                            </image>
+                        </ImageView>
                         <VBox alignment="BOTTOM_LEFT" spacing="5">
                             <Label text="₱84,600" styleClass="stat-value"/>
                             <Label text="Monthly Revenue" styleClass="stat-label"/>
@@ -122,7 +158,11 @@
 
                 <VBox styleClass="stat-card-pending">
                     <StackPane alignment="TOP_LEFT">
-                        <Region prefWidth="30" prefHeight="30" styleClass="stat-icon-applications"/>
+                        <ImageView fitWidth="30" fitHeight="30" preserveRatio="true">
+                            <image>
+                                <Image url="@images/document-signed.png"/>
+                            </image>
+                        </ImageView>
                         <VBox alignment="BOTTOM_LEFT" spacing="5">
                             <Label text="5" styleClass="stat-value"/>
                             <Label text="Pending Applications" styleClass="stat-label"/>
@@ -137,7 +177,11 @@
                     <Label text="Recent Activity" styleClass="panel-title"/>
                     <VBox spacing="10">
                         <HBox alignment="CENTER_LEFT" spacing="10" styleClass="activity-item">
-                            <Region prefWidth="30" prefHeight="30" styleClass="activity-icon-application"/>
+                            <ImageView fitWidth="30" fitHeight="30" preserveRatio="true">
+                                <image>
+                                    <Image url="@images/document-signed.png"/>
+                                </image>
+                            </ImageView>
                             <VBox HBox.hgrow="ALWAYS">
                                 <Label text="New Application from Shayne Digo" styleClass="activity-main-text"/>
                                 <Label text="Cozy Student Room" styleClass="activity-sub-text"/>
@@ -145,7 +189,11 @@
                             <Label text="2 hours ago" styleClass="activity-time-text"/>
                         </HBox>
                         <HBox alignment="CENTER_LEFT" spacing="10" styleClass="activity-item">
-                            <Region prefWidth="30" prefHeight="30" styleClass="activity-icon-payment"/>
+                            <ImageView fitWidth="30" fitHeight="30" preserveRatio="true">
+                                <image>
+                                    <Image url="@images/coins.png"/>
+                                </image>
+                            </ImageView>
                             <VBox HBox.hgrow="ALWAYS">
                                 <Label text="Payment received from Pete Petero" styleClass="activity-main-text"/>
                                 <Label text="Modern Boarding House" styleClass="activity-sub-text"/>
