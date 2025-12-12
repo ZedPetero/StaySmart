@@ -1,0 +1,266 @@
+/* Define color variables for easy modification */
+.root {
+    /* Primary Sidebar/App color */
+    -color-dark-blue: #243845;
+    /* Gradient color on the right side */
+    -color-light-blue-bg: #F2F9FF;
+    /* Search/Filter background color */
+    -color-light-blue-fill: #D5EBF9;
+    /* Filter bar background color */
+    -color-filter-bar: #A9C3D5;
+    /* Property card background color */
+    -color-card-bg: #B8D1E0;
+    /* Price color */
+    -color-price-blue: #2B0BFB;
+    /* Primary text color */
+    -color-black: #000000;
+    /* Secondary text color (location) */
+    -color-gray: #938686;
+    /* Button background color */
+    -color-button-dark: #060606;
+    /* Green for 'Available' status */
+    -color-available-green: #39EF46;
+}
+
+/* Base AnchorPane/Dashboard */
+.tenant-dashboard {
+    -fx-background-color: white;
+}
+
+/* Right Side Background Gradient */
+.background-gradient {
+    -fx-fill: -color-light-blue-bg;
+}
+
+/* --- Left Sidebar Styles --- */
+
+.sidebar {
+    -fx-background-color: -color-dark-blue;
+}
+
+.app-name {
+    -fx-font-family: "Outfit Bold", Helvetica;
+    -fx-font-weight: 700;
+    -fx-text-fill: #F1F9FF;
+    -fx-font-size: 20px;
+}
+
+/* Nav Menu Item Container (HBox) */
+.nav-item {
+    -fx-pref-width: 320px; /* Force to full sidebar width */
+    -fx-background-radius: 0;
+    -fx-cursor: hand;
+    -fx-min-height: 50px;
+    -fx-padding: 8px 0; /* Vertical padding only, horizontal padding is on the HBox in FXML */
+}
+
+.nav-text {
+    -fx-font-family: "Outfit Bold", Helvetica;
+    -fx-font-weight: 700;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 20px;
+}
+
+/* === ACTIVE SAVED STATE STYLES === */
+
+.nav-item.active {
+    -fx-background-color: white; /* **WHITE BACKGROUND** */
+}
+
+.nav-text-active {
+    -fx-font-family: "Outfit Bold", Helvetica;
+    -fx-font-weight: 700;
+    -fx-text-fill: -color-dark-blue; /* **DARK BLUE TEXT** */
+    -fx-font-size: 20px;
+}
+
+/* --- Right Content Area Styles --- */
+
+.content-area {
+    -fx-alignment: top-left;
+}
+
+/* Search Field */
+.search-field {
+    -fx-background-color: -color-light-blue-fill;
+    -fx-background-radius: 30;
+    -fx-min-height: 50px;
+    -fx-pref-width: 671px;
+    -fx-font-family: "Outfit Medium", Helvetica;
+    -fx-font-size: 20px;
+    -fx-prompt-text-fill: #87ACC4;
+    -fx-padding: 0 20 0 67;
+}
+
+/* Header Section */
+.main-title {
+    -fx-font-family: "Outfit Bold", Helvetica;
+    -fx-font-weight: 700;
+    -fx-text-fill: -color-black;
+    -fx-font-size: 25px;
+}
+
+.subtitle {
+    -fx-font-family: "Outfit Medium", Helvetica;
+    -fx-font-weight: 500;
+    -fx-text-fill: rgba(0, 0, 0, 0.66);
+    -fx-font-size: 18px;
+}
+
+.recently-saved-text {
+    -fx-font-family: "Outfit Regular", Helvetica;
+    -fx-font-weight: 400;
+    -fx-text-fill: #5C7281;
+    -fx-font-size: 20px;
+    -fx-translate-y: 2px;
+    -fx-translate-x: -125px;
+}
+
+.recently-saved-box {
+    -fx-fill: -color-filter-bar;
+    -fx-arc-width: 10;
+    -fx-arc-height: 10;
+    -fx-translate-y: 2px;
+}
+
+/* Filter Bar (Pills) */
+.filter-bar {
+    -fx-background-color: -color-filter-bar;
+    -fx-background-radius: 40;
+    -fx-padding: 5 10;
+    -fx-max-width: 872px;
+}
+
+.filter-pill {
+    -fx-font-family: "Outfit Regular", Helvetica;
+    -fx-font-weight: 400;
+    -fx-text-fill: #0C0C0C;
+    -fx-font-size: 20px;
+    -fx-padding: 5 15;
+    -fx-background-radius: 40;
+    -fx-cursor: hand;
+}
+
+.filter-pill.active-pill {
+    -fx-background-color: #F4F5F5;
+    -fx-text-fill: -color-black;
+}
+
+/* --- Property Cards --- */
+
+.property-cards-container {
+    -fx-alignment: top-left;
+}
+
+.property-card {
+    -fx-background-color: -color-card-bg;
+    -fx-background-radius: 20;
+    -fx-pref-width: 292px;
+    -fx-spacing: 5;
+    -fx-padding: 15;
+    -fx-alignment: top-left;
+}
+
+.card-image-placeholder {
+    -fx-fill: #A9C3D5;
+    -fx-arc-width: 15;
+    -fx-arc-height: 15;
+    -fx-translate-y: -10px;
+}
+
+/* Status Pill */
+.status-pill-background-1,
+.status-pill-background-2,
+.status-pill-background-3 {
+    -fx-fill: -color-available-green;
+    -fx-arc-width: 30;
+    -fx-arc-height: 30;
+}
+
+.status-text {
+    -fx-font-family: "Outfit Regular", Helvetica;
+    -fx-font-weight: 400;
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+}
+
+.card-rating {
+    -fx-font-family: "Outfit Regular", Helvetica;
+    -fx-font-weight: 400;
+    -fx-text-fill: -color-black;
+    -fx-font-size: 17px;
+}
+
+.card-title-text {
+    -fx-font-family: "Outfit Regular", Helvetica;
+    -fx-font-weight: 400;
+    -fx-text-fill: -color-black;
+    -fx-font-size: 20px;
+    -fx-padding: 5 0 0 0;
+    -fx-wrap-text: true;
+}
+
+.card-price {
+    -fx-font-family: "Outfit Regular", Helvetica;
+    -fx-font-weight: 400;
+    -fx-text-fill: -color-price-blue;
+    -fx-font-size: 18px;
+    -fx-padding: 5 0 0 0;
+}
+
+.card-location {
+    -fx-font-family: "Outfit Regular", Helvetica;
+    -fx-font-weight: 400;
+    -fx-text-fill: -color-gray;
+    -fx-font-size: 17px;
+    -fx-padding: 5 0 10 0;
+}
+
+.amenities-container {
+    -fx-padding: 0 0 10 0;
+}
+
+.amenity-pill {
+    -fx-background-color: -color-light-blue-fill;
+    -fx-background-radius: 15;
+    -fx-font-family: "Outfit Regular", Helvetica;
+    -fx-font-weight: 400;
+    -fx-text-fill: -color-black;
+    -fx-font-size: 15px;
+    -fx-padding: 2 10;
+}
+
+.card-saved-date {
+    -fx-font-family: "Outfit Regular", Helvetica;
+    -fx-font-weight: 400;
+    -fx-text-fill: -color-black;
+    -fx-font-size: 17px;
+    -fx-padding: 5 0 10 0;
+}
+
+.actions-container {
+    -fx-pref-width: 262px;
+}
+
+.view-details-button {
+    -fx-background-color: -color-button-dark;
+    -fx-background-radius: 10;
+    -fx-font-family: "Outfit SemiBold", Helvetica;
+    -fx-font-weight: 600;
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-pref-height: 37px;
+    -fx-pref-width: 197px;
+    -fx-cursor: hand;
+}
+
+.save-toggle-button {
+    -fx-background-color: #E8E8E8;
+    -fx-background-radius: 10;
+    -fx-border-color: -color-black;
+    -fx-border-width: 1px;
+    -fx-border-radius: 10;
+    -fx-pref-height: 37px;
+    -fx-pref-width: 40px;
+    -fx-cursor: hand;
+}

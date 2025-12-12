@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1"
+            prefWidth="1280" prefHeight="720"
+            minWidth="1280" minHeight="720"
+            styleClass="tenant-dashboard"
+            stylesheets="@TenantExploreDashboard.css">
+
+    <Rectangle styleClass="background-gradient"
+               width="960" height="720"
+               AnchorPane.leftAnchor="320" AnchorPane.topAnchor="0"/>
+
+    <AnchorPane styleClass="sidebar" prefWidth="320" prefHeight="720" AnchorPane.leftAnchor="0" AnchorPane.topAnchor="0">
+        <VBox spacing="40" AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
+            <padding>
+                <Insets top="40" left="40"/>
+            </padding>
+
+            <HBox styleClass="app-title" spacing="15" alignment="CENTER_LEFT">
+                <ImageView fitWidth="50" fitHeight="50">
+                    <Image url="@images/image-7.png"/>
+                </ImageView>
+                <Label text="SMART STAY" styleClass="app-name"/>
+            </HBox>
+
+            <VBox styleClass="nav-menu" spacing="10">
+                <HBox styleClass="nav-item" spacing="15" alignment="CENTER_LEFT">
+                    <ImageView fitWidth="24" fitHeight="24">
+                        <Image url="@images/homeicon.png"/>
+                    </ImageView>
+                    <Label text="Dashboard" styleClass="nav-text"/>
+                </HBox>
+
+                <HBox styleClass="nav-item active" spacing="15" alignment="CENTER_LEFT">
+                    <ImageView fitWidth="24" fitHeight="24">
+                        <Image url="@images/location-crosshairs.png"/>
+                    </ImageView>
+                    <Label text="Explore Rooms" styleClass="nav-text"/>
+                </HBox>
+
+                <HBox styleClass="nav-item" spacing="15" alignment="CENTER_LEFT">
+                    <ImageView fitWidth="24" fitHeight="24">
+                        <Image url="@images/heart.png"/>
+                    </ImageView>
+                    <Label text="Saved" styleClass="nav-text"/>
+                </HBox>
+
+                <HBox styleClass="nav-item" spacing="15" alignment="CENTER_LEFT">
+                    <ImageView fitWidth="24" fitHeight="24">
+                        <Image url="@images/document-signed.png"/>
+                    </ImageView>
+                    <Label text="Applications" styleClass="nav-text"/>
+                </HBox>
+
+                <HBox styleClass="nav-item" spacing="15" alignment="CENTER_LEFT">
+                    <ImageView fitWidth="24" fitHeight="24">
+                        <Image url="@images/user.png"/>
+                    </ImageView>
+                    <Label text="Profile" styleClass="nav-text"/>
+                </HBox>
+
+                <HBox styleClass="nav-item" spacing="15" alignment="CENTER_LEFT">
+                    <ImageView fitWidth="24" fitHeight="24">
+                        <Image url="@images/settings.png"/>
+                    </ImageView>
+                    <Label text="Settings" styleClass="nav-text"/>
+                </HBox>
+            </VBox>
+        </VBox>
+    </AnchorPane>
+
+    <VBox styleClass="main-content" spacing="30"
+          AnchorPane.leftAnchor="320" AnchorPane.topAnchor="0"
+          prefWidth="960" prefHeight="720">
+        <padding>
+            <Insets top="30" right="40" bottom="30" left="40"/>
+        </padding>
+
+        <HBox styleClass="top-bar" spacing="20" alignment="CENTER">
+            <HBox styleClass="search-container" spacing="10" alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+                <ImageView fitWidth="20" fitHeight="20">
+                    <Image url="@images/location-crosshairs.png"/>
+                </ImageView>
+                <TextField styleClass="search-field" promptText="Search rooms or locations"
+                           prefHeight="45" HBox.hgrow="ALWAYS"/>
+            </HBox>
+            <HBox styleClass="user-icons" spacing="15" alignment="CENTER">
+                <ImageView styleClass="notification-icon" fitWidth="24" fitHeight="24">
+                    <Image url="@images/bell.png"/>
+                </ImageView>
+                <ImageView styleClass="profile-icon" fitWidth="32" fitHeight="32">
+                    <Image url="@images/user.png"/>
+                </ImageView>
+            </HBox>
+        </HBox>
+
+        <VBox styleClass="explore-header" spacing="5">
+            <Label text="Explore Boarding House" styleClass="header-title"/>
+            <Label text="Find your perfect room from available listings" styleClass="header-subtitle"/>
+        </VBox>
+
+        <HBox styleClass="filter-bar" spacing="15" alignment="CENTER_LEFT">
+            <HBox styleClass="property-search-container" alignment="CENTER_LEFT" HBox.hgrow="ALWAYS" prefHeight="54">
+                <ImageView fitWidth="20" fitHeight="20" styleClass="search-icon">
+                    <Image url="@images/location-crosshairs.png
+"/>
+                </ImageView>
+                <Label text="Search for location, property name..." styleClass="property-search-text"/>
+            </HBox>
+
+            <HBox styleClass="recommended-filter-container" alignment="CENTER" prefWidth="236" prefHeight="54">
+                <Label text="Recommended" styleClass="filter-text"/>
+            </HBox>
+
+            <HBox styleClass="filter-button-container" alignment="CENTER" prefWidth="166" prefHeight="54">
+                <ImageView fitWidth="20" fitHeight="20" styleClass="filter-icon">
+                    <Image url="@images/cursor-finger-click.png"/>
+                </ImageView>
+                <Label text="Filter" styleClass="filter-text"/>
+            </HBox>
+        </HBox>
+
+        <HBox styleClass="room-listings-container" spacing="24" alignment="TOP_LEFT" VBox.vgrow="ALWAYS">
+            <VBox styleClass="room-card" prefWidth="292">
+                <StackPane styleClass="available-tag-wrapper">
+                    <Rectangle styleClass="room-card-background"/>
+                    <VBox styleClass="room-card-content" spacing="5" alignment="TOP_LEFT">
+                        <HBox styleClass="tag-available">
+                            <Label text="Available" styleClass="tag-text"/>
+                        </HBox>
+
+                        <Rectangle height="150" styleClass="room-image-placeholder"/>
+
+                        <Label text="Cozy Student Room" styleClass="room-title"/>
+                        <Label text="₱2,800/month" styleClass="room-price"/>
+                        <Label text="UM Matina Drive, Davao" styleClass="room-location"/>
+
+                        <HBox styleClass="amenities-container" spacing="10">
+                            <Label text="WiFi" styleClass="amenity-tag"/>
+                            <Label text="Aircon" styleClass="amenity-tag"/>
+                            <Label text="Own CR" styleClass="amenity-tag"/>
+                        </HBox>
+
+                        <Button text="View Details" styleClass="view-details-button"/>
+                    </VBox>
+                </StackPane>
+            </VBox>
+
+            <VBox styleClass="room-card" prefWidth="292">
+                <StackPane styleClass="available-tag-wrapper">
+                    <Rectangle styleClass="room-card-background"/>
+                    <VBox styleClass="room-card-content" spacing="5" alignment="TOP_LEFT">
+                        <HBox styleClass="tag-available">
+                            <Label text="Available" styleClass="tag-text"/>
+                        </HBox>
+
+                        <Rectangle height="150" styleClass="room-image-placeholder"/>
+
+                        <Label text="Modern Boarding House" styleClass="room-title"/>
+                        <Label text="₱3,500/month" styleClass="room-price"/>
+                        <Label text="Sandawa, Davao City" styleClass="room-location"/>
+
+                        <HBox styleClass="amenities-container" spacing="10">
+                            <Label text="WiFi" styleClass="amenity-tag"/>
+                            <Label text="Aircon" styleClass="amenity-tag"/>
+                            <Label text="Kitchen" styleClass="amenity-tag"/>
+                        </HBox>
+
+                        <Button text="View Details" styleClass="view-details-button"/>
+                    </VBox>
+                </StackPane>
+            </VBox>
+
+            <VBox styleClass="room-card" prefWidth="292">
+                <StackPane styleClass="available-tag-wrapper">
+                    <Rectangle styleClass="room-card-background"/>
+                    <VBox styleClass="room-card-content" spacing="5" alignment="TOP_LEFT">
+                        <HBox styleClass="tag-available">
+                            <Label text="Available" styleClass="tag-text"/>
+                        </HBox>
+
+                        <Rectangle height="150" styleClass="room-image-placeholder"/>
+
+                        <Label text="Affordable Studio Type" styleClass="room-title"/>
+                        <Label text="₱4,200/month" styleClass="room-price"/>
+                        <Label text="Maa Crossing, Davao City" styleClass="room-location"/>
+
+                        <HBox styleClass="amenities-container" spacing="10">
+                            <Label text="WiFi" styleClass="amenity-tag"/>
+                            <Label text="Kitchen" styleClass="amenity-tag"/>
+                            <Label text="Laundry" styleClass="amenity-tag"/>
+                        </HBox>
+
+                        <Button text="View Details" styleClass="view-details-button"/>
+                    </VBox>
+                </StackPane>
+            </VBox>
+        </HBox>
+    </VBox>
+</AnchorPane>

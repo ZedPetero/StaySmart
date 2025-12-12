@@ -28,7 +28,7 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/../../mysql-connector-j-9.4.0/mysql-connector-j-9.4.0/mysql-connector-j-9.4.0.jar!/" />
+          <root url="jar://C:/Users/mysql-connector-j-9.4.0/mysql-connector-j-9.4.0/mysql-connector-j-9.4.0.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -37,12 +37,14 @@
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
-          <root url="file://$MODULE_DIR$/../../openjfx-25.0.1_windows-x64_bin-sdk/javafx-sdk-25.0.1/lib" />
+          <root url="file://C:/Users/openjfx-25.0.1_windows-x64_bin-sdk/javafx-sdk-25.0.1/lib" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
-        <jarDirectory url="file://$MODULE_DIR$/../../openjfx-25.0.1_windows-x64_bin-sdk/javafx-sdk-25.0.1/lib" recursive="false" />
+        <jarDirectory url="file://C:/Users/openjfx-25.0.1_windows-x64_bin-sdk/javafx-sdk-25.0.1/lib" recursive="false" />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="mysql-connector-j-9.4.0" level="project" />
+    <orderEntry type="library" name="lib" level="project" />
   </component>
 </module>
