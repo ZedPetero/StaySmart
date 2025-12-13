@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.Region?>
+
+<VBox spacing="0" alignment="TOP_LEFT" styleClass="main-content"
+      xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1">
+
+    <VBox styleClass="header-and-welcome-wrapper">
+        <StackPane styleClass="header-background-container">
+            <Region styleClass="header-background-rectangle"/>
+            <HBox alignment="CENTER_LEFT" styleClass="top-header-bar">
+                <StackPane styleClass="header-title-box">
+                    <Label text="Properties" styleClass="header-title"/>
+                </StackPane>
+                <HBox HBox.hgrow="ALWAYS" alignment="CENTER_RIGHT">
+                    <StackPane styleClass="add-property-button">
+                        <HBox alignment="CENTER" spacing="5">
+                            <Label text="+" styleClass="add-property-plus"/>
+                            <Label text="New" styleClass="add-property-text"/>
+                        </HBox>
+                    </StackPane>
+                </HBox>
+            </HBox>
+        </StackPane>
+        <VBox spacing="10" styleClass="welcome-message-vbox">
+            <Label text="My Property List" styleClass="welcome-title"/>
+            <Label text="Manage and view all your real estate assets." styleClass="welcome-subtitle"/>
+        </VBox>
+    </VBox>
+
+    <VBox spacing="20" style="-fx-padding: 30 50 50 50;">
+        <Label text="Content for My Properties goes here..." style="-fx-font-size: 18px; -fx-text-fill: #666666;" />
+    </VBox>
+
+</VBox>

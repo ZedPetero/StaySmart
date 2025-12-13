@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<VBox spacing="20" styleClass="main-content" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+    <VBox style="-fx-padding: 30 50 20 50;">
+        <Label text="Tenant Directory" styleClass="header-title" style="-fx-text-fill: #1a1a1a;"/>
+        <Label text="Manage current residents and lease details." styleClass="welcome-subtitle"/>
+    </VBox>
+
+    <TableView style="-fx-margin: 0 50 50 50;" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn text="Name" prefWidth="200"/>
+            <TableColumn text="Property" prefWidth="200"/>
+            <TableColumn text="Phone" prefWidth="150"/>
+            <TableColumn text="Status" prefWidth="100"/>
+        </columns>
+        <placeholder>
+            <Label text="No tenants found."/>
+        </placeholder>
+    </TableView>
+    <padding>
+        <Insets bottom="50" left="50" right="50"/>
+    </padding>
+</VBox>

@@ -4,7 +4,6 @@
 
 .main-content {
     -fx-background-color: #f0f4f9;
-    /* Ensures content starts exactly at the edges of the center pane */
     -fx-padding: 0;
 }
 
@@ -18,7 +17,6 @@
 /* ============================================== */
 
 .sidebar {
-    /* CHANGED: New light blue background color */
     -fx-background-color: #B3CEDE;
     -fx-min-width: 250px;
     -fx-padding: 30px 20px;
@@ -28,22 +26,16 @@
 .logo-text {
     -fx-font-family: "Outfit Bold";
     -fx-font-size: 20px;
-    /* CHANGED: Dark blue text for contrast against light sidebar */
     -fx-text-fill: #113970;
 }
+
+/* --- Menu Item Containers --- */
 
 .menu-item {
     -fx-padding: 10px 15px;
     -fx-cursor: hand;
     -fx-background-radius: 8px;
     -fx-spacing: 15px;
-}
-
-.menu-text {
-    -fx-font-family: "Outfit Regular";
-    -fx-font-size: 16px;
-    /* CHANGED: Darker text for visibility on light sidebar */
-    -fx-text-fill: #113970;
 }
 
 .menu-item-active {
@@ -54,29 +46,39 @@
     -fx-spacing: 15px;
 }
 
-.menu-text-active {
+/* --- Menu Text Styling (Parent-Child Logic) --- */
+
+/* Default text state (Dark Blue) */
+.menu-item .menu-text {
+    -fx-font-family: "Outfit Regular";
+    -fx-font-size: 16px;
+    -fx-text-fill: #113970;
+}
+
+/* Active text state (White) */
+.menu-item-active .menu-text {
     -fx-font-family: "Outfit SemiBold";
     -fx-font-size: 16px;
-    -fx-text-fill: #ffffff; /* Active text stays white inside the blue button */
+    -fx-text-fill: #ffffff;
 }
 
-/* 1. Dark Blue Icons for inactive menu items */
+/* --- Menu Icon Styling --- */
+
+/* 1. Default icon state (Inactive) -> Colorize to Dark Blue */
 .menu-item ImageView {
-    /* TRICK: We use an Inner Shadow that is the same color as the text (#113970).
-       radius=50, choke=1.0 (100%) -> This effectively fills the white icon with blue.
-    */
+    /* Fills the icon shape with Dark Blue */
     -fx-effect: innershadow(gaussian, #113970, 50, 1.0, 0, 0);
 }
 
-/* 2. White Icons for the active menu item (Selected) */
+/* 2. Active icon state (Selected) -> Force to White */
 .menu-item-active ImageView {
-    /* Remove the effect so it reveals the original white image */
-    -fx-effect: null;
+    /* Fills the icon shape with Pure White */
+    -fx-effect: innershadow(gaussian, #ffffff, 50, 1.0, 0, 0);
 }
 
-/* 3. Dark Blue Icon for the Logo (Optional, if you want the house icon blue too) */
+/* 3. Logo icon exception (Keep original colors) */
 .logo-area ImageView {
-    -fx-effect: innershadow(gaussian, #113970, 50, 1.0, 0, 0);
+    -fx-effect: null !important;
 }
 
 /* ============================================== */
@@ -95,7 +97,6 @@
 }
 
 .header-background-rectangle {
-    /* UPDATED: New lighter blue color */
     -fx-background-color: #D5EBF9;
     -fx-min-height: 80px;
     -fx-max-height: 80px;
@@ -117,7 +118,6 @@
 }
 
 .header-title {
-    /* UPDATED: Bold font */
     -fx-font-family: "Outfit Bold";
     -fx-font-size: 20px;
     -fx-text-fill: #ffffff;
@@ -137,11 +137,11 @@
 }
 
 .add-property-text {
-    /* UPDATED: Bold font */
     -fx-font-family: "Outfit Bold";
     -fx-font-size: 16px;
     -fx-text-fill: #ffffff;
 }
+
 /* ============================================== */
 /* 4. WELCOME MESSAGE */
 /* ============================================== */
@@ -204,7 +204,6 @@
 .stat-change {
     -fx-font-family: "Outfit Medium";
     -fx-font-size: 15px;
-    /* CHANGED: Green color for all changes (+2, 3 new today) */
     -fx-text-fill: #3da953;
 }
 
@@ -213,8 +212,6 @@
     -fx-font-size: 15px;
     -fx-text-fill: #3da953;
 }
-
-/* ... Previous sections 1 through 5 remain the same ... */
 
 /* ============================================== */
 /* 6. BOTTOM PANELS */
@@ -244,10 +241,9 @@
     -fx-cursor: hand;
 }
 
-/* --- NEW: Individual Row Card Styling --- */
+/* --- Row Card Styling --- */
 
 .activity-card, .status-card {
-    /* CHANGED: Background color from white to #c9e2f3 */
     -fx-background-color: #c9e2f3;
     -fx-background-radius: 12px;
     -fx-padding: 12px 15px;
@@ -256,18 +252,7 @@
     -fx-alignment: center-left;
 }
 
-/* Ensure contents align nicely */
-.activity-card {
-    -fx-spacing: 15px;
-    -fx-alignment: center-left;
-}
-
-.status-card {
-    -fx-spacing: 15px;
-    -fx-alignment: center-left;
-}
-
-/* --- Text Styling (Existing) --- */
+/* --- Text Styling --- */
 
 .activity-main-text {
     -fx-font-family: "Outfit SemiBold";
@@ -328,60 +313,40 @@
     -fx-text-fill: #113970;
 }
 
-.more-icon-text {
-    -fx-font-family: "Outfit Bold";
-    -fx-font-size: 24px;
-    -fx-text-fill: #999999;
-    -fx-alignment: CENTER;
-    -fx-padding: 0 5px;
-    -fx-cursor: hand;
-    -fx-min-width: 20px;
-}
-
 /* ============================================== */
 /* 7. ICON COLORING (Global Overrides) */
 /* ============================================== */
 
-/* 1. DEFAULT: Turn all icons in Stat Cards and Activity Cards to Dark Blue (#113970) */
+/* Default Stat and Activity icons: Dark Blue */
 .stat-card ImageView,
 .activity-card ImageView {
     -fx-effect: innershadow(gaussian, #113970, 50, 1.0, 0, 0);
 }
 
-/* 2. EXCEPTION: Turn the icon in "Pending Applications" to Red (#E83A3A) */
+/* Exception: Pending Application icons are Red */
 .stat-card-pending ImageView {
     -fx-effect: innershadow(gaussian, #E83A3A, 50, 1.0, 0, 0);
 }
 
-/* 3. EXCEPTION: Turn the specific "Payment" icon to Green (#097139) */
-/* We use !important or high specificity to override the default blue rule above */
+/* Exception: Payment icons are Green */
 .icon-payment {
     -fx-effect: innershadow(gaussian, #097139, 50, 1.0, 0, 0) !important;
-}
-
-/* 4. SIDEBAR ICONS (Already defined, but ensuring consistency) */
-.menu-item ImageView {
-    -fx-effect: innershadow(gaussian, #113970, 50, 1.0, 0, 0);
-}
-
-.menu-item-active ImageView {
-    -fx-effect: null; /* Keep active icon white */
 }
 
 /* ============================================== */
 /* 8. LOGO EXCEPTION */
 /* ============================================== */
 
-/* Ensure the top-left logo keeps its original colors */
+/* Ensure Logo keeps original colors */
 .logo-area ImageView {
     -fx-effect: null !important;
 }
 
 /* ============================================== */
-/* 9. ICON BACKGROUND SQUARES (NEW) */
+/* 9. ICON BACKGROUND SQUARES */
 /* ============================================== */
 
-/* Base style for all icon backgrounds */
+/* Base background style */
 .icon-bg-blue, .icon-bg-orange, .icon-bg-green {
     -fx-min-width: 50px;
     -fx-min-height: 50px;
@@ -391,43 +356,30 @@
     -fx-alignment: center;
 }
 
-/* Blue background (Most icons) */
-.icon-bg-blue {
-    -fx-background-color: #c4dcfd;
-}
+.icon-bg-blue { -fx-background-color: #c4dcfd; }
+.icon-bg-orange { -fx-background-color: #f8dac1; }
+.icon-bg-green { -fx-background-color: #9ef0a4; }
 
-/* Orange background (Pending Applications) */
-.icon-bg-orange {
-    -fx-background-color: #f8dac1;
-}
+/* --- Specific Icon Colors inside Backgrounds --- */
 
-/* Green background (Payment Received) */
-.icon-bg-green {
-    -fx-background-color: #9ef0a4;
-}
-
-/* ============================================== */
-/* UPDATED ICON COLORING LOGIC */
-/* ============================================== */
-
-/* 1. General Rule: Icons inside these backgrounds are Blue by default */
+/* Blue Background -> Blue Icon */
 .icon-bg-blue ImageView {
     -fx-effect: innershadow(gaussian, #113970, 50, 1.0, 0, 0);
 }
 
-/* 2. Pending Rule: Icon inside orange background is Red */
+/* Orange Background -> Red Icon */
 .icon-bg-orange ImageView {
     -fx-effect: innershadow(gaussian, #E83A3A, 50, 1.0, 0, 0);
 }
 
-/* 3. Payment Rule: Icon inside green background is Dark Green */
+/* Green Background -> Green Icon */
 .icon-bg-green ImageView {
     -fx-effect: innershadow(gaussian, #097139, 50, 1.0, 0, 0);
 }
 
-/* 4. Ellipsis Icon Styling (Ensure it's visible, maybe grey) */
+/* More/Ellipsis Icon -> Grey */
 .icon-more {
     -fx-cursor: hand;
-    -fx-effect: innershadow(gaussian, #999999, 50, 1.0, 0, 0); /* Grey color */
-    -fx-padding: 0 0 0 10px; /* Slight left margin */
+    -fx-effect: innershadow(gaussian, #999999, 50, 1.0, 0, 0);
+    -fx-padding: 0 0 0 10px;
 }

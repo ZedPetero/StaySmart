@@ -138,7 +138,7 @@ public class LoginController {
             Font.loadFont(getClass().getResourceAsStream("/fonts/Outfit-Bold.ttf"), 10);
 
             // Then load FXML
-            Parent root = FXMLLoader.load(getClass().getResource("LandlordDashboard.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("MainLandlordLayout.fxml"));
             Scene scene = new Scene(root);
 
             Stage mainStage = new Stage();

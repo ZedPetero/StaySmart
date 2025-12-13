@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="20" styleClass="main-content" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+    <VBox style="-fx-padding: 30 50 20 50;">
+        <Label text="Messages" styleClass="header-title" style="-fx-text-fill: #1a1a1a;"/>
+        <Label text="Inbox" styleClass="welcome-subtitle"/>
+    </VBox>
+
+    <VBox alignment="CENTER" VBox.vgrow="ALWAYS">
+        <Label text="Select a conversation to start chatting" style="-fx-text-fill: #999; -fx-font-size: 16px;"/>
+    </VBox>
+</VBox>
