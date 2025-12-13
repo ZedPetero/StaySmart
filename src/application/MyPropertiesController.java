@@ -1,113 +1,119 @@
 package application;
 
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.control.Button;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
-import javafx.geometry.Insets;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
-public class MyPropertiesController implements Initializable {
+public class MyPropertiesController {
+
+    // Matches the fx:id="propertiesGrid" in your FXML
+    @FXML private GridPane propertiesGrid;
+
+    // Matches the fx:id="emptyStateBox"
+    @FXML private VBox emptyStateBox;
 
     @FXML
-    private GridPane propertiesGrid;
-
-    // Simple inner class to hold data for now
-    private class PropertyData {
-        String name;
-        String address;
-        String price;
-        String status; // "Occupied" or "Vacant"
-
-        public PropertyData(String name, String address, String price, String status) {
-            this.name = name;
-            this.address = address;
-            this.price = price;
-            this.status = status;
-        }
+    public void initialize() {
+        loadPropertiesFromDatabase();
     }
 
-    private List<PropertyData> properties = new ArrayList<>();
+    public void loadPropertiesFromDatabase() {
+        // Clear previous items
+        propertiesGrid.getChildren().clear();
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        // 1. Add some dummy data (Later we will get this from MySQL)
-        properties.add(new PropertyData("Sunset Villa", "123 Ocean Drive", "$1,200", "Occupied"));
-        properties.add(new PropertyData("Urban Loft", "404 Tech Plaza", "$850", "Vacant"));
-        properties.add(new PropertyData("Greenwood Estate", "55 Nature Way", "$2,100", "Occupied"));
-        properties.add(new PropertyData("Cozy Cabin", "88 Mountain Rd", "$600", "Vacant"));
-        properties.add(new PropertyData("Downtown Studio", "101 City Center", "$950", "Occupied"));
+        String query = "SELECT * FROM properties";
 
-        int column = 0;
-        int row = 1;
+        try (Connection conn = DatabaseHandler.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query);
+             ResultSet rs = pstmt.executeQuery()) {
 
-        try {
-            for (PropertyData prop : properties) {
-                // 2. Create the Card Programmatically
-                VBox card = createPropertyCard(prop);
+            int column = 0;
+            int row = 1;
 
-                // 3. Add to Grid (max 3 columns)
+            boolean hasProperties = false;
+
+            while (rs.next()) {
+                hasProperties = true;
+
+                // Create Property Object
+                Property p = new Property(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("location"),
+                        rs.getDouble("price"),
+                        rs.getString("type"),
+                        rs.getString("floors"),
+                        rs.getBytes("image_data")
+                );
+
+                // Load Card
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("PropertyCard.fxml"));
+                VBox card = loader.load();
+
+                // Pass Data
+                PropertyCardController controller = loader.getController();
+                controller.setData(p, this);
+
+                // Add to Grid (column, row)
+                propertiesGrid.add(card, column, row);
+
+                // Grid Logic (3 columns max)
+                column++;
                 if (column == 3) {
                     column = 0;
                     row++;
                 }
-
-                propertiesGrid.add(card, column++, row);
-
-                // Add margins to cards
-                GridPane.setMargin(card, new Insets(10));
             }
+
+            // Toggle Empty State Visibility
+            if (hasProperties) {
+                emptyStateBox.setVisible(false);
+                emptyStateBox.setManaged(false);
+                propertiesGrid.setVisible(true);
+            } else {
+                emptyStateBox.setVisible(true);
+                emptyStateBox.setManaged(true);
+                propertiesGrid.setVisible(false);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private VBox createPropertyCard(PropertyData prop) {
-        VBox card = new VBox();
-        card.getStyleClass().add("property-card");
-        card.setSpacing(10);
-        card.setPrefWidth(280); // Fixed width for cards
+    @FXML
+    private void handleAddProperty() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("AddPropertyDialog.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Add New Property");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
 
-        // --- Image Placeholder ---
-        HBox imageContainer = new HBox();
-        imageContainer.getStyleClass().add("property-image-container");
-        imageContainer.setPrefHeight(150);
+            // Icon
+            try {
+                stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/homeicon.png")));
+            } catch (Exception ignored) {}
 
-        // (Optional: Load real image if you have one, using a placeholder for now)
-        // ImageView img = new ImageView(new Image(getClass().getResourceAsStream("images/house_placeholder.png")));
+            stage.showAndWait();
 
-        // --- Status Badge ---
-        Label statusLabel = new Label(prop.status);
-        statusLabel.getStyleClass().add(prop.status.equals("Occupied") ? "status-occupied" : "status-vacant");
+            // Refresh after closing dialog
+            loadPropertiesFromDatabase();
 
-        // --- Details ---
-        Label nameLabel = new Label(prop.name);
-        nameLabel.getStyleClass().add("card-title");
-
-        Label addressLabel = new Label(prop.address);
-        addressLabel.getStyleClass().add("card-address");
-
-        Label priceLabel = new Label(prop.price + "/mo");
-        priceLabel.getStyleClass().add("card-price");
-
-        // --- Edit Button ---
-        Button editBtn = new Button("Edit Details");
-        editBtn.getStyleClass().add("card-button");
-        editBtn.setMaxWidth(Double.MAX_VALUE); // Fill width
-
-        // Assemble the card
-        card.getChildren().addAll(imageContainer, statusLabel, nameLabel, addressLabel, priceLabel, editBtn);
-
-        return card;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

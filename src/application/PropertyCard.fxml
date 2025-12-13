@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.geometry.Insets?>
+
+<VBox spacing="10" alignment="TOP_CENTER"
+      style="-fx-background-color: white; -fx-background-radius: 12; -fx-padding: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 4);"
+      xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="application.PropertyCardController">
+
+    <StackPane alignment="TOP_RIGHT">
+
+        <StackPane style="-fx-border-color: #eee; -fx-border-radius: 8; -fx-background-radius: 8;">
+            <ImageView fx:id="imgProperty" fitWidth="220" fitHeight="140" preserveRatio="false"
+                       style="-fx-background-radius: 8;"/>
+        </StackPane>
+
+        <Button text="✕" onAction="#handleRemove" styleClass="remove-btn"
+                style="-fx-background-color: #8b0000; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 4; -fx-min-width: 26; -fx-min-height: 26; -fx-max-width: 26; -fx-max-height: 26; -fx-padding: 0; -fx-cursor: hand; -fx-font-size: 12px;">
+            <StackPane.margin>
+                <Insets top="8" right="8" />
+            </StackPane.margin>
+        </Button>
+    </StackPane>
+
+    <VBox spacing="2" alignment="CENTER_LEFT" style="-fx-padding: 5;">
+        <Label fx:id="lblType" text="APARTMENT" style="-fx-text-fill: #1f57da; -fx-font-size: 10px; -fx-font-weight: bold;"/>
+
+        <Label fx:id="lblName" text="Property Name" wrapText="true" maxWidth="200"
+               style="-fx-font-family: 'Outfit Bold'; -fx-font-size: 15px; -fx-text-fill: #333;"/>
+
+        <Label fx:id="lblLocation" text="Location Address" wrapText="true" maxWidth="200"
+               style="-fx-font-family: 'Outfit Regular'; -fx-font-size: 12px; -fx-text-fill: #777;"/>
+
+        <Region prefHeight="8"/>
+
+        <Label fx:id="lblPrice" text="₱ 0.00 / mo"
+               style="-fx-font-family: 'Outfit Bold'; -fx-font-size: 14px; -fx-text-fill: #113970;"/>
+    </VBox>
+
+    <Region VBox.vgrow="ALWAYS" />
+
+    <Button text="Check Details" onAction="#handleCheckDetails" maxWidth="Infinity"
+            style="-fx-background-color: #f0f4ff; -fx-text-fill: #1f57da; -fx-font-weight: bold; -fx-background-radius: 6; -fx-cursor: hand; -fx-font-size: 12px; -fx-border-color: #dbe4ff; -fx-border-radius: 6;"/>
+
+</VBox>

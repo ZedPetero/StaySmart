@@ -11,32 +11,38 @@
       fx:controller="application.MyPropertiesController">
 
     <StackPane alignment="CENTER_LEFT">
-
         <Region styleClass="header-background-rectangle" />
-
         <HBox alignment="CENTER_LEFT" spacing="20" style="-fx-padding: 0 50 0 50;">
-
             <VBox alignment="CENTER_LEFT">
                 <Label text="My Properties" styleClass="header-title" style="-fx-text-fill: #113970; -fx-font-size: 24px;"/>
                 <Label text="Manage your portfolio" styleClass="welcome-subtitle" style="-fx-font-size: 14px;"/>
             </VBox>
-
             <Region HBox.hgrow="ALWAYS" />
-
-            <Button text="+ Add Property" styleClass="add-property-button"/>
+            <Button text="+ Add Property" styleClass="add-property-button" onAction="#handleAddProperty"/>
         </HBox>
     </StackPane>
 
-    <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent;" VBox.vgrow="ALWAYS">
-        <content>
-            <GridPane fx:id="propertiesGrid" hgap="20" vgap="20" style="-fx-padding: 30 50 50 50;">
-                <columnConstraints>
-                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                </columnConstraints>
-            </GridPane>
-        </content>
-    </ScrollPane>
+    <StackPane VBox.vgrow="ALWAYS" style="-fx-padding: 30 50 50 50;">
+
+        <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent;">
+            <content>
+                <GridPane fx:id="propertiesGrid" hgap="20" vgap="20">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                </GridPane>
+            </content>
+        </ScrollPane>
+
+        <VBox fx:id="emptyStateBox" alignment="CENTER" spacing="15">
+            <ImageView fitWidth="80" fitHeight="80" preserveRatio="true" opacity="0.5">
+                <image><Image url="@images/building.png"/></image> </ImageView>
+            <Label text="You have no properties registered" style="-fx-font-family: 'Outfit Bold'; -fx-font-size: 20px; -fx-text-fill: #999;"/>
+            <Label text="Click '+ Add Property' to get started." style="-fx-font-family: 'Outfit Regular'; -fx-font-size: 14px; -fx-text-fill: #999;"/>
+        </VBox>
+
+    </StackPane>
 
 </VBox>

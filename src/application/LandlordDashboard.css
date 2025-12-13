@@ -465,3 +465,124 @@
     -fx-background-color: #1f57da;
     -fx-text-fill: white;
 }
+
+.form-label {
+    -fx-font-family: "Outfit Medium";
+    -fx-font-size: 14px;
+    -fx-text-fill: #555;
+}
+
+.text-field, .combo-box {
+    -fx-background-color: #f9f9f9;
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-padding: 8px;
+    -fx-font-family: "Outfit Regular";
+}
+
+.text-field:focused, .combo-box:focused {
+    -fx-border-color: #1f57da;
+    -fx-background-color: white;
+}
+/* --- DIALOG STYLES --- */
+
+.dialog-title {
+    -fx-font-family: "Outfit Bold";
+    -fx-font-size: 20px;
+    -fx-text-fill: #113970;
+}
+
+.dialog-subtitle {
+    -fx-font-family: "Outfit Regular";
+    -fx-font-size: 13px;
+    -fx-text-fill: #7d8da6;
+}
+
+.section-header {
+    -fx-font-family: "Outfit Bold";
+    -fx-font-size: 14px;
+    -fx-text-fill: #1f57da;
+    -fx-padding: 0 0 5 0;
+}
+
+.form-label {
+    -fx-font-family: "Outfit Medium";
+    -fx-font-size: 13px;
+    -fx-text-fill: #444;
+}
+
+.input-field {
+    -fx-background-color: white;
+    -fx-border-color: #dde2e8;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-padding: 8;
+    -fx-font-size: 13px;
+    -fx-font-family: "Outfit Regular";
+}
+
+.input-field:focused {
+    -fx-border-color: #1f57da;
+    -fx-background-color: #fdfdfd;
+}
+
+/* Container for the dynamic room rows */
+.dynamic-container {
+    -fx-background-color: #f4f6f9;
+    -fx-background-radius: 8;
+    -fx-padding: 15;
+    -fx-border-color: #eef0f3;
+    -fx-border-radius: 8;
+}
+
+/* Upload Button */
+.upload-button {
+    -fx-background-color: white;
+    -fx-border-color: #ccc;
+    -fx-text-fill: #333;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-cursor: hand;
+    -fx-padding: 6 12;
+}
+
+/* Footer Buttons */
+.btn-cancel {
+    -fx-background-color: transparent;
+    -fx-text-fill: #666;
+    -fx-font-family: "Outfit Medium";
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+}
+
+.btn-cancel:hover {
+    -fx-text-fill: #333;
+    -fx-background-color: #f0f0f0;
+    -fx-background-radius: 4;
+}
+
+.btn-primary {
+    -fx-background-color: #1f57da;
+    -fx-text-fill: white;
+    -fx-font-family: "Outfit Bold";
+    -fx-font-size: 14px;
+    -fx-padding: 8 20;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(31, 87, 218, 0.3), 10, 0, 0, 4);
+}
+
+.btn-primary:hover {
+    -fx-background-color: #1646b8;
+}
+
+/* ScrollPane Clean Up */
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
