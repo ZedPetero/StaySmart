@@ -1,0 +1,186 @@
+/* Main container */
+.tenant-dashboard {
+    -fx-background-color: #ffffff;
+}
+
+/* Background Gradient for Main Content */
+.background-gradient {
+    -fx-fill: linear-gradient(to bottom right, #eef6fb, #d9e8f1);
+}
+
+/* Sidebar */
+.sidebar {
+    /* CHANGED COLOR HERE */
+    -fx-background-color: #243845;
+}
+
+/* App Title */
+.app-name {
+    -fx-font-family: 'Outfit Bold';
+    -fx-font-weight: 700;
+    /* Slightly reduced font size for smaller layout */
+    -fx-font-size: 18px;
+    -fx-text-fill: #ffffff;
+}
+
+/* Navigation Menu */
+.nav-menu {
+    -fx-padding: 0;
+}
+
+.nav-item {
+    -fx-cursor: hand;
+    -fx-background-color: transparent;
+    -fx-padding: 10 0 10 0;
+}
+
+.nav-item.active {
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+    -fx-border-color: #ffffff;
+    -fx-border-width: 0 0 0 3px;
+}
+
+.nav-text {
+    -fx-font-family: 'Outfit Bold';
+    -fx-font-weight: 700;
+    /* Slightly reduced font size */
+    -fx-font-size: 18px;
+    -fx-text-fill: #ffffff;
+}
+
+.nav-item:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Main Content Area */
+.main-content {
+    /* Padding is handled in FXML */
+}
+
+/* Top Bar */
+.top-bar {
+    /* Reduced height */
+    -fx-pref-height: 45px;
+}
+
+.search-container {
+    -fx-background-color: #d5ebf8;
+    /* Adjusted radius for new height */
+    -fx-background-radius: 22.5px;
+    -fx-border-radius: 22.5px;
+    -fx-padding: 0 20px;
+}
+
+.search-field {
+    -fx-font-family: 'Outfit Medium';
+    /* Slightly reduced font size */
+    -fx-font-size: 18px;
+    -fx-text-fill: #87acc4;
+    -fx-background-color: transparent;
+    -fx-border-width: 0;
+    -fx-padding: 0;
+}
+
+.search-field .text {
+    -fx-fill: #87acc4;
+}
+
+.user-icons {
+    /* Spacing handled in FXML */
+}
+
+.notification-icon, .profile-icon {
+    -fx-cursor: hand;
+}
+
+/* Welcome Section */
+.welcome-section {
+    /* Spacing handled in FXML */
+}
+
+.welcome-title {
+    -fx-font-family: 'Outfit Bold';
+    -fx-font-weight: 700;
+    -fx-font-size: 25px;
+    -fx-text-fill: #000000;
+}
+
+.welcome-subtitle {
+    -fx-font-family: 'Outfit Medium';
+    -fx-font-weight: 500;
+    -fx-font-size: 18px;
+    -fx-text-fill: #000000a8;
+}
+
+/* Statistics Cards */
+.stats-container {
+    /* Spacing handled in FXML */
+}
+
+.stat-card {
+    /* CONFIRMED COLORS */
+    -fx-background-color: #b8d1e0;
+    -fx-border-color: #87acc4;
+    -fx-background-radius: 15px;
+    -fx-border-width: 1px;
+    -fx-border-radius: 15px;
+    -fx-padding: 20px;
+    /* Reduced sizes to fit smaller layout */
+    -fx-pref-width: 210px;
+    -fx-pref-height: 150px;
+    -fx-spacing: 10px;
+    -fx-alignment: top-left;
+}
+
+.stat-number {
+    -fx-font-family: 'Outfit Medium';
+    -fx-font-weight: 500;
+    -fx-font-size: 40px;
+    -fx-text-fill: #000000;
+}
+
+.stat-label {
+    -fx-font-family: 'Outfit Regular';
+    -fx-font-weight: 400;
+    -fx-font-size: 18px;
+    -fx-text-fill: #000000;
+    -fx-wrap-text: true;
+}
+
+/* Recent Activity */
+.recent-activity {
+    /* Spacing handled in FXML */
+}
+
+.section-title {
+    -fx-font-family: 'Outfit Bold';
+    -fx-font-weight: 700;
+    -fx-font-size: 24px;
+    -fx-text-fill: #000000;
+}
+
+.activity-list {
+    /* Spacing handled in FXML */
+}
+
+.activity-background {
+    -fx-fill: #d1dfe8;
+    -fx-arc-width: 15px;
+    -fx-arc-height: 15px;
+}
+
+/* Font Faces */
+@font-face {
+    font-family: 'Outfit Bold';
+    src: url('fonts/Outfit-Bold.ttf');
+}
+
+@font-face {
+    font-family: 'Outfit Medium';
+    src: url('fonts/Outfit-Medium.ttf');
+}
+
+@font-face {
+    font-family: 'Outfit Regular';
+    src: url('fonts/Outfit-Regular.ttf');
+}

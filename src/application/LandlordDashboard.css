@@ -195,12 +195,13 @@
     -fx-text-fill: #3da953;
 }
 
+/* ... Previous sections 1 through 5 remain the same ... */
+
 /* ============================================== */
 /* 6. BOTTOM PANELS */
 /* ============================================== */
 
 .bottom-panels {
-    -fx-padding: 0 50px 0 50px;
     -fx-spacing: 20px;
 }
 
@@ -224,11 +225,27 @@
     -fx-cursor: hand;
 }
 
-.activity-item {
-    -fx-padding: 10px 0;
+/* --- NEW: Individual Row Card Styling --- */
+
+.activity-card, .status-card {
+    -fx-background-color: #ffffff; /* White background for the items */
+    -fx-background-radius: 12px;   /* Rounded corners */
+    -fx-padding: 12px 15px;        /* Padding inside the white box */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 5, 0, 0, 2); /* Very subtle shadow */
+}
+
+/* Ensure contents align nicely */
+.activity-card {
     -fx-spacing: 15px;
     -fx-alignment: center-left;
 }
+
+.status-card {
+    -fx-spacing: 15px;
+    -fx-alignment: center-left;
+}
+
+/* --- Text Styling (Existing) --- */
 
 .activity-main-text {
     -fx-font-family: "Outfit SemiBold";
@@ -247,12 +264,6 @@
     -fx-font-size: 12px;
     -fx-text-fill: #777777;
     -fx-alignment: center-right;
-}
-
-.status-item {
-    -fx-padding: 10px 0;
-    -fx-spacing: 15px;
-    -fx-alignment: center-left;
 }
 
 .property-name {
@@ -297,15 +308,10 @@
 
 .more-icon-text {
     -fx-font-family: "Outfit Bold";
-    /* Font size adjusted to make the dots prominent */
     -fx-font-size: 24px;
     -fx-text-fill: #999999;
-    /* Center the three dots visually */
     -fx-alignment: CENTER;
-    /* Add horizontal padding to separate it from the tags */
     -fx-padding: 0 5px;
     -fx-cursor: hand;
-
-    /* Ensure it aligns well vertically with the rest of the row */
     -fx-min-width: 20px;
 }
