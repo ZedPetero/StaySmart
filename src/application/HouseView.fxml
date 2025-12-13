@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+
+<VBox xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="application.HouseViewController"
+      spacing="10" style="-fx-padding: 20; -fx-background-color: #F4F7FC;">
+
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Button text="← Back" onAction="#handleBack"
+                style="-fx-background-color: transparent; -fx-text-fill: #113970; -fx-font-weight: bold; -fx-cursor: hand;"/>
+        <Label fx:id="propertyNameLabel" text="Property Name"
+               style="-fx-font-family: 'Outfit Bold'; -fx-font-size: 24px; -fx-text-fill: #113970;"/>
+    </HBox>
+
+    <Label text="Hover over a room to see details." style="-fx-text-fill: #7f8c8d;"/>
+
+    <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent;">
+        <VBox fx:id="houseContainer" alignment="BOTTOM_CENTER" spacing="0" style="-fx-padding: 20;"/>
+    </ScrollPane>
+
+</VBox>

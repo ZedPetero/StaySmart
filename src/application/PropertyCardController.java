@@ -13,7 +13,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Optional;
 import java.io.File;
-import java.util.Objects;
 
 public class PropertyCardController {
 
@@ -22,7 +21,7 @@ public class PropertyCardController {
     @FXML private Label lblLocation;
     @FXML private Label lblPrice;
     @FXML private ImageView imgProperty;
-    @FXML private Button btnRemove; // Ensure you add fx:id="btnRemove" to the button in FXML if using Java hover
+    @FXML private Button btnRemove;
 
     private Property property;
     private MyPropertiesController parentController;
@@ -42,8 +41,6 @@ public class PropertyCardController {
         clip.setArcWidth(16);
         clip.setArcHeight(16);
         imgProperty.setClip(clip);
-
-        String imagePath = property.getImagePath();
 
         if (property.getImagePath() != null && !property.getImagePath().isEmpty()) {
             File file = new File(property.getImagePath());
@@ -70,13 +67,17 @@ public class PropertyCardController {
         }
     }
 
+    // =================================================================
+    // UPDATED METHOD: CONNECTS TO THE 2D VIEW
+    // =================================================================
     @FXML
     private void handleCheckDetails() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Details");
-        alert.setHeaderText(property.getName());
-        alert.setContentText("Details view coming soon.");
-        alert.show();
+        if (parentController != null) {
+            // This calls the method we added to MyPropertiesController in the previous step
+            parentController.openPropertyDetails(property);
+        } else {
+            System.err.println("Error: Parent controller is not linked.");
+        }
     }
 
     private void deleteFromDB() {
@@ -90,12 +91,13 @@ public class PropertyCardController {
             e.printStackTrace();
         }
     }
+
     private void loadDefaultImage() {
         var url = getClass().getResource("/application/images/homeicon.png");
         if (url != null) {
             imgProperty.setImage(new Image(url.toExternalForm()));
         } else {
-            System.err.println("⚠ Default image not found: /application/images/homeicon.png");
+            // Fallback if image is missing to prevent crash
         }
     }
 }

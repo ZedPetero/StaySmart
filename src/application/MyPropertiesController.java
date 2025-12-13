@@ -1,5 +1,7 @@
 package application;
 
+import application.model.Floor;
+import application.model.Room;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,6 +16,10 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 public class MyPropertiesController {
 
@@ -61,7 +67,7 @@ public class MyPropertiesController {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("PropertyCard.fxml"));
                 VBox card = loader.load();
 
-                // Pass Data
+                // Pass Data AND 'this' controller so the card can call back
                 PropertyCardController controller = loader.getController();
                 controller.setData(p, this);
 
@@ -102,7 +108,6 @@ public class MyPropertiesController {
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
 
-            // Icon
             try {
                 stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/homeicon.png")));
             } catch (Exception ignored) {}
@@ -115,5 +120,74 @@ public class MyPropertiesController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    // ========================================================================
+    // NEW CODE: CALL THIS FROM YOUR PropertyCardController
+    // ========================================================================
+    // 1. Update openPropertyDetails
+    public void openPropertyDetails(Property property) {
+        try {
+            List<Floor> floors = fetchFloorsAndRooms(property.getId());
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("HouseView.fxml"));
+            Parent root = loader.load();
+
+            HouseViewController houseController = loader.getController();
+            // CHANGED: passing 'property' object, not just name
+            houseController.setupPropertyData(property, floors);
+
+            Stage stage = new Stage();
+            stage.setTitle(property.getName() + " - Visual View");
+            stage.setScene(new Scene(root, 900, 700));
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Helper method to organize DB rows into Floor/Room objects
+    private List<Floor> fetchFloorsAndRooms(int propertyId) {
+        Map<Integer, Floor> floorMap = new HashMap<>();
+        String query = "SELECT * FROM rooms WHERE property_id = ? ORDER BY floor_level ASC, room_number ASC";
+
+        try (Connection conn = DatabaseHandler.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            pstmt.setInt(1, propertyId);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                int level = rs.getInt("floor_level");
+
+                // Get or Create Floor
+                Floor floor = floorMap.computeIfAbsent(level, k -> new Floor(k));
+
+                // Create Room
+                Room room = new Room(
+                        rs.getString("room_number"),
+                        rs.getString("status"), // 'Occupied' or 'Available'
+                        rs.getDouble("price"),
+                        rs.getString("image_path")
+                );
+
+                floor.addRoom(room);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Return list of floors
+        return new ArrayList<>(floorMap.values());
+    }
+    // 2. Add this Static Helper for refreshing (Call this from HouseViewController)
+    public static void reloadHouseView(HouseViewController controller, Property prop) {
+        // Re-fetch data
+        MyPropertiesController temp = new MyPropertiesController(); // Just to access the non-static fetch method
+        List<Floor> floors = temp.fetchFloorsAndRooms(prop.getId());
+
+        // Update the controller
+        controller.setupPropertyData(prop, floors);
     }
 }

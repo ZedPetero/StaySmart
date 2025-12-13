@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox spacing="15" alignment="CENTER_LEFT" style="-fx-padding: 20; -fx-background-color: white;"
+      xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="application.RoomEditorController">
+
+    <Label text="Room Details" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+
+    <GridPane vgap="10" hgap="10">
+        <Label text="Room Number:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+        <TextField fx:id="txtRoomNumber" promptText="e.g. 101" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+        <Label text="Price (Monthly):" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+        <TextField fx:id="txtPrice" promptText="0.00" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+        <Label text="Status:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+        <ComboBox fx:id="comboStatus" prefWidth="150" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+    </GridPane>
+
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <Button text="Cancel" onAction="#handleCancel"/>
+        <Button text="Save Room" onAction="#handleSave" style="-fx-background-color: #113970; -fx-text-fill: white;"/>
+    </HBox>
+</VBox>
