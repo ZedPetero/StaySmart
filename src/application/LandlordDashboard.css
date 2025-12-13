@@ -124,10 +124,16 @@
 }
 
 .add-property-button {
+    /* Background Styles */
     -fx-background-color: #1f57da;
     -fx-background-radius: 24;
     -fx-padding: 10px 20px;
     -fx-cursor: hand;
+
+    /* Text Styles (Added here so it applies to the Button directly) */
+    -fx-text-fill: #ffffff;
+    -fx-font-family: "Outfit Bold";
+    -fx-font-size: 16px;
 }
 
 .add-property-plus {
@@ -382,4 +388,80 @@
     -fx-cursor: hand;
     -fx-effect: innershadow(gaussian, #999999, 50, 1.0, 0, 0);
     -fx-padding: 0 0 0 10px;
+}
+/* ============================================== */
+/* 10. PROPERTY GRID CARDS */
+/* ============================================== */
+
+.property-card {
+    -fx-background-color: white;
+    -fx-background-radius: 15px;
+    -fx-padding: 15px;
+    /* Soft shadow for depth */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0, 0, 3);
+    -fx-alignment: TOP_LEFT;
+}
+
+.property-image-container {
+    -fx-background-color: #e0e6ed; /* Grey placeholder color */
+    -fx-background-radius: 10px;
+    -fx-min-height: 140px;
+}
+
+/* --- Badges --- */
+
+.status-occupied {
+    -fx-background-color: #e6f7e9; /* Light Green */
+    -fx-text-fill: #097139;         /* Dark Green */
+    -fx-background-radius: 5px;
+    -fx-padding: 5px 10px;
+    -fx-font-family: "Outfit Bold";
+    -fx-font-size: 12px;
+}
+
+.status-vacant {
+    -fx-background-color: #fff0e3; /* Light Orange */
+    -fx-text-fill: #b55d0b;         /* Dark Orange */
+    -fx-background-radius: 5px;
+    -fx-padding: 5px 10px;
+    -fx-font-family: "Outfit Bold";
+    -fx-font-size: 12px;
+}
+
+/* --- Typography --- */
+
+.card-title {
+    -fx-font-family: "Outfit Bold";
+    -fx-font-size: 18px;
+    -fx-text-fill: #113970;
+}
+
+.card-address {
+    -fx-font-family: "Outfit Regular";
+    -fx-font-size: 14px;
+    -fx-text-fill: #7d7d7d;
+}
+
+.card-price {
+    -fx-font-family: "Outfit Bold";
+    -fx-font-size: 16px;
+    -fx-text-fill: #1f57da; /* Blue highlight */
+}
+
+/* --- Button --- */
+
+.card-button {
+    -fx-background-color: transparent;
+    -fx-border-color: #1f57da;
+    -fx-border-radius: 8px;
+    -fx-border-width: 1px;
+    -fx-text-fill: #1f57da;
+    -fx-font-family: "Outfit Medium";
+    -fx-cursor: hand;
+    -fx-padding: 8px;
+}
+
+.card-button:hover {
+    -fx-background-color: #1f57da;
+    -fx-text-fill: white;
 }
