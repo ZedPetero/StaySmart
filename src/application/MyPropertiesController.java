@@ -169,7 +169,9 @@ public class MyPropertiesController {
                         rs.getString("room_number"),
                         rs.getString("status"), // 'Occupied' or 'Available'
                         rs.getDouble("price"),
-                        rs.getString("image_path")
+                        rs.getString("image_path"),
+                        rs.getString("facilities"),
+                        rs.getString("payment_status")
                 );
 
                 floor.addRoom(room);

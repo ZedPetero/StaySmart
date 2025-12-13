@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.ImageView?>
 
 <VBox spacing="15" alignment="CENTER_LEFT" style="-fx-padding: 20; -fx-background-color: white;"
       xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
@@ -11,14 +11,28 @@
 
     <GridPane vgap="10" hgap="10">
         <Label text="Room Number:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-        <TextField fx:id="txtRoomNumber" promptText="e.g. 101" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+        <TextField fx:id="txtRoomNumber" editable="false" style="-fx-background-color: #eee;" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
 
         <Label text="Price (Monthly):" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
         <TextField fx:id="txtPrice" promptText="0.00" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
 
         <Label text="Status:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
         <ComboBox fx:id="comboStatus" prefWidth="150" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+        <Label text="Facilities:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+        <TextArea fx:id="txtFacilities" promptText="AC, WiFi, Heater..." prefHeight="60" prefWidth="200" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+
+        <Label text="Room Image:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+        <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="4">
+            <Button text="Choose Image" onAction="#handleChooseImage"/>
+            <Label fx:id="lblImagePath" text="No file selected" style="-fx-font-style: italic; -fx-font-size: 10px;"/>
+        </HBox>
+
+        <Label text="Payment:" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+        <CheckBox fx:id="chkPaid" text="Paid this Month" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
     </GridPane>
+
+    <ImageView fx:id="imgPreview" fitWidth="200" fitHeight="120" preserveRatio="true"/>
 
     <HBox spacing="10" alignment="CENTER_RIGHT">
         <Button text="Cancel" onAction="#handleCancel"/>
