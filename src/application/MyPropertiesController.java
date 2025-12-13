@@ -54,7 +54,7 @@ public class MyPropertiesController {
                         rs.getDouble("price"),
                         rs.getString("type"),
                         rs.getString("floors"),
-                        rs.getBytes("image_data")
+                        rs.getString("image_path")
                 );
 
                 // Load Card

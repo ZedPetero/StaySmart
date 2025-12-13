@@ -8,11 +8,12 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
-import java.io.ByteArrayInputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Optional;
+import java.io.File;
+import java.util.Objects;
 
 public class PropertyCardController {
 
@@ -42,23 +43,17 @@ public class PropertyCardController {
         clip.setArcHeight(16);
         imgProperty.setClip(clip);
 
-        // 🟢 LOAD IMAGE: Prioritize BLOB (image_data)
-        boolean imageLoaded = false;
+        String imagePath = property.getImagePath();
 
-        if (property.getImageData() != null && property.getImageData().length > 0) {
-            try {
-                imgProperty.setImage(new Image(new ByteArrayInputStream(property.getImageData())));
-                imageLoaded = true;
-            } catch (Exception e) {
-                System.out.println("Error loading image bytes");
+        if (property.getImagePath() != null && !property.getImagePath().isEmpty()) {
+            File file = new File(property.getImagePath());
+            if (file.exists()) {
+                imgProperty.setImage(new Image(file.toURI().toString()));
+            } else {
+                loadDefaultImage();
             }
-        }
-
-        // If no image loaded, show default
-        if (!imageLoaded) {
-            try {
-                imgProperty.setImage(new Image(getClass().getResourceAsStream("/images/homeicon.png")));
-            } catch (Exception ignored) {}
+        } else {
+            loadDefaultImage();
         }
     }
 
@@ -93,6 +88,14 @@ public class PropertyCardController {
             if(parentController != null) parentController.loadPropertiesFromDatabase();
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+    private void loadDefaultImage() {
+        var url = getClass().getResource("/application/images/homeicon.png");
+        if (url != null) {
+            imgProperty.setImage(new Image(url.toExternalForm()));
+        } else {
+            System.err.println("⚠ Default image not found: /application/images/homeicon.png");
         }
     }
 }

@@ -7,7 +7,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.io.FileInputStream; // Required for reading image bytes
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -92,31 +91,19 @@ public class AddPropertyController {
         }
 
         try (Connection conn = DatabaseHandler.getConnection()) {
-            // 🟢 CHANGE 3: Updated SQL to use 'image_data' (BLOB) and correct column names
-            // Note: We use 'type' and 'floors' because those are the columns we created earlier.
-            String sql = "INSERT INTO properties (name, location, price, type, floors, image_data) VALUES (?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO properties (name, location, price, type, floors, image_path) VALUES (?, ?, ?, ?, ?, ?)";
 
             PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             pstmt.setString(1, txtName.getText());
             pstmt.setString(2, txtLocation.getText());
-
-            // Clean price input (remove commas)
-            String priceStr = txtPrice.getText().replace(",", "");
-            pstmt.setDouble(3, Double.parseDouble(priceStr));
-
+            pstmt.setDouble(3, Double.parseDouble(txtPrice.getText().replace(",", "")));
             pstmt.setString(4, cmbType.getValue());
-            pstmt.setString(5, txtFloors.getText()); // Saving as string to match your Property model
+            pstmt.setString(5, txtFloors.getText());
 
-            // 🟢 CHANGE 4: Read the file and save as BLOB (Bytes)
             if (selectedImageFile != null) {
-                try (FileInputStream fis = new FileInputStream(selectedImageFile)) {
-                    // Create a byte array of the file size
-                    byte[] imageBytes = new byte[(int) selectedImageFile.length()];
-                    fis.read(imageBytes); // Read file into bytes
-                    pstmt.setBytes(6, imageBytes); // Save to database
-                }
+                pstmt.setString(6, selectedImageFile.getAbsolutePath());
             } else {
-                pstmt.setBytes(6, null); // No image
+                pstmt.setString(6, null);
             }
 
             pstmt.executeUpdate();
