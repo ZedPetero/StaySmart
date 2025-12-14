@@ -38,7 +38,7 @@ public class TenantDashboardController {
     }
 
     @FXML private void handleShowSaved() {
-        // loadPage("Saved.fxml");
+        loadPage("TenantSavedProperties.fxml");
         highlightButton(btnSaved);
     }
 
