@@ -40,13 +40,13 @@ public class SignupController {
         String contactNumber = contactField.getText() == null ? "" : contactField.getText().trim();
 
         // Get selected role based on ownership type
-        // Owner = admin, Tenant = user
-        String role = "user"; // default to tenant
+        // Owner = owner, Tenant = tenant
+        String role = "tenant"; // default to tenant
         String ownershipType = ownershipCombo.getValue();
         if (ownershipType != null && ownershipType.equals("Owner")) {
-            role = "admin";
+            role = "owner";
         } else if (ownershipType != null && ownershipType.equals("Tenant")) {
-            role = "user";
+            role = "tenant";
         }
 
         // Validation

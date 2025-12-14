@@ -76,6 +76,7 @@ public class LoginController {
 
         if (user != null) {
             currentUser = user;
+            System.out.println("DEBUG: User role is: '" + user.getRole() + "'"); // Debug line
             showAlert(Alert.AlertType.INFORMATION, "Login Successful", 
                      "Welcome, " + username + "! Role: " + user.getRole());
             
@@ -137,12 +138,33 @@ public class LoginController {
             Font.loadFont(getClass().getResourceAsStream("/fonts/Outfit-SemiBold.ttf"), 10);
             Font.loadFont(getClass().getResourceAsStream("/fonts/Outfit-Bold.ttf"), 10);
 
+            // Determine which FXML to load based on user role
+            String fxmlPath;
+            String windowTitle;
+            
+            System.out.println("DEBUG: Checking role for routing: '" + currentUser.getRole() + "'"); // Debug line
+            
+            if ("owner".equalsIgnoreCase(currentUser.getRole())) {
+                fxmlPath = "MainLandlordLayout.fxml";
+                windowTitle = "Landlord Dashboard";
+                System.out.println("DEBUG: Routing to landlord dashboard"); // Debug line
+            } else if ("tenant".equalsIgnoreCase(currentUser.getRole())) {
+                fxmlPath = "TenantExploreDashboard.fxml";
+                windowTitle = "Tenant Dashboard";
+                System.out.println("DEBUG: Routing to tenant dashboard"); // Debug line
+            } else {
+                // Default to landlord dashboard for unknown roles or admin
+                fxmlPath = "MainLandlordLayout.fxml";
+                windowTitle = "Dashboard";
+                System.out.println("DEBUG: Unknown role, defaulting to landlord dashboard"); // Debug line
+            }
+
             // Then load FXML
-            Parent root = FXMLLoader.load(getClass().getResource("MainLandlordLayout.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource(fxmlPath));
             Scene scene = new Scene(root);
 
             Stage mainStage = new Stage();
-            mainStage.setTitle("Landlord Dashboard");
+            mainStage.setTitle(windowTitle);
             mainStage.setMaximized(true);
             mainStage.setFullScreen(false);
 
