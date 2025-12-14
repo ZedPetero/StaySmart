@@ -1,186 +1,89 @@
-/* Main container */
-.tenant-dashboard {
-    -fx-background-color: #ffffff;
+/* --- APP FONTS --- */
+/* Ensure your fonts are loaded in the Controller or Main class */
+.root {
+    -fx-font-family: 'Outfit', sans-serif;
 }
 
-/* Background Gradient for Main Content */
-.background-gradient {
-    -fx-fill: linear-gradient(to bottom right, #eef6fb, #d9e8f1);
-}
-
-/* Sidebar */
+/* --- SIDEBAR CONTAINER --- */
 .sidebar {
-    /* CHANGED COLOR HERE */
-    -fx-background-color: #243845;
+    -fx-background-color: #243845; /* The Dark Blue Background */
 }
 
-/* App Title */
-.app-name {
-    -fx-font-family: 'Outfit Bold';
-    -fx-font-weight: 700;
-    /* Slightly reduced font size for smaller layout */
-    -fx-font-size: 18px;
-    -fx-text-fill: #ffffff;
-}
-
-/* Navigation Menu */
-.nav-menu {
-    -fx-padding: 0;
-}
-
+/* --- NAVIGATION ITEMS --- */
 .nav-item {
-    -fx-cursor: hand;
     -fx-background-color: transparent;
-    -fx-padding: 10 0 10 0;
+    -fx-cursor: hand;
+    -fx-min-height: 50px;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 0 0 0 40; /* Moves content right, but background fills edge-to-edge */
 }
 
-.nav-item.active {
-    -fx-background-color: rgba(255, 255, 255, 0.1);
-    -fx-border-color: #ffffff;
-    -fx-border-width: 0 0 0 3px;
-}
-
+/* Default (Inactive) Text */
 .nav-text {
-    -fx-font-family: 'Outfit Bold';
-    -fx-font-weight: 700;
-    /* Slightly reduced font size */
-    -fx-font-size: 18px;
-    -fx-text-fill: #ffffff;
+    -fx-text-fill: white; /* Text is white on the dark background */
+    -fx-font-family: 'Outfit';
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
 }
 
+/* --- HOVER STATE --- */
 .nav-item:hover {
-    -fx-background-color: rgba(255, 255, 255, 0.05);
+    -fx-background-color: rgba(255, 255, 255, 0.1); /* Slight white tint on hover */
 }
 
-/* Main Content Area */
-.main-content {
-    /* Padding is handled in FXML */
+/* --- ACTIVE STATE (Selected Tab) --- */
+.nav-item.active {
+    -fx-background-color: white; /* The "White Box" highlight */
 }
 
-/* Top Bar */
+.nav-item.active .nav-text {
+    -fx-text-fill: #243845; /* Text turns Dark Blue inside the white box */
+}
+
+/* --- APP TITLE --- */
+.app-title {
+    -fx-alignment: CENTER_LEFT;
+    /* Maintain the alignment since we removed global sidebar padding */
+    -fx-padding: 0 0 0 40;
+}
+
+.app-name {
+    -fx-font-family: 'Outfit';
+    -fx-font-weight: bold;
+    -fx-font-size: 20px;
+    -fx-text-fill: white;
+}
+
+/* --- MAIN CONTENT BACKGROUND --- */
+.background-gradient {
+    -fx-background-color: linear-gradient(to bottom right, #f4f7f9, #eef2f5);
+}
+
+/* --- TOP BAR --- */
 .top-bar {
-    /* Reduced height */
-    -fx-pref-height: 45px;
+    -fx-background-color: transparent;
 }
 
 .search-container {
-    -fx-background-color: #d5ebf8;
-    /* Adjusted radius for new height */
-    -fx-background-radius: 22.5px;
-    -fx-border-radius: 22.5px;
-    -fx-padding: 0 20px;
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-padding: 0 15;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 5, 0, 0, 2);
 }
 
 .search-field {
-    -fx-font-family: 'Outfit Medium';
-    /* Slightly reduced font size */
-    -fx-font-size: 18px;
-    -fx-text-fill: #87acc4;
     -fx-background-color: transparent;
-    -fx-border-width: 0;
-    -fx-padding: 0;
+    -fx-prompt-text-fill: #9CA3AF;
+    -fx-text-fill: #243845;
+    -fx-font-size: 14px;
 }
 
-.search-field .text {
-    -fx-fill: #87acc4;
-}
-
-.user-icons {
-    /* Spacing handled in FXML */
-}
-
-.notification-icon, .profile-icon {
-    -fx-cursor: hand;
-}
-
-/* Welcome Section */
-.welcome-section {
-    /* Spacing handled in FXML */
-}
-
-.welcome-title {
-    -fx-font-family: 'Outfit Bold';
-    -fx-font-weight: 700;
-    -fx-font-size: 25px;
-    -fx-text-fill: #000000;
-}
-
-.welcome-subtitle {
-    -fx-font-family: 'Outfit Medium';
-    -fx-font-weight: 500;
-    -fx-font-size: 18px;
-    -fx-text-fill: #000000a8;
-}
-
-/* Statistics Cards */
-.stats-container {
-    /* Spacing handled in FXML */
-}
-
-.stat-card {
-    /* CONFIRMED COLORS */
-    -fx-background-color: #b8d1e0;
-    -fx-border-color: #87acc4;
-    -fx-background-radius: 15px;
-    -fx-border-width: 1px;
-    -fx-border-radius: 15px;
-    -fx-padding: 20px;
-    /* Reduced sizes to fit smaller layout */
-    -fx-pref-width: 210px;
-    -fx-pref-height: 150px;
-    -fx-spacing: 10px;
-    -fx-alignment: top-left;
-}
-
-.stat-number {
-    -fx-font-family: 'Outfit Medium';
-    -fx-font-weight: 500;
-    -fx-font-size: 40px;
-    -fx-text-fill: #000000;
-}
-
-.stat-label {
-    -fx-font-family: 'Outfit Regular';
-    -fx-font-weight: 400;
-    -fx-font-size: 18px;
-    -fx-text-fill: #000000;
-    -fx-wrap-text: true;
-}
-
-/* Recent Activity */
-.recent-activity {
-    /* Spacing handled in FXML */
-}
-
-.section-title {
-    -fx-font-family: 'Outfit Bold';
-    -fx-font-weight: 700;
-    -fx-font-size: 24px;
-    -fx-text-fill: #000000;
-}
-
-.activity-list {
-    /* Spacing handled in FXML */
-}
-
-.activity-background {
-    -fx-fill: #d1dfe8;
-    -fx-arc-width: 15px;
-    -fx-arc-height: 15px;
-}
-
-/* Font Faces */
-@font-face {
-    font-family: 'Outfit Bold';
-    src: url('fonts/Outfit-Bold.ttf');
-}
-
-@font-face {
-    font-family: 'Outfit Medium';
-    src: url('fonts/Outfit-Medium.ttf');
-}
-
-@font-face {
-    font-family: 'Outfit Regular';
-    src: url('fonts/Outfit-Regular.ttf');
+/* --- ICONS --- */
+/* Note: Changing PNG icon colors via CSS is limited in JavaFX.
+   This attempts to darken them when the parent .nav-item is active,
+   but it depends on your JavaFX version support for -fx-effect on ImageViews inside specific parents. */
+.nav-item.active ImageView {
+    /* This is a trick to tint the icon to the dark blue color #243845.
+       It creates an inner shadow of that color that overlays the image. */
+    -fx-effect: innershadow(gaussian, #243845, 100, 0, 0, 0);
 }

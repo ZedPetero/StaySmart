@@ -128,45 +128,46 @@ public class LoginController {
 
     private void loadMainApplication(ActionEvent event) {
         try {
-            // Close login window
-            Stage currentStage = (Stage)((Node)event.getSource()).getScene().getWindow();
+            // 1. Close the current login window
+            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             currentStage.close();
 
-            // Load fonts first
+            // 2. Load Fonts (Keep your existing font loading)
             Font.loadFont(getClass().getResourceAsStream("/fonts/Outfit-Regular.ttf"), 10);
             Font.loadFont(getClass().getResourceAsStream("/fonts/Outfit-Medium.ttf"), 10);
             Font.loadFont(getClass().getResourceAsStream("/fonts/Outfit-SemiBold.ttf"), 10);
             Font.loadFont(getClass().getResourceAsStream("/fonts/Outfit-Bold.ttf"), 10);
 
-            // Determine which FXML to load based on user role
+            // 3. Determine Role and FXML
             String fxmlPath;
             String windowTitle;
-            
-            System.out.println("DEBUG: Checking role for routing: '" + currentUser.getRole() + "'"); // Debug line
-            
+
+            System.out.println("DEBUG: Checking role for routing: '" + currentUser.getRole() + "'");
+
             if ("owner".equalsIgnoreCase(currentUser.getRole())) {
                 fxmlPath = "MainLandlordLayout.fxml";
                 windowTitle = "Landlord Dashboard";
-                System.out.println("DEBUG: Routing to landlord dashboard"); // Debug line
             } else if ("tenant".equalsIgnoreCase(currentUser.getRole())) {
-                fxmlPath = "TenantExploreDashboard.fxml";
+                fxmlPath = "TenantDashboard.fxml"; // This is the FXML we fixed
                 windowTitle = "Tenant Dashboard";
-                System.out.println("DEBUG: Routing to tenant dashboard"); // Debug line
             } else {
-                // Default to landlord dashboard for unknown roles or admin
                 fxmlPath = "MainLandlordLayout.fxml";
                 windowTitle = "Dashboard";
-                System.out.println("DEBUG: Unknown role, defaulting to landlord dashboard"); // Debug line
             }
 
-            // Then load FXML
+            // 4. Load the FXML
             Parent root = FXMLLoader.load(getClass().getResource(fxmlPath));
             Scene scene = new Scene(root);
 
+            // 5. Setup the New Stage
             Stage mainStage = new Stage();
             mainStage.setTitle(windowTitle);
-            mainStage.setMaximized(true);
-            mainStage.setFullScreen(false);
+
+            // --- SCREEN SIZING SETTINGS ---
+            mainStage.setResizable(true);  // Allow resizing
+            mainStage.setMaximized(true);  // <--- This forces the window to fill the screen (with title bar)
+            mainStage.setFullScreen(false); // Set this to 'true' if you want KIOSK mode (no title bar/X button)
+            // ------------------------------
 
             // Set application icon
             try {
@@ -177,7 +178,6 @@ public class LoginController {
             }
 
             mainStage.setScene(scene);
-            mainStage.setResizable(true);
             mainStage.show();
 
         } catch (Exception e) {
@@ -185,7 +185,6 @@ public class LoginController {
             showAlert(Alert.AlertType.ERROR, "Error", "Failed to load application: " + e.getMessage());
         }
     }
-
 
     private void showAlert(Alert.AlertType type, String title, String message) {
         Platform.runLater(() -> {

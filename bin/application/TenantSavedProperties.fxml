@@ -17,7 +17,7 @@
             prefWidth="1450" prefHeight="720"
             minWidth="1450" minHeight="720"
             styleClass="tenant-dashboard"
-            stylesheets="@TenantSavedDashboard.css">
+            stylesheets="@TenantSavedProperties.css">
 
     <Rectangle styleClass="background-gradient"
                width="1130" height="820"

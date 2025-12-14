@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1" spacing="30" style="-fx-background-color: transparent;">
+
+    <VBox styleClass="explore-header" spacing="5">
+        <Label text="Dashboard Overview" styleClass="header-title"/>
+        <Label text="Welcome back! Here is a summary of your activity." styleClass="header-subtitle"/>
+    </VBox>
+
+    <HBox spacing="20" alignment="CENTER_LEFT">
+        <VBox style="-fx-background-color: white; -fx-background-radius: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);"
+              prefHeight="150" prefWidth="280" spacing="10" alignment="CENTER_LEFT">
+            <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+            <ImageView fitWidth="32" fitHeight="32" preserveRatio="true">
+                <Image url="@images/document-signed.png"/>
+            </ImageView>
+            <Label text="0" style="-fx-font-family: 'Outfit'; -fx-font-weight: bold; -fx-font-size: 32px; -fx-text-fill: #125A8B;"/>
+            <Label text="Active Applications" style="-fx-font-family: 'Outfit'; -fx-text-fill: #7d8da1; -fx-font-size: 14px;"/>
+        </VBox>
+
+        <VBox style="-fx-background-color: white; -fx-background-radius: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);"
+              prefHeight="150" prefWidth="280" spacing="10" alignment="CENTER_LEFT">
+            <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+            <ImageView fitWidth="32" fitHeight="32" preserveRatio="true">
+                <Image url="@images/heart.png"/>
+            </ImageView>
+            <Label text="3" style="-fx-font-family: 'Outfit'; -fx-font-weight: bold; -fx-font-size: 32px; -fx-text-fill: #125A8B;"/>
+            <Label text="Saved Rooms" style="-fx-font-family: 'Outfit'; -fx-text-fill: #7d8da1; -fx-font-size: 14px;"/>
+        </VBox>
+
+        <VBox style="-fx-background-color: white; -fx-background-radius: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);"
+              prefHeight="150" prefWidth="280" spacing="10" alignment="CENTER_LEFT">
+            <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+            <ImageView fitWidth="32" fitHeight="32" preserveRatio="true">
+                <Image url="@images/bell.png"/>
+            </ImageView>
+            <Label text="5" style="-fx-font-family: 'Outfit'; -fx-font-weight: bold; -fx-font-size: 32px; -fx-text-fill: #125A8B;"/>
+            <Label text="New Notifications" style="-fx-font-family: 'Outfit'; -fx-text-fill: #7d8da1; -fx-font-size: 14px;"/>
+        </VBox>
+    </HBox>
+
+    <VBox spacing="15" VBox.vgrow="ALWAYS">
+        <Label text="Recent Activity" styleClass="header-title" style="-fx-font-size: 20px;"/>
+
+        <VBox style="-fx-background-color: rgba(255,255,255,0.6); -fx-background-radius: 10;">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+            <Label text="No recent activity to show." style="-fx-text-fill: #7d8da1;"/>
+        </VBox>
+    </VBox>
+
+</VBox>
