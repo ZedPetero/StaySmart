@@ -43,17 +43,17 @@ public class TenantDashboardController {
     }
 
     @FXML private void handleShowApplications() {
-        // loadPage("Applications.fxml");
+         loadPage("TenantApplications.fxml");
         highlightButton(btnApplications);
     }
 
     @FXML private void handleShowProfile() {
-        // loadPage("Profile.fxml");
+         loadPage("TenantProfile.fxml");
         highlightButton(btnProfile);
     }
 
     @FXML private void handleShowSettings() {
-        // loadPage("Settings.fxml");
+        loadPage("TenantSettings.fxml");
         highlightButton(btnSettings);
     }
 

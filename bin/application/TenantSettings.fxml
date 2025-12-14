@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.geometry.Insets?>
+
+<ScrollPane xmlns:fx="http://javafx.com/fxml/1"
+            fitToWidth="true"
+            style="-fx-background-color: transparent; -fx-background: transparent; -fx-padding: 0; -fx-background-insets: 0;"
+            stylesheets="@TenantSettings.css">
+
+    <content>
+        <VBox spacing="25" style="-fx-background-color: transparent;">
+            <padding><Insets top="0" right="0" bottom="50" left="0"/></padding>
+            <Region prefHeight="10" />
+
+            <VBox spacing="5">
+                <Label text="Settings" styleClass="page-title"/>
+                <Label text="Manage your account preferences and settings" styleClass="page-subtitle"/>
+            </VBox>
+
+            <HBox styleClass="settings-tab-container" alignment="CENTER_LEFT">
+                <Button text="Security" styleClass="settings-tab-btn, settings-tab-active" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+                <Button text="Preferences" styleClass="settings-tab-btn" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+            </HBox>
+
+            <VBox styleClass="settings-card" spacing="25">
+                <padding><Insets top="40" right="50" bottom="40" left="50"/></padding>
+
+                <HBox spacing="15" alignment="CENTER_LEFT">
+                    <Rectangle width="24" height="21" fill="#113970" arcWidth="5" arcHeight="5"/>
+                    <Label text="Change Password" styleClass="section-title"/>
+                </HBox>
+
+                <VBox spacing="20">
+
+                    <VBox spacing="8">
+                        <Label text="Current Password" styleClass="field-label"/>
+                        <PasswordField promptText="Enter current password" styleClass="settings-textfield"/>
+                    </VBox>
+
+                    <VBox spacing="8">
+                        <Label text="New Password" styleClass="field-label"/>
+                        <PasswordField promptText="Enter new password" styleClass="settings-textfield"/>
+                    </VBox>
+
+                    <VBox spacing="8">
+                        <Label text="Confirm New Password" styleClass="field-label"/>
+                        <PasswordField promptText="Confirm new password" styleClass="settings-textfield"/>
+                    </VBox>
+
+                </VBox>
+
+                <Region prefHeight="10"/>
+
+                <Button text="Update Password" styleClass="btn-update"/>
+
+            </VBox>
+
+        </VBox>
+    </content>
+</ScrollPane>

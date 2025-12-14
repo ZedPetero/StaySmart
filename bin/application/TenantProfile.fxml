@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.geometry.Insets?>
+
+<ScrollPane xmlns:fx="http://javafx.com/fxml/1"
+            fitToWidth="true"
+            style="-fx-background-color: transparent; -fx-background: transparent; -fx-padding: 0; -fx-background-insets: 0;"
+            stylesheets="@TenantProfile.css">
+
+    <content>
+        <VBox spacing="25" style="-fx-background-color: transparent;">
+            <padding><Insets top="0" right="0" bottom="50" left="0"/></padding>
+            <Region prefHeight="10" />
+
+            <VBox spacing="5">
+                <Label text="My Profile" styleClass="page-title"/>
+                <Label text="Manage your personal information and documents" styleClass="page-subtitle"/>
+            </VBox>
+
+            <HBox spacing="30" alignment="TOP_LEFT">
+
+                <VBox styleClass="profile-card-left" alignment="TOP_CENTER" spacing="20" prefWidth="340" minWidth="340">
+                    <padding><Insets top="40" right="30" bottom="40" left="30"/></padding>
+
+                    <StackPane styleClass="profile-image-container">
+                        <ImageView fitWidth="180" fitHeight="180" preserveRatio="false">
+                            <clip>
+                                <Circle centerX="90" centerY="90" radius="90"/>
+                            </clip>
+                            <image>
+                                <Image url="@images/profile.png"/>
+                            </image>
+                        </ImageView>
+                    </StackPane>
+
+                    <Label text="Shayne Mier G. Digo" styleClass="profile-name"/>
+
+                    <Separator styleClass="profile-separator"/>
+
+                    <GridPane hgap="30" vgap="25" alignment="CENTER">
+                        <columnConstraints>
+                            <ColumnConstraints halignment="CENTER" minWidth="100"/>
+                            <ColumnConstraints halignment="CENTER" minWidth="100"/>
+                        </columnConstraints>
+
+                        <VBox alignment="CENTER" spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                            <Label text="1" styleClass="stat-number"/>
+                            <Label text="Applications Sent" styleClass="stat-label" wrapText="true"/>
+                        </VBox>
+                        <VBox alignment="CENTER" spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                            <Label text="8" styleClass="stat-number"/>
+                            <Label text="Properties Viewed" styleClass="stat-label" wrapText="true"/>
+                        </VBox>
+
+                        <VBox alignment="CENTER" spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                            <Label text="12" styleClass="stat-number"/>
+                            <Label text="Saved Properties" styleClass="stat-label" wrapText="true"/>
+                        </VBox>
+                        <VBox alignment="CENTER" spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <Label text="45" styleClass="stat-number"/>
+                            <Label text="Profile Views" styleClass="stat-label" wrapText="true"/>
+                        </VBox>
+                    </GridPane>
+                </VBox>
+
+                <VBox HBox.hgrow="ALWAYS" spacing="25">
+
+                    <HBox styleClass="tabs-container-right" alignment="CENTER_LEFT" spacing="0">
+                        <Button text="Personal Info" styleClass="tab-btn-right, tab-active-right" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+                        <Button text="Emergency Contact" styleClass="tab-btn-right" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+                    </HBox>
+
+                    <VBox styleClass="info-card-right" spacing="25">
+                        <padding><Insets top="30" right="40" bottom="40" left="40"/></padding>
+
+                        <HBox alignment="CENTER_LEFT">
+                            <Label text="Personal Information" styleClass="info-card-title"/>
+                            <Region HBox.hgrow="ALWAYS"/>
+                            <Button text="Edit Profile" styleClass="btn-edit-profile">
+                                <graphic>
+                                    <ImageView fitHeight="16" fitWidth="16" preserveRatio="true">
+                                        <image><Image url="@images/icon-edit.png"/></image>
+                                    </ImageView>
+                                </graphic>
+                            </Button>
+                        </HBox>
+
+                        <GridPane hgap="30" vgap="20">
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="ALWAYS" percentWidth="50"/>
+                                <ColumnConstraints hgrow="ALWAYS" percentWidth="50"/>
+                            </columnConstraints>
+
+                            <VBox spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                                <HBox spacing="10" alignment="CENTER_LEFT">
+                                    <ImageView fitHeight="16" fitWidth="16" preserveRatio="true">
+                                        <image><Image url="@images/icon-user.png"/></image>
+                                    </ImageView>
+                                    <Label text="Full Name" styleClass="field-label"/>
+                                </HBox>
+                                <TextField text="Shayne Mier G. Digo" styleClass="info-textfield" editable="false"/>
+                            </VBox>
+
+                            <VBox spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                <HBox spacing="10" alignment="CENTER_LEFT">
+                                    <ImageView fitHeight="16" fitWidth="16" preserveRatio="true">
+                                        <image><Image url="@images/icon-email.png"/></image>
+                                    </ImageView>
+                                    <Label text="Email Address" styleClass="field-label"/>
+                                </HBox>
+                                <TextField text="shayne@example.com" styleClass="info-textfield" editable="false"/>
+                            </VBox>
+
+                            <VBox spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                                <HBox spacing="10" alignment="CENTER_LEFT">
+                                    <ImageView fitHeight="16" fitWidth="16" preserveRatio="true">
+                                        <image><Image url="@images/icon-phone.png"/></image>
+                                    </ImageView>
+                                    <Label text="Phone Number" styleClass="field-label"/>
+                                </HBox>
+                                <TextField text="0912 345 6789" styleClass="info-textfield" editable="false"/>
+                            </VBox>
+
+                            <VBox spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                <HBox spacing="10" alignment="CENTER_LEFT">
+                                    <ImageView fitHeight="16" fitWidth="16" preserveRatio="true">
+                                        <image><Image url="@images/icon-location.png"/></image>
+                                    </ImageView>
+                                    <Label text="Current Address" styleClass="field-label"/>
+                                </HBox>
+                                <TextField text="Davao City, Philippines" styleClass="info-textfield" editable="false"/>
+                            </VBox>
+                        </GridPane>
+
+                        <VBox spacing="10">
+                            <Label text="About Me" styleClass="info-card-title"/>
+                            <VBox styleClass="about-me-box">
+                                <padding><Insets top="15" right="20" bottom="15" left="20"/></padding>
+                                <Label text="Responsible professional seeking long-term boarding house accommodation. Non-smoker, clean, and respectful of house rules. Looking for a quiet place near my workplace."
+                                       styleClass="about-me-text" wrapText="true"/>
+                            </VBox>
+                        </VBox>
+
+                    </VBox> </VBox> </HBox> </VBox>
+    </content>
+</ScrollPane>
