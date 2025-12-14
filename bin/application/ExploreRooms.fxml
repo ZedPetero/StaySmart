@@ -1,49 +1,138 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.Insets?>
 
-<VBox xmlns:fx="http://javafx.com/fxml/1" spacing="30" style="-fx-background-color: transparent;">
+<ScrollPane xmlns:fx="http://javafx.com/fxml/1"
+            fitToWidth="true"
+            style="-fx-background-color: transparent; -fx-background: transparent;"
+            stylesheets="@ExploreRooms.css">
 
-    <VBox styleClass="explore-header" spacing="5">
-        <Label text="Explore Boarding House" styleClass="header-title"/>
-        <Label text="Find your perfect room from available listings" styleClass="header-subtitle"/>
-    </VBox>
+    <content>
+        <VBox spacing="25" style="-fx-background-color: transparent;">
+            <padding><Insets top="20" right="40" bottom="40" left="40"/></padding>
 
-    <HBox styleClass="filter-bar" spacing="15" alignment="CENTER_LEFT">
-        <HBox styleClass="property-search-container" alignment="CENTER_LEFT" HBox.hgrow="ALWAYS" prefHeight="54">
-            <ImageView fitWidth="20" fitHeight="20" styleClass="search-icon"><Image url="@images/location-crosshairs.png"/></ImageView>
-            <Label text="Search for location, property name..." styleClass="property-search-text"/>
-        </HBox>
-        <HBox styleClass="recommended-filter-container" alignment="CENTER" prefWidth="236" prefHeight="54">
-            <Label text="Recommended" styleClass="filter-text"/>
-        </HBox>
-        <HBox styleClass="filter-button-container" alignment="CENTER" prefWidth="166" prefHeight="54">
-            <ImageView fitWidth="20" fitHeight="20" styleClass="filter-icon"><Image url="@images/cursor-finger-click.png"/></ImageView>
-            <Label text="Filter" styleClass="filter-text"/>
-        </HBox>
-    </HBox>
+            <VBox spacing="5">
+                <Label text="Explore Boarding House" style="-fx-font-family: 'Outfit'; -fx-font-weight: bold; -fx-font-size: 24px; -fx-text-fill: black;"/>
+                <Label text="Find your perfect room from available listings" style="-fx-font-family: 'Outfit'; -fx-font-size: 16px; -fx-text-fill: #7d8da1;"/>
+            </VBox>
 
-    <ScrollPane fitToHeight="true" fitToWidth="true" style="-fx-background-color:transparent; -fx-background:transparent;" VBox.vgrow="ALWAYS">
-        <content>
-            <HBox styleClass="room-listings-container" spacing="24" alignment="TOP_LEFT">
+            <HBox styleClass="search-bar-container" spacing="15" alignment="CENTER_LEFT">
+                <HBox styleClass="search-input" alignment="CENTER_LEFT" HBox.hgrow="ALWAYS" prefHeight="45">
+                    <padding><Insets left="15"/></padding>
+                    <ImageView fitHeight="20" fitWidth="20" opacity="0.5"><Image url="@images/location-crosshairs.png"/></ImageView>
+                    <TextField promptText="Search for location, property name..."
+                               style="-fx-background-color: transparent; -fx-text-fill: white; -fx-prompt-text-fill: #e6eef5; -fx-font-size: 16px;"
+                               HBox.hgrow="ALWAYS"/>
+                </HBox>
 
-                <VBox styleClass="room-card" prefWidth="292" minWidth="292">
-                    <StackPane styleClass="available-tag-wrapper">
-                        <Rectangle styleClass="room-card-background"/>
-                        <VBox styleClass="room-card-content" spacing="5" alignment="TOP_LEFT">
-                            <HBox styleClass="tag-available"><Label text="Available" styleClass="tag-text"/></HBox>
-                            <Rectangle height="150" styleClass="room-image-placeholder"/>
-                            <Label text="Cozy Student Room" styleClass="room-title"/>
-                            <Label text="₱2,800/month" styleClass="room-price"/>
-                            <Label text="UM Matina Drive, Davao" styleClass="room-location"/>
-                            <Button text="View Details" styleClass="view-details-button"/>
-                        </VBox>
-                    </StackPane>
-                </VBox>
+                <HBox styleClass="filter-button" prefHeight="45" prefWidth="180" alignment="CENTER">
+                    <Label text="Recommended"/>
+                </HBox>
+
+                <HBox styleClass="filter-button" prefHeight="45" prefWidth="120" alignment="CENTER" spacing="10">
+                    <ImageView fitHeight="18" fitWidth="18"><Image url="@images/settings.png"/></ImageView>
+                    <Label text="Filter"/>
+                </HBox>
             </HBox>
-        </content>
-    </ScrollPane>
-</VBox>
+
+            <FlowPane hgap="30" vgap="30" prefWrapLength="1000">
+
+                <VBox styleClass="room-card" prefWidth="300" minHeight="400">
+
+                    <StackPane alignment="TOP_LEFT" prefHeight="180" styleClass="room-image-placeholder">
+
+                        <ImageView fitWidth="300" fitHeight="180" preserveRatio="false">
+                            <image>
+                                <Image url="@images/sampleroom1.jpg"/>
+                            </image>
+                        </ImageView>
+
+                        <HBox styleClass="status-badge" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity">
+                            <StackPane.margin><Insets top="15" left="15"/></StackPane.margin>
+                            <Label text="Available" styleClass="status-text"/>
+                        </HBox>
+                    </StackPane>
+
+                    <VBox spacing="10">
+                        <padding><Insets top="15" right="15" bottom="15" left="15"/></padding>
+
+                        <Label text="Cozy Student Room" styleClass="room-title"/>
+                        <Label text="₱2,800/month" styleClass="room-price"/>
+                        <Label text="UM Matina Drive, Davao" styleClass="room-location"/>
+
+                        <HBox spacing="10">
+                            <HBox styleClass="amenity-tag"><Label text="WiFi" styleClass="amenity-text"/></HBox>
+                            <HBox styleClass="amenity-tag"><Label text="Aircon" styleClass="amenity-text"/></HBox>
+                            <HBox styleClass="amenity-tag"><Label text="Own CR" styleClass="amenity-text"/></HBox>
+                        </HBox>
+
+                        <Region prefHeight="10"/>
+                        <Button text="View Details" maxWidth="Infinity" styleClass="btn-view-details" prefHeight="40"/>
+                    </VBox>
+                </VBox>
+
+                <VBox styleClass="room-card" prefWidth="300" minHeight="400">
+
+                    <StackPane alignment="TOP_LEFT" prefHeight="180" styleClass="room-image-placeholder">
+                        <ImageView fitWidth="300" fitHeight="180" preserveRatio="false">
+                            <image>
+                                <Image url="@images/sampleroom2.jpg"/>
+                            </image>
+                        </ImageView>
+
+                        <HBox styleClass="status-badge" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity">
+                            <StackPane.margin><Insets top="15" left="15"/></StackPane.margin>
+                            <Label text="Available" styleClass="status-text"/>
+                        </HBox>
+                    </StackPane>
+
+                    <VBox spacing="10">
+                        <padding><Insets top="15" right="15" bottom="15" left="15"/></padding>
+                        <Label text="Modern Boarding House" styleClass="room-title"/>
+                        <Label text="₱3,500/month" styleClass="room-price"/>
+                        <Label text="Sandawa, Davao City" styleClass="room-location"/>
+                        <HBox spacing="10">
+                            <HBox styleClass="amenity-tag"><Label text="Kitchen" styleClass="amenity-text"/></HBox>
+                        </HBox>
+                        <Region prefHeight="10"/>
+                        <Button text="View Details" maxWidth="Infinity" styleClass="btn-view-details" prefHeight="40"/>
+                    </VBox>
+                </VBox>
+
+                <VBox styleClass="room-card" prefWidth="300" minHeight="400">
+
+                    <StackPane alignment="TOP_LEFT" prefHeight="180" styleClass="room-image-placeholder">
+                        <ImageView fitWidth="300" fitHeight="180" preserveRatio="false">
+                            <image>
+                                <Image url="@images/sampleroom3.jpg"/>
+                            </image>
+                        </ImageView>
+
+                        <HBox styleClass="status-badge" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity">
+                            <StackPane.margin><Insets top="15" left="15"/></StackPane.margin>
+                            <Label text="Available" styleClass="status-text"/>
+                        </HBox>
+                    </StackPane>
+
+                    <VBox spacing="10">
+                        <padding><Insets top="15" right="15" bottom="15" left="15"/></padding>
+                        <Label text="Affordable Studio Type" styleClass="room-title"/>
+                        <Label text="₱4,200/month" styleClass="room-price"/>
+                        <Label text="Maa Crossing, Davao City" styleClass="room-location"/>
+                        <HBox spacing="10">
+                            <HBox styleClass="amenity-tag"><Label text="WiFi" styleClass="amenity-text"/></HBox>
+                            <HBox styleClass="amenity-tag"><Label text="Kitchen" styleClass="amenity-text"/></HBox>
+                            <HBox styleClass="amenity-tag"><Label text="Laundry" styleClass="amenity-text"/></HBox>
+                        </HBox>
+                        <Region prefHeight="10"/>
+                        <Button text="View Details" maxWidth="Infinity" styleClass="btn-view-details" prefHeight="40"/>
+                    </VBox>
+                </VBox>
+
+            </FlowPane>
+        </VBox>
+    </content>
+</ScrollPane>
