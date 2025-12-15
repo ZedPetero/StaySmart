@@ -5,8 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.control.Label;
-import javafx.scene.Node;
+
 import java.io.IOException;
 import java.net.URL;
 import javafx.scene.effect.ColorAdjust;
@@ -75,17 +74,17 @@ public class LandlordLayoutController {
     }
 
     @FXML private void handleShowTenants() {
-        loadPage("/application/Tenants.fxml");
+        loadPage("/application/LandlordTenants.fxml");
         setActiveButton(btnTenants);
     }
 
     @FXML private void handleShowMessages() {
-        loadPage("/application/Messages.fxml");
+        loadPage("/application/LandlordMessages.fxml");
         setActiveButton(btnMessages);
     }
 
     @FXML private void handleShowSettings() {
-        loadPage("/application/Settings.fxml");
+        loadPage("/application/LandlordSettings.fxml");
         setActiveButton(btnSettings);
     }
 

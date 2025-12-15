@@ -1,0 +1,126 @@
+/* --- Global --- */
+.root {
+    -fx-font-family: 'Segoe UI', sans-serif; /* Replaces 'Outfit' */
+}
+
+.main-scroll {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+}
+.main-scroll > .viewport {
+    -fx-background-color: transparent;
+}
+.main-content-background {
+    -fx-background-color: #FFFFFF;
+}
+
+/* --- Headers --- */
+.page-title {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #000000;
+}
+.page-subtitle {
+    -fx-font-size: 18px;
+    -fx-text-fill: #000000a8;
+}
+
+/* --- Internal Settings Sidebar --- */
+.settings-sidebar {
+    -fx-background-color: #D5EBF9; /* From HTML: .rectangle-2/6 */
+    -fx-background-radius: 20;
+    -fx-padding: 30;
+}
+
+.settings-menu-item {
+    -fx-padding: 12 15;
+    -fx-background-radius: 10;
+    -fx-cursor: hand;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #000000;
+}
+.settings-menu-item:hover {
+    -fx-background-color: rgba(31, 87, 218, 0.1);
+}
+
+/* Active State (Blue Background, White Text) */
+.settings-menu-item.menu-active {
+    -fx-background-color: #1F57DA; /* From HTML .rectangle-3 */
+    -fx-text-fill: #FFFFFF;
+}
+.settings-menu-item.menu-active .label {
+    -fx-text-fill: #FFFFFF;
+}
+
+/* --- Right Content Card --- */
+.settings-content-card {
+    -fx-background-color: #D5EBF9; /* From HTML .rectangle-7 */
+    -fx-background-radius: 20;
+    -fx-padding: 40;
+}
+
+.card-header {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #000000;
+}
+
+.text-caption {
+    -fx-font-size: 14px;
+    -fx-text-fill: #797070;
+}
+
+/* --- Inputs --- */
+.input-label {
+    -fx-font-size: 15px;
+    -fx-text-fill: #000000;
+}
+
+.input-field {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 8;
+    -fx-border-color: transparent;
+    -fx-padding: 10;
+    -fx-font-size: 15px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 5, 0, 0, 2);
+}
+.input-field:focused {
+    -fx-border-color: #1F57DA;
+    -fx-border-width: 1;
+}
+
+/* --- Buttons --- */
+.btn-small-blue {
+    -fx-background-color: #1F57DA;
+    -fx-text-fill: white;
+    -fx-background-radius: 15;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-font-size: 14px;
+    -fx-padding: 5 15;
+}
+
+.btn-primary {
+    -fx-background-color: #1F57DA;
+    -fx-text-fill: white;
+    -fx-background-radius: 10;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 10 25;
+    -fx-cursor: hand;
+}
+.btn-primary:hover {
+    -fx-background-color: #1742a6;
+}
+
+.btn-secondary {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #9F9797;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-text-fill: #000000;
+    -fx-font-size: 16px;
+    -fx-padding: 9 25; /* Adjust for border width */
+    -fx-cursor: hand;
+}
