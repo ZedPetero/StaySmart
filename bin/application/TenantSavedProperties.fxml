@@ -38,7 +38,7 @@
                 <VBox styleClass="property-card" prefWidth="300">
                     <StackPane alignment="TOP_LEFT" prefHeight="180" styleClass="image-placeholder">
                         <ImageView fitWidth="300" fitHeight="180" preserveRatio="false">
-                            <image><Image url="@images/room1.jpg"/></image>
+                            <image><Image url="@images/sampleroom1.jpg"/></image>
                         </ImageView>
                         <HBox styleClass="badge-available" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity">
                             <StackPane.margin><Insets top="15" left="15"/></StackPane.margin>
@@ -75,7 +75,7 @@
                 <VBox styleClass="property-card" prefWidth="300">
                     <StackPane alignment="TOP_LEFT" prefHeight="180" styleClass="image-placeholder">
                         <ImageView fitWidth="300" fitHeight="180" preserveRatio="false">
-                            <image><Image url="@images/room2.jpg"/></image>
+                            <image><Image url="@images/sampleroom2.jpg"/></image>
                         </ImageView>
                         <HBox styleClass="badge-available" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity">
                             <StackPane.margin><Insets top="15" left="15"/></StackPane.margin>
@@ -111,7 +111,7 @@
                 <VBox styleClass="property-card" prefWidth="300">
                     <StackPane alignment="TOP_LEFT" prefHeight="180" styleClass="image-placeholder">
                         <ImageView fitWidth="300" fitHeight="180" preserveRatio="false">
-                            <image><Image url="@images/room3.jpg"/></image>
+                            <image><Image url="@images/sampleroom3.jpg"/></image>
                         </ImageView>
                         <HBox styleClass="badge-available" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity">
                             <StackPane.margin><Insets top="15" left="15"/></StackPane.margin>

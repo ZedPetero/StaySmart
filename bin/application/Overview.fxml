@@ -5,35 +5,18 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.Circle?>
-<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.layout.Region?>
 
 <VBox spacing="0" alignment="TOP_LEFT" styleClass="main-content"
       xmlns="http://javafx.com/javafx/17"
       xmlns:fx="http://javafx.com/fxml/1">
 
-    <VBox styleClass="header-and-welcome-wrapper">
-        <StackPane styleClass="header-background-container">
-            <Region styleClass="header-background-rectangle"/>
-            <HBox alignment="CENTER_LEFT" styleClass="top-header-bar">
-                <StackPane styleClass="header-title-box">
-                    <Label text="LandLord" styleClass="header-title"/>
-                </StackPane>
-                <HBox HBox.hgrow="ALWAYS" alignment="CENTER_RIGHT">
-                    <StackPane styleClass="add-property-button">
-                        <HBox alignment="CENTER" spacing="5">
-                            <Label text="+" styleClass="add-property-plus"/>
-                            <Label text="Add Property" styleClass="add-property-text"/>
-                        </HBox>
-                    </StackPane>
-                </HBox>
-            </HBox>
-        </StackPane>
-        <VBox spacing="10" styleClass="welcome-message-vbox">
-            <Label text="Hello Landlord!" styleClass="welcome-title"/>
-            <Label text="Here's what's happening with your properties today." styleClass="welcome-subtitle"/>
-        </VBox>
+    <VBox spacing="10" styleClass="welcome-message-vbox">
+        <padding>
+            <Insets top="50" right="50" bottom="10" left="50"/>
+        </padding>
+        <Label text="Hello Landlord!" styleClass="welcome-title"/>
+        <Label text="Here's what's happening with your properties today." styleClass="welcome-subtitle"/>
     </VBox>
 
     <HBox spacing="20" alignment="CENTER_LEFT" styleClass="cards-row" style="-fx-padding: 30 50 0 50;">

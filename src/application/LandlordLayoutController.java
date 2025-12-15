@@ -11,12 +11,14 @@ import java.io.IOException;
 import java.net.URL;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
 
 public class LandlordLayoutController {
 
     @FXML private BorderPane mainBorderPane;
+    @FXML private StackPane contentArea;
 
-    // Inject the buttons from FXML
+    // Navigation Buttons
     @FXML private HBox btnOverview;
     @FXML private HBox btnProperties;
     @FXML private HBox btnApplications;
@@ -24,14 +26,38 @@ public class LandlordLayoutController {
     @FXML private HBox btnMessages;
     @FXML private HBox btnSettings;
 
+    // TRACKING: We need to know which controller is currently active
+    private Object currentController;
+
     @FXML
     public void initialize() {
         // 1. Load the default page
         loadPage("/application/Overview.fxml");
 
-        // 2. MANUALLY set the button to active so it highlights immediately
+        // 2. Set Overview as active
         setActiveButton(btnOverview);
     }
+
+    // =========================================================
+    // GLOBAL HEADER ACTIONS
+    // =========================================================
+
+    @FXML
+    private void handleGlobalAddProperty() {
+        // 1. If we are NOT on the properties page, go there first
+        if (!(currentController instanceof MyPropertiesController)) {
+            handleShowProperties(); // This loads the page and updates 'currentController'
+        }
+
+        // 2. Now that we are definitely on the page, trigger the add dialog
+        if (currentController instanceof MyPropertiesController) {
+            ((MyPropertiesController) currentController).handleAddProperty();
+        }
+    }
+
+    // =========================================================
+    // NAVIGATION HANDLERS
+    // =========================================================
 
     @FXML private void handleShowOverview() {
         loadPage("/application/Overview.fxml");
@@ -44,7 +70,7 @@ public class LandlordLayoutController {
     }
 
     @FXML private void handleShowApplications() {
-        loadPage("/application/Applications.fxml");
+        loadPage("/application/LandlordApplications.fxml");
         setActiveButton(btnApplications);
     }
 
@@ -63,8 +89,11 @@ public class LandlordLayoutController {
         setActiveButton(btnSettings);
     }
 
+    // =========================================================
+    // HELPER METHODS
+    // =========================================================
+
     private void setActiveButton(HBox activeButton) {
-        // 1. Reset ALL buttons (Style + Icon Color)
         resetButtonStyle(btnOverview);
         resetButtonStyle(btnProperties);
         resetButtonStyle(btnApplications);
@@ -72,28 +101,23 @@ public class LandlordLayoutController {
         resetButtonStyle(btnMessages);
         resetButtonStyle(btnSettings);
 
-        // 2. Set Active Style
         activeButton.getStyleClass().removeAll("menu-item");
         activeButton.getStyleClass().add("menu-item-active");
 
-        // 3. Apply White Color Effect to the Icon
-        // (Assumes the ImageView is the first child, index 0)
         if (activeButton.getChildren().get(0) instanceof ImageView) {
             ImageView icon = (ImageView) activeButton.getChildren().get(0);
             ColorAdjust whiteEffect = new ColorAdjust();
-            whiteEffect.setBrightness(1.0); // Make it 100% bright (White)
+            whiteEffect.setBrightness(1.0);
             icon.setEffect(whiteEffect);
         }
     }
 
     private void resetButtonStyle(HBox button) {
-        // Remove active class
         button.getStyleClass().removeAll("menu-item-active");
         if (!button.getStyleClass().contains("menu-item")) {
             button.getStyleClass().add("menu-item");
         }
 
-        // Remove Icon Effect (Return to original color)
         if (button.getChildren().get(0) instanceof ImageView) {
             ImageView icon = (ImageView) button.getChildren().get(0);
             icon.setEffect(null);
@@ -109,7 +133,11 @@ public class LandlordLayoutController {
             }
             FXMLLoader loader = new FXMLLoader(fileUrl);
             Parent newPage = loader.load();
-            mainBorderPane.setCenter(newPage);
+
+            // KEY CHANGE: Capture the controller of the loaded page
+            this.currentController = loader.getController();
+
+            contentArea.getChildren().setAll(newPage);
         } catch (IOException e) {
             e.printStackTrace();
         }
