@@ -6,23 +6,28 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.Pane?>
 
 <VBox xmlns="http://javafx.com/javafx/17"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="application.HouseViewController"
-      spacing="10" style="-fx-padding: 20; -fx-background-color: #F4F7FC;">
+      stylesheets="@HouseView.css"
+      spacing="10" styleClass="main-background">
 
     <HBox spacing="10" alignment="CENTER_LEFT">
-        <Button text="← Back" onAction="#handleBack"
-                style="-fx-background-color: transparent; -fx-text-fill: #113970; -fx-font-weight: bold; -fx-cursor: hand;"/>
-        <Label fx:id="propertyNameLabel" text="Property Name"
-               style="-fx-font-family: 'Outfit Bold'; -fx-font-size: 24px; -fx-text-fill: #113970;"/>
+        <Button text="← Back" onAction="#handleBack" styleClass="back-button"/>
+        <Label fx:id="propertyNameLabel" text="Property Name" styleClass="property-title"/>
     </HBox>
 
-    <Label text="Hover over a room to see details." style="-fx-text-fill: #7f8c8d;"/>
+    <Label text="Hover over a room to see details." styleClass="subtitle-label"/>
 
-    <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent;">
-        <VBox fx:id="houseContainer" alignment="BOTTOM_CENTER" spacing="0" style="-fx-padding: 20;"/>
+    <ScrollPane fitToWidth="true" styleClass="scroll-pane-clean">
+        <VBox alignment="BOTTOM_CENTER" spacing="0" style="-fx-padding: 20;">
+
+            <VBox fx:id="houseContainer" alignment="BOTTOM_CENTER" spacing="0"/>
+
+            <Pane fx:id="grassBase" visible="false" managed="false" styleClass="rural-grass" prefHeight="20" maxWidth="Infinity"/>
+        </VBox>
     </ScrollPane>
 
 </VBox>
