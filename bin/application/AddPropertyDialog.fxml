@@ -3,69 +3,87 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane style="-fx-background-color: white;" prefHeight="600" prefWidth="450"
+<BorderPane styleClass="add-property-root" prefHeight="750" prefWidth="500"
             stylesheets="@LandlordDashboard.css"
             xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="application.AddPropertyController">
 
     <top>
-        <VBox style="-fx-padding: 20 25 20 25; -fx-background-color: white; -fx-border-color: #eee; -fx-border-width: 0 0 1 0;">
+        <VBox styleClass="header-container">
             <Label text="Add New Property" styleClass="dialog-title"/>
-            <Label text="Fill in the details below to register your building." styleClass="dialog-subtitle"/>
+            <Label text="Fill in the details below to register your building" styleClass="dialog-subtitle"/>
         </VBox>
     </top>
 
     <center>
-        <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent; -fx-padding: 0;">
+        <ScrollPane fitToWidth="true" styleClass="custom-scroll">
             <content>
-                <VBox spacing="20" style="-fx-padding: 25;">
+                <VBox spacing="25" style="-fx-padding: 25;">
 
                     <VBox spacing="15">
                         <Label text="Basic Details" styleClass="section-header"/>
 
                         <VBox spacing="5">
                             <Label text="Property Name" styleClass="form-label"/>
-                            <TextField fx:id="txtName" promptText="e.g. Sunset Apartments" styleClass="input-field"/>
+                            <TextField fx:id="txtName" styleClass="blue-input-field"/>
                         </VBox>
 
                         <VBox spacing="5">
-                            <Label text="Location / Address" styleClass="form-label"/>
-                            <TextField fx:id="txtLocation" promptText="e.g. 123 Ocean Drive" styleClass="input-field"/>
+                            <Label text="Location/Address" styleClass="form-label"/>
+                            <TextField fx:id="txtLocation" styleClass="blue-input-field"/>
                         </VBox>
 
                         <HBox spacing="15">
                             <VBox spacing="5" HBox.hgrow="ALWAYS">
-                                <Label text="Monthly Price (₱)" styleClass="form-label"/>
-                                <TextField fx:id="txtPrice" promptText="e.g. 1,500" styleClass="input-field"/>
+                                <Label text="Monthly Price" styleClass="form-label"/>
+                                <TextField fx:id="txtPrice" styleClass="blue-input-field"/>
                             </VBox>
                             <VBox spacing="5" HBox.hgrow="ALWAYS">
                                 <Label text="Location Type" styleClass="form-label"/>
-                                <ComboBox fx:id="cmbType" promptText="Select" maxWidth="Infinity" styleClass="input-field"/>
+                                <ComboBox fx:id="cmbType" promptText="" maxWidth="Infinity" styleClass="blue-input-field"/>
                             </VBox>
                         </HBox>
                     </VBox>
 
-                    <Separator />
-
-                    <VBox spacing="15">
+                    <VBox spacing="10">
                         <Label text="Structure Layout" styleClass="section-header"/>
-                        <Label text="Enter floors to generate room inputs." style="-fx-text-fill: #888; -fx-font-size: 12px;" wrapText="true"/>
+                        <Label text="Enter floors to generate room inputs" styleClass="helper-text"/>
 
                         <VBox spacing="5">
                             <Label text="Number of Floors" styleClass="form-label"/>
-                            <TextField fx:id="txtFloors" promptText="e.g. 3" styleClass="input-field"/>
+                            <TextField fx:id="txtFloors" styleClass="blue-input-field"/>
                         </VBox>
 
-                        <VBox fx:id="dynamicRoomContainer" spacing="10" styleClass="dynamic-container"/>
+                        <VBox fx:id="dynamicRoomContainer" spacing="10" styleClass="structure-box"/>
                     </VBox>
 
-                    <Separator />
+                    <VBox spacing="10">
+                        <Label text="Shared Amenities" styleClass="section-header"/>
+                        <GridPane hgap="10" vgap="10">
+                            <columnConstraints>
+                                <ColumnConstraints percentWidth="50"/>
+                                <ColumnConstraints percentWidth="50"/>
+                            </columnConstraints>
+
+                            <CheckBox text="Toilet &amp; bath" styleClass="blue-checkbox" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                            <CheckBox text="Kitchen / cooking area" styleClass="blue-checkbox" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                            <CheckBox text="Refrigerator" styleClass="blue-checkbox" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                            <CheckBox text="Laundry area" styleClass="blue-checkbox" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                            <CheckBox text="Washing machine" styleClass="blue-checkbox" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+
+                            <CheckBox text="CCTV cameras" styleClass="blue-checkbox" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                            <CheckBox text="Fire extinguisher" styleClass="blue-checkbox" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                            <CheckBox text="Emergency exits" styleClass="blue-checkbox" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                            <CheckBox text="Secure main entrance / gate" styleClass="blue-checkbox" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+
+                        </GridPane>
+                    </VBox>
 
                     <VBox spacing="10">
                         <Label text="Property Image" styleClass="section-header"/>
-                        <HBox spacing="15" alignment="CENTER_LEFT" style="-fx-background-color: #f8f9fa; -fx-padding: 15; -fx-background-radius: 8; -fx-border-color: #eef0f3; -fx-border-radius: 8;">
+                        <HBox spacing="15" alignment="CENTER_LEFT" styleClass="image-upload-box">
                             <Button text="Choose File" onAction="#handleImageUpload" styleClass="upload-button"/>
-                            <Label fx:id="lblImageName" text="No file selected" style="-fx-text-fill: #666; -fx-font-style: italic;"/>
+                            <Label fx:id="lblImageName" text="No File Selected" styleClass="file-label"/>
                         </HBox>
                     </VBox>
 
@@ -75,9 +93,9 @@
     </center>
 
     <bottom>
-        <HBox spacing="15" alignment="CENTER_RIGHT" style="-fx-padding: 20 25 20 25; -fx-background-color: #fcfcfc; -fx-border-color: #eee; -fx-border-width: 1 0 0 0;">
-            <Button text="Cancel" onAction="#handleCancel" styleClass="btn-cancel"/>
-            <Button text="Save Property" onAction="#handleSave" styleClass="btn-primary"/>
+        <HBox spacing="15" alignment="CENTER_RIGHT" styleClass="footer-container">
+            <Button text="Cancel" onAction="#handleCancel" styleClass="btn-cancel-blue"/>
+            <Button text="Save Property" onAction="#handleSave" styleClass="btn-save-blue"/>
         </HBox>
     </bottom>
 

@@ -574,3 +574,152 @@
     -fx-background-insets: 0;
     -fx-padding: 0;
 }
+/* ============================================== */
+/* ADD PROPERTY FORM SPECIFIC STYLES              */
+/* ============================================== */
+
+/* 1. Main Background matching the light blue image */
+.add-property-root {
+    -fx-background-color: #D6EAF8; /* Light pastel blue background */
+    -fx-font-family: "Outfit";
+}
+
+.header-container {
+    -fx-padding: 30 25 10 25;
+    -fx-background-color: #D6EAF8;
+}
+
+.custom-scroll,
+.custom-scroll > .viewport {
+    -fx-background-color: transparent;
+}
+
+/* 2. Text Styling */
+.dialog-title {
+    -fx-font-family: "Outfit Bold";
+    -fx-font-size: 22px;
+    -fx-text-fill: #113970; /* Dark Navy */
+}
+
+.dialog-subtitle {
+    -fx-font-family: "Outfit Regular";
+    -fx-font-size: 14px;
+    -fx-text-fill: #5D7B9D;
+}
+
+.section-header {
+    -fx-font-family: "Outfit Bold";
+    -fx-font-size: 16px;
+    -fx-text-fill: #2E86DE; /* Bright Blue */
+}
+
+.form-label {
+    -fx-font-family: "Outfit SemiBold";
+    -fx-font-size: 13px;
+    -fx-text-fill: #113970;
+}
+
+.helper-text {
+    -fx-font-family: "Outfit Regular";
+    -fx-font-size: 12px;
+    -fx-text-fill: #5D7B9D;
+}
+
+/* 3. Input Fields - The "Blue Bar" Look */
+.blue-input-field {
+    -fx-background-color: #BDE0FE; /* A saturated light blue */
+    -fx-background-radius: 4;
+    -fx-border-width: 0;
+    -fx-padding: 8 10;
+    -fx-font-size: 14px;
+    -fx-text-fill: #113970;
+}
+
+.blue-input-field:focused {
+    -fx-background-color: #A0CFF9; /* Slightly darker on focus */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 4, 0, 0, 1);
+}
+
+/* 4. Structure Box (The darker container for dynamic inputs) */
+.structure-box {
+    -fx-background-color: #BDE0FE; /* Matches input color block */
+    -fx-background-radius: 6;
+    -fx-padding: 20;
+    -fx-border-color: transparent;
+}
+
+/* 5. Checkboxes */
+.blue-checkbox {
+    -fx-text-fill: #113970;
+    -fx-font-size: 13px;
+    -fx-font-family: "Outfit Regular";
+}
+
+.blue-checkbox > .box {
+    -fx-background-color: transparent;
+    -fx-border-color: #113970;
+    -fx-border-radius: 3px;
+}
+
+.blue-checkbox:selected > .box {
+    -fx-background-color: #113970;
+}
+
+.blue-checkbox:selected > .box > .mark {
+    -fx-background-color: white;
+}
+
+/* 6. Image Upload Section */
+.image-upload-box {
+    -fx-background-color: #BDE0FE;
+    -fx-padding: 15;
+    -fx-background-radius: 6;
+}
+
+.upload-button {
+    -fx-background-color: #A0CFF9; /* Slightly darker blue */
+    -fx-text-fill: #113970;
+    -fx-font-family: "Outfit SemiBold";
+    -fx-background-radius: 4;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 2, 0, 0, 1);
+}
+
+.file-label {
+    -fx-text-fill: #555;
+    -fx-font-style: italic;
+}
+
+/* 7. Footer & Buttons */
+.footer-container {
+    -fx-padding: 20 25 25 25;
+    -fx-background-color: #D6EAF8;
+}
+
+.btn-cancel-blue {
+    -fx-background-color: #BDE0FE;
+    -fx-text-fill: #113970;
+    -fx-font-family: "Outfit Bold";
+    -fx-font-size: 14px;
+    -fx-padding: 8 20;
+    -fx-background-radius: 5;
+    -fx-cursor: hand;
+}
+
+.btn-cancel-blue:hover {
+    -fx-background-color: #a9d4f5;
+}
+
+.btn-save-blue {
+    -fx-background-color: #113970; /* Dark Navy */
+    -fx-text-fill: white;
+    -fx-font-family: "Outfit Bold";
+    -fx-font-size: 14px;
+    -fx-padding: 8 20;
+    -fx-background-radius: 5;
+    -fx-cursor: hand;
+}
+
+.btn-save-blue:hover {
+    -fx-background-color: #0d2b56;
+}
