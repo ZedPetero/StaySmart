@@ -1,33 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 
-<VBox xmlns="http://javafx.com/javafx/17"
-      xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="application.HouseViewController"
-      stylesheets="@HouseView.css"
-      spacing="10" styleClass="main-background">
+<StackPane fx:id="rootStackPane"
+           xmlns="http://javafx.com/javafx/17"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="application.HouseViewController"
+           stylesheets="@HouseView.css">
 
-    <HBox spacing="10" alignment="CENTER_LEFT">
-        <Button text="← Back" onAction="#handleBack" styleClass="back-button"/>
-        <Label fx:id="propertyNameLabel" text="Property Name" styleClass="property-title"/>
-    </HBox>
+    <VBox spacing="10" alignment="TOP_LEFT" style="-fx-background-color: transparent;">
 
-    <Label text="Hover over a room to see details." styleClass="subtitle-label"/>
+        <padding>
+            <Insets top="20" right="20" bottom="0" left="20"/>
+        </padding>
 
-    <ScrollPane fitToWidth="true" styleClass="scroll-pane-clean">
-        <VBox alignment="BOTTOM_CENTER" spacing="0" style="-fx-padding: 20;">
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <Button text="← Back" onAction="#handleBack" styleClass="button"/>
+            <Label fx:id="propertyNameLabel" text="Property Name" styleClass="property-title"/>
+        </HBox>
 
-            <VBox fx:id="houseContainer" alignment="BOTTOM_CENTER" spacing="0"/>
+        <Label text="Hover over a room to see details." styleClass="subtitle-label"/>
 
-            <Pane fx:id="grassBase" visible="false" managed="false" styleClass="rural-grass" prefHeight="20" maxWidth="Infinity"/>
-        </VBox>
-    </ScrollPane>
+        <ScrollPane fx:id="mainScrollPane" fitToWidth="true" fitToHeight="true"
+                    VBox.vgrow="ALWAYS"
+                    styleClass="scroll-pane"
+                    style="-fx-background-color: transparent; -fx-background: transparent;">
 
-</VBox>
+            <StackPane alignment="BOTTOM_CENTER" style="-fx-background-color: transparent;">
+
+                <VBox fx:id="houseContainer" alignment="BOTTOM_CENTER" spacing="0"
+                      style="-fx-background-color: transparent;"/>
+
+            </StackPane>
+        </ScrollPane>
+
+    </VBox>
+</StackPane>

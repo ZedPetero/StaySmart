@@ -1,27 +1,45 @@
 /* =============================================================================
-   1. GENERAL UI & TRANSPARENCY CORE
+   CORE TRANSPARENCY & UI
    ============================================================================= */
 
-/* Make the root transparent so the Java-set Image shows through */
 .root {
-    -fx-background-color: transparent;
     -fx-font-family: "Segoe UI", sans-serif;
 }
 
-/* CRITICAL: Make the ScrollPane surrounding the house transparent */
-.scroll-pane {
+/* CRITICAL: Make the ScrollPane and its viewport transparent */
+.scroll-pane,
+.scroll-pane > .viewport {
     -fx-background-color: transparent;
-    /* Some JavaFX versions need this specific override */
     -fx-background: transparent;
     -fx-padding: 0;
 }
 
-/* CRITICAL: Make the viewport (the viewing window) transparent */
-.scroll-pane > .viewport {
+/* Hide the Main Vertical Scrollbar background, only show the thumb */
+.scroll-pane > .scroll-bar:vertical {
+    -fx-background-color: transparent;
+}
+.scroll-pane > .scroll-bar:vertical .thumb {
+    -fx-background-color: rgba(120, 144, 156, 0.5);
+    -fx-background-radius: 5;
+}
+
+/* Style the Horizontal Scrollbars (Inside Floors) to be subtle */
+.floor-scroll > .scroll-bar:horizontal {
+    -fx-background-color: transparent; /* Transparent track */
+    -fx-padding: 0;
+}
+.floor-scroll > .scroll-bar:horizontal .thumb {
+    -fx-background-color: rgba(255, 255, 255, 0.4); /* Semi-transparent white thumb */
+    -fx-background-radius: 4px;
+}
+/* Hide scrollbar arrows */
+.floor-scroll > .scroll-bar > .increment-button,
+.floor-scroll > .scroll-bar > .decrement-button {
+    -fx-padding: 0;
     -fx-background-color: transparent;
 }
 
-/* Ensure the VBox holding the house is transparent */
+/* Make the VBox holding the house transparent */
 .house-container-vbox {
     -fx-background-color: transparent;
     -fx-alignment: bottom-center;
@@ -29,22 +47,20 @@
     -fx-spacing: 0;
 }
 
-
-/* Labels and Buttons */
+/* UI Elements */
 .label {
     -fx-text-fill: #2C3E50;
     -fx-font-size: 14px;
+    -fx-effect: dropshadow(gaussian, rgba(255,255,255,0.7), 2, 0, 0, 1);
 }
-#propertyNameLabel {
+
+.property-title {
+    -fx-font-family: 'Outfit Bold', sans-serif;
     -fx-font-size: 24px;
-    -fx-font-weight: bold;
-    -fx-text-fill: #2C3E50;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 4, 0, 0, 1); /* Stronger shadow for readability over image */
-    -fx-padding: 10 0 10 20;
-    /* Optional: Semi-transparent white box behind title for better readability */
-    /* -fx-background-color: rgba(255, 255, 255, 0.5); */
-    /* -fx-background-radius: 5px; */
+    -fx-text-fill: #113970;
+    -fx-effect: dropshadow(gaussian, rgba(255,255,255,0.8), 3, 0, 0, 1);
 }
+
 .button {
     -fx-background-color: #3498DB;
     -fx-text-fill: white;
@@ -56,120 +72,82 @@
 }
 .button:hover { -fx-background-color: #2980B9; }
 
-/* =============================================================================
-   2. RURAL HOUSE DESIGN (Semi-Transparent Walls)
-   ============================================================================= */
 
-/* Roof (Solid) */
+/* =============================================================================
+   RURAL HOUSE DESIGN
+   ============================================================================= */
 .rural-roof {
     -fx-background-color: linear-gradient(from 0px 0px to 20px 0px, repeat, #8D6E63 0%, #8D6E63 90%, #5D4037 100%);
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 5);
-    -fx-border-color: #5D4037;
-    -fx-border-width: 2;
+    -fx-border-color: #5D4037; -fx-border-width: 2;
     -fx-shape: "M 0 100 L 20 0 L 280 0 L 300 100 Z";
-    -fx-min-height: 80px;
-    -fx-max-width: 420px;
+    -fx-min-height: 80px; -fx-max-width: 420px;
 }
 
-/* Floors (TRANSPARENT WALLS - 0.7 Alpha) */
 .rural-floor-wood {
-    -fx-background-color:
-            linear-gradient(from 0px 0px to 40px 0px, repeat, rgba(188, 170, 164, 0.7) 0%, rgba(188, 170, 164, 0.7) 95%, rgba(141, 110, 99, 0.8) 100%);
-    -fx-border-color: #5D4037;
-    -fx-border-width: 0 4 4 4;
-    -fx-padding: 15 0 0 0;
-    -fx-alignment: bottom-center;
-    -fx-max-width: 380px;
+    -fx-background-color: linear-gradient(from 0px 0px to 40px 0px, repeat, rgba(188, 170, 164, 0.7) 0%, rgba(188, 170, 164, 0.7) 95%, rgba(141, 110, 99, 0.8) 100%);
+    -fx-border-color: #5D4037; -fx-border-width: 0 4 4 4;
+    -fx-padding: 15 0 0 0; -fx-alignment: bottom-center; -fx-max-width: 380px;
 }
 
-/* BASE (Grass) - STRETCHED */
 .rural-base {
     -fx-background-color: linear-gradient(to bottom, #66BB6A, #388E3C);
-    -fx-border-color: #2E7D32;
-    -fx-border-width: 2 0 0 0;
-    -fx-min-height: 25px;
-    -fx-max-height: 25px;
-    -fx-max-width: Infinity;
-    -fx-pref-width: 100%;
+    -fx-border-color: #2E7D32; -fx-border-width: 2 0 0 0;
+    -fx-min-height: 25px; -fx-max-height: 25px;
+    -fx-max-width: Infinity; -fx-pref-width: 100%;
 }
 
-/* Rooms (OPAQUE) */
 .rural-room {
-    -fx-min-width: 70px; -fx-min-height: 80px;
-    -fx-max-width: 70px; -fx-max-height: 80px;
-    -fx-padding: 0;
+    -fx-min-width: 70px; -fx-min-height: 80px; -fx-max-width: 70px; -fx-max-height: 80px;
+    -fx-padding: 0; -fx-cursor: hand;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 3, 0, 1, 1);
 }
 .rural-window-arched { -fx-background-radius: 35 35 0 0; -fx-border-radius: 35 35 0 0; -fx-border-color: #5D4037; -fx-border-width: 4; }
 .rural-window-rect { -fx-background-radius: 2px; -fx-border-color: #5D4037; -fx-border-width: 4; }
-
-/* Status Colors - Solid */
 .rural-status-occupied { -fx-background-color: linear-gradient(to bottom, #FFE082, #FFCA28); }
 .rural-status-vacant { -fx-background-color: linear-gradient(to bottom, #B3E5FC, #81D4FA); }
 .rural-status-placeholder { -fx-background-color: #D7CCC8; -fx-border-color: #8D6E63; -fx-border-style: dashed; -fx-border-width: 2; }
-
 .rural-label { -fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: #3E2723; }
 .rural-flower-box { -fx-background-color: #4CAF50; -fx-background-radius: 0 0 5 5; -fx-border-color: #388E3C; -fx-border-width: 1; }
 
-/* =============================================================================
-   3. URBAN HOUSE DESIGN (Semi-Transparent Walls)
-   ============================================================================= */
 
-/* Roof (Solid) */
+/* =============================================================================
+   URBAN HOUSE DESIGN
+   ============================================================================= */
 .urban-roof {
     -fx-background-color: linear-gradient(from 0px 0px to 20px 0px, repeat, #5D8AA8 0%, #5D8AA8 90%, #34495E 100%);
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 8, 0, 0, 4);
-    -fx-border-color: #2C3E50;
-    -fx-border-width: 2;
+    -fx-border-color: #2C3E50; -fx-border-width: 2;
     -fx-shape: "M 0 100 L 20 0 L 280 0 L 300 100 Z";
-    -fx-min-height: 80px;
-    -fx-max-width: 440px;
+    -fx-min-height: 80px; -fx-max-width: 440px;
 }
 
-/* Floors (TRANSPARENT WALLS - 0.6 Alpha) */
 .urban-floor-container {
     -fx-background-color: rgba(214, 234, 248, 0.6);
-    -fx-border-color: #85C1E9;
-    -fx-border-width: 0 3 3 3;
-    -fx-padding: 15 0 0 0;
-    -fx-alignment: bottom-center;
-    -fx-max-width: 400px;
+    -fx-border-color: #85C1E9; -fx-border-width: 0 3 3 3;
+    -fx-padding: 15 0 0 0; -fx-alignment: bottom-center; -fx-max-width: 400px;
 }
 
-/* BASE (Cement) - STRETCHED */
 .urban-base {
-    -fx-background-color:
-            linear-gradient(to bottom, #BDC3C7, #95A5A6),
-            radial-gradient(focus-angle 0deg, focus-distance 0%, center 50% 50%, radius 1px, #7F8C8D 20%, transparent 21%);
-    -fx-background-size: 10px 10px;
-    -fx-border-color: #7F8C8D;
-    -fx-border-width: 2 0 0 0;
+    -fx-background-color: linear-gradient(to bottom, #BDC3C7, #95A5A6);
+    -fx-border-color: #7F8C8D; -fx-border-width: 2 0 0 0;
     -fx-min-height: 25px; -fx-max-height: 25px;
-    -fx-max-width: Infinity;
-    -fx-pref-width: 100%;
+    -fx-max-width: Infinity; -fx-pref-width: 100%;
 }
 
-/* Rooms (OPAQUE) */
 .urban-room {
-    -fx-min-width: 70px; -fx-min-height: 85px;
-    -fx-max-width: 70px; -fx-max-height: 85px;
-    -fx-padding: 0;
+    -fx-min-width: 70px; -fx-min-height: 85px; -fx-max-width: 70px; -fx-max-height: 85px;
+    -fx-padding: 0; -fx-cursor: hand;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 2, 0, 1, 1);
 }
 .urban-window-arched { -fx-background-radius: 35 35 0 0; -fx-border-radius: 35 35 0 0; -fx-border-color: #34495E; -fx-border-width: 3; }
 .urban-window-rect { -fx-background-radius: 0; -fx-border-color: #34495E; -fx-border-width: 3; }
-
 .urban-status-occupied { -fx-background-color: #F0B27A; }
 .urban-status-vacant { -fx-background-color: #AED6F1; }
 .urban-status-placeholder { -fx-background-color: #ECF0F1; -fx-border-color: #BDC3C7; -fx-border-style: dashed; }
-
 .urban-label { -fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: #2C3E50; }
-.urban-balcony {
-    -fx-background-color: linear-gradient(to right, transparent 0%, transparent 80%, #2C3E50 81%, #2C3E50 100%);
-    -fx-border-color: #2C3E50; -fx-border-width: 2 0 2 0;
-}
+.urban-balcony { -fx-background-color: linear-gradient(to right, transparent 0%, transparent 80%, #2C3E50 81%, #2C3E50 100%); -fx-border-color: #2C3E50; -fx-border-width: 2 0 2 0; }
 .urban-doorstep { -fx-background-color: #7F8C8D; -fx-border-color: #34495E; -fx-border-width: 1; }
 
-/* Helpers */
 .floor-scroll { -fx-background-color: transparent; -fx-background: transparent; -fx-padding: 0; }
 .floor-scroll > .viewport { -fx-background-color: transparent; }
