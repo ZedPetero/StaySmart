@@ -84,7 +84,7 @@ public class LandlordLayoutController {
     }
 
     @FXML private void handleShowSettings() {
-        loadPage("/application/LandlordSettings.fxml");
+        loadPage("/application/LandlordSettingsLayout.fxml");
         setActiveButton(btnSettings);
     }
 

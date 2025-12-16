@@ -176,3 +176,26 @@
 .btn-filled:hover {
     -fx-background-color: #1A47B0;
 }
+/* --- New Styles for Payment Page --- */
+
+/* The light blue box for the QR code section */
+.info-box-blue {
+    -fx-background-color: #d5ebf9;
+    -fx-border-color: #6ba3f1;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-padding: 15;
+}
+
+/* The purple-ish title inside the QR box (matches #6848f8) */
+.text-highlight-purple {
+    -fx-font-family: 'Outfit', sans-serif;
+    -fx-font-size: 18px;
+    -fx-font-weight: normal;
+    -fx-text-fill: #6848f8;
+}
+
+/* Small adjustments to input fields to match the "+62" placeholder style if needed */
+.input-field-blue {
+    -fx-prompt-text-fill: #b1acac;
+}

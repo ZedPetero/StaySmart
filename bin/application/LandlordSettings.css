@@ -1,15 +1,17 @@
 /* --- Global --- */
 .root {
-    -fx-font-family: 'Segoe UI', sans-serif; /* Replaces 'Outfit' */
+    -fx-font-family: 'Segoe UI', sans-serif;
 }
 
 .main-scroll {
     -fx-background-color: transparent;
     -fx-background: transparent;
 }
+
 .main-scroll > .viewport {
     -fx-background-color: transparent;
 }
+
 .main-content-background {
     -fx-background-color: #FFFFFF;
 }
@@ -20,6 +22,7 @@
     -fx-font-weight: bold;
     -fx-text-fill: #000000;
 }
+
 .page-subtitle {
     -fx-font-size: 18px;
     -fx-text-fill: #000000a8;
@@ -27,37 +30,51 @@
 
 /* --- Internal Settings Sidebar --- */
 .settings-sidebar {
-    -fx-background-color: #D5EBF9; /* From HTML: .rectangle-2/6 */
+    -fx-background-color: #D5EBF9; /* Light Blue Container */
     -fx-background-radius: 20;
     -fx-padding: 30;
+    /* No min-height here ensures it shrinks to fit content */
 }
 
 .settings-menu-item {
     -fx-padding: 12 15;
     -fx-background-radius: 10;
     -fx-cursor: hand;
-    -fx-font-size: 18px;
+    -fx-font-size: 16px; /* Adjusted to match design */
     -fx-font-weight: bold;
-    -fx-text-fill: #000000;
+    -fx-text-fill: #113970; /* Dark Blue instead of Black */
 }
+
 .settings-menu-item:hover {
     -fx-background-color: rgba(31, 87, 218, 0.1);
 }
 
 /* Active State (Blue Background, White Text) */
 .settings-menu-item.menu-active {
-    -fx-background-color: #1F57DA; /* From HTML .rectangle-3 */
+    -fx-background-color: #1F57DA;
     -fx-text-fill: #FFFFFF;
 }
+
+/* This specifically targets the text label inside the active button */
 .settings-menu-item.menu-active .label {
     -fx-text-fill: #FFFFFF;
 }
 
-/* --- Right Content Card --- */
+/* --- Right Content Card (The Main Container) --- */
+/* Use this for the outer blue background seen in Profile/Account/Payment */
 .settings-content-card {
-    -fx-background-color: #D5EBF9; /* From HTML .rectangle-7 */
+    -fx-background-color: #D5EBF9;
     -fx-background-radius: 20;
     -fx-padding: 40;
+}
+
+/* --- Inner White Card (New!) --- */
+/* Use this for the white box inside Account and Payment pages */
+.inner-card-white {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 15;
+    -fx-padding: 30;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 10, 0, 0, 2);
 }
 
 .card-header {
@@ -77,14 +94,21 @@
     -fx-text-fill: #000000;
 }
 
+/* Use this for labels inside the White Card (lighter grey) */
+.input-label-grey {
+    -fx-font-size: 15px;
+    -fx-text-fill: #666666;
+}
+
 .input-field {
     -fx-background-color: #FFFFFF;
     -fx-background-radius: 8;
-    -fx-border-color: transparent;
+    -fx-border-color: #d1d1d1; /* Light grey border */
+    -fx-border-radius: 8;
     -fx-padding: 10;
     -fx-font-size: 15px;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 5, 0, 0, 2);
 }
+
 .input-field:focused {
     -fx-border-color: #1F57DA;
     -fx-border-width: 1;
@@ -110,6 +134,7 @@
     -fx-padding: 10 25;
     -fx-cursor: hand;
 }
+
 .btn-primary:hover {
     -fx-background-color: #1742a6;
 }
@@ -121,6 +146,42 @@
     -fx-background-radius: 10;
     -fx-text-fill: #000000;
     -fx-font-size: 16px;
-    -fx-padding: 9 25; /* Adjust for border width */
+    -fx-padding: 9 25;
     -fx-cursor: hand;
+}
+
+/* The specific "Change Password" title inside the white box */
+.form-section-title {
+    -fx-font-family: 'Segoe UI', sans-serif;
+    -fx-font-size: 18px; /* HTML says 20px, visually 18px looks better in JavaFX */
+    -fx-font-weight: normal; /* Regular weight per design */
+    -fx-text-fill: #000000;
+}
+
+/* Specific Input Style for Account Page
+   Ref HTML: bg #f7fcff, border #86c0e6
+*/
+.input-field-blue {
+    -fx-background-color: #f7fcff; /* Very pale blue */
+    -fx-background-radius: 10;
+    -fx-border-color: #86c0e6;     /* Light blue border */
+    -fx-border-radius: 10;
+    -fx-padding: 12;
+    -fx-font-size: 15px;
+    -fx-prompt-text-fill: #b1acac;
+}
+
+.input-field-blue:focused {
+    -fx-border-color: #1F57DA; /* Darker blue when clicked */
+    -fx-border-width: 1.5;
+}
+
+/* Refining the Inner White Card to match the "Slate-50" look
+   HTML says background-color: #f1f5f9
+*/
+.inner-card-white {
+    -fx-background-color: #f8f9fa; /* Slightly off-white/very light grey */
+    -fx-background-radius: 20;
+    -fx-padding: 40;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.03), 10, 0, 0, 4);
 }
