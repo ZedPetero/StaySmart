@@ -1,27 +1,29 @@
 package application;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.shape.Rectangle;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.Optional;
+
 import java.io.File;
 
 public class PropertyCardController {
 
-    @FXML private Label lblType;
-    @FXML private Label lblName;
-    @FXML private Label lblLocation;
-    @FXML private Label lblPrice;
-    @FXML private ImageView imgProperty;
-    @FXML private Button btnRemove;
+    @FXML private ImageView propertyImage;
+    @FXML private Label nameLabel;
+    @FXML private Label locationLabel;
+    @FXML private Label priceLabel;
+    @FXML private Label typeLabel;
+    @FXML private Label floorsLabel;
+    @FXML private HBox actionBox;
+
+    // THE NEW CONTAINER
+    @FXML private FlowPane amenitiesContainer;
 
     private Property property;
     private MyPropertiesController parentController;
@@ -30,74 +32,96 @@ public class PropertyCardController {
         this.property = property;
         this.parentController = parentController;
 
-        // Set Text
-        lblType.setText(property.getType() != null ? property.getType().toUpperCase() : "PROPERTY");
-        lblName.setText(property.getName());
-        lblLocation.setText(property.getLocation());
-        lblPrice.setText("₱ " + String.format("%,.2f", property.getPrice()) + " / mo");
+        // 1. Text Data
+        nameLabel.setText(property.getName());
+        locationLabel.setText(property.getLocation());
+        priceLabel.setText("₱ " + String.format("%,.0f", property.getPrice()));
+        typeLabel.setText(property.getType());
+        floorsLabel.setText(property.getFloors() + (property.getFloors().equals("1") ? " Floor" : " Floors"));
 
-        // Clip Image Corners
-        Rectangle clip = new Rectangle(220, 140);
-        clip.setArcWidth(16);
-        clip.setArcHeight(16);
-        imgProperty.setClip(clip);
-
+        // 2. Image Loading
         if (property.getImagePath() != null && !property.getImagePath().isEmpty()) {
             File file = new File(property.getImagePath());
             if (file.exists()) {
-                imgProperty.setImage(new Image(file.toURI().toString()));
-            } else {
-                loadDefaultImage();
+                Image img = new Image(file.toURI().toString());
+                propertyImage.setImage(img);
+                centerImage(propertyImage);
             }
-        } else {
-            loadDefaultImage();
         }
-    }
 
-    @FXML
-    private void handleRemove() {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Remove Property");
-        alert.setHeaderText("Delete " + property.getName() + "?");
-        alert.setContentText("This cannot be undone.");
+        // 3. Rounded Corners for Image
+        Rectangle clip = new Rectangle(300, 160);
+        clip.setArcWidth(15);
+        clip.setArcHeight(15);
+        propertyImage.setClip(clip);
 
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            deleteFromDB();
-        }
-    }
+        // 4. Populate Amenities (NEW FEATURE)
+        populateAmenities(property.getAmenities());
 
-    // =================================================================
-    // UPDATED METHOD: CONNECTS TO THE 2D VIEW
-    // =================================================================
-    @FXML
-    private void handleCheckDetails() {
+        // 5. Interaction
         if (parentController != null) {
-            // This calls the method we added to MyPropertiesController in the previous step
+            actionBox.setVisible(true);
+            actionBox.setManaged(true);
+            // Make the whole card clickable
+            propertyImage.getParent().getParent().setOnMouseClicked(e -> parentController.openPropertyDetails(property));
+        }
+    }
+
+    private void populateAmenities(String amenitiesString) {
+        amenitiesContainer.getChildren().clear();
+
+        if (amenitiesString == null || amenitiesString.trim().isEmpty()) {
+            Label placeholder = new Label("None listed");
+            placeholder.setStyle("-fx-text-fill: #999; -fx-font-size: 10px; -fx-font-style: italic;");
+            amenitiesContainer.getChildren().add(placeholder);
+            return;
+        }
+
+        String[] items = amenitiesString.split(",");
+        int maxItemsToShow = 4; // Don't overcrowd the card
+        int count = 0;
+
+        for (String item : items) {
+            if (count >= maxItemsToShow) {
+                Label more = new Label("+" + (items.length - count));
+                more.setStyle("-fx-background-color: #eee; -fx-text-fill: #666; -fx-font-size: 9px; -fx-padding: 2 5; -fx-background-radius: 4;");
+                amenitiesContainer.getChildren().add(more);
+                break;
+            }
+
+            Label tag = new Label(item.trim());
+            // Style: Light blue pill
+            tag.setStyle("-fx-background-color: #e3f2fd; -fx-text-fill: #1565c0; -fx-font-size: 9px; -fx-padding: 2 6; -fx-background-radius: 4;");
+            amenitiesContainer.getChildren().add(tag);
+
+            count++;
+        }
+    }
+
+    // Helper to center-crop image
+    private void centerImage(ImageView imageView) {
+        Image img = imageView.getImage();
+        if (img != null) {
+            double w = 0;
+            double h = 0;
+            double ratioX = imageView.getFitWidth() / img.getWidth();
+            double ratioY = imageView.getFitHeight() / img.getHeight();
+            double reducCoeff = 0;
+            if(ratioX >= ratioY) {
+                reducCoeff = ratioX;
+            } else {
+                reducCoeff = ratioY;
+            }
+            w = imageView.getFitWidth() / reducCoeff;
+            h = imageView.getFitHeight() / reducCoeff;
+            imageView.setViewport(new Rectangle2D((img.getWidth() - w) / 2, (img.getHeight() - h) / 2, w, h));
+        }
+    }
+
+    @FXML
+    private void handleView(MouseEvent event) {
+        if (parentController != null) {
             parentController.openPropertyDetails(property);
-        } else {
-            System.err.println("Error: Parent controller is not linked.");
-        }
-    }
-
-    private void deleteFromDB() {
-        String query = "DELETE FROM properties WHERE id = ?";
-        try (Connection conn = DatabaseHandler.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(query)) {
-            pstmt.setInt(1, property.getId());
-            pstmt.executeUpdate();
-            if(parentController != null) parentController.loadPropertiesFromDatabase();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void loadDefaultImage() {
-        var url = getClass().getResource("/application/images/homeicon.png");
-        if (url != null) {
-            imgProperty.setImage(new Image(url.toExternalForm()));
-        } else {
-            // Fallback if image is missing to prevent crash
         }
     }
 }
