@@ -46,12 +46,11 @@ public class HouseViewController {
         this.currentProperty = property;
         propertyNameLabel.setText(property.getName());
 
-        // --- ADD THIS LINE TO FIX OLD PROPERTIES ---
+        // 1. AUTO-FIX: Create rooms for old properties if they are missing
         ensureRoomsExistInDatabase(dbFloors);
-        // ------------------------------------------
 
-        // Refresh existing visuals
-        buildHouseVisuals(dbFloors);
+        // 2. BUILD: Load the visuals
+        refreshHouseData();
     }
 
     private void buildHouseVisuals(List<Floor> dbFloors) {
@@ -433,10 +432,14 @@ public class HouseViewController {
         } catch (IOException e) { e.printStackTrace(); }
     }
 
-    // 1. REFRESH DATA: Reloads the house after you save so the new room appears instantly
     private void refreshHouseData() {
+        // FIX: Force clear the root background to prevent room images from getting stuck there
+        if (rootStackPane != null) {
+            rootStackPane.setBackground(Background.EMPTY);
+            rootStackPane.setStyle("");
+        }
+
         List<Floor> freshFloors = new ArrayList<>();
-        // Query property_floors using the correct columns
         String sql = "SELECT * FROM property_floors WHERE property_id = ? ORDER BY floor_number DESC";
 
         try (Connection conn = DatabaseHandler.getConnection();
@@ -445,21 +448,16 @@ public class HouseViewController {
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
-                // Fetch basic floor info
                 int floorId = rs.getInt("id");
                 int level = rs.getInt("floor_number");
                 int count = rs.getInt("room_count");
 
                 Floor f = new Floor(floorId, level, count);
-
-                // Fetch the rooms for this floor
                 f.setRooms(fetchRoomsForFloor(currentProperty.getId(), level));
-
                 freshFloors.add(f);
             }
         } catch (Exception e) { e.printStackTrace(); }
 
-        // Rebuild the screen
         buildHouseVisuals(freshFloors);
     }
 
@@ -488,7 +486,7 @@ public class HouseViewController {
         return rooms;
     }
 
-    // This creates the database rows if they are missing (Fixes "Ghost" rooms for old properties)
+    // --- ADD THIS HELPER METHOD ---
     private void ensureRoomsExistInDatabase(List<Floor> dbFloors) {
         try (Connection conn = DatabaseHandler.getConnection()) {
             String insertSql = "INSERT INTO rooms (property_id, floor_level, room_number, price, status, payment_status) VALUES (?, ?, ?, ?, ?, ?)";
@@ -496,7 +494,7 @@ public class HouseViewController {
             boolean needsUpdate = false;
 
             for (Floor floor : dbFloors) {
-                // Check if rooms actually exist in DB
+                // Check if rooms exist
                 int existingCount = 0;
                 String checkSql = "SELECT COUNT(*) FROM rooms WHERE property_id = ? AND floor_level = ?";
                 try (PreparedStatement checkStmt = conn.prepareStatement(checkSql)) {
@@ -506,12 +504,10 @@ public class HouseViewController {
                     if (rs.next()) existingCount = rs.getInt(1);
                 }
 
-                // If DB is empty but Floor says it has rooms -> Create them!
+                // If missing, create them
                 if (existingCount == 0 && floor.getRoomCount() > 0) {
-                    System.out.println("Fixing missing rooms for Floor " + floor.getLevel());
                     for (int i = 1; i <= floor.getRoomCount(); i++) {
                         String roomNum = String.format("%d%02d", floor.getLevel(), i);
-
                         pstmt.setInt(1, currentProperty.getId());
                         pstmt.setInt(2, floor.getLevel());
                         pstmt.setString(3, roomNum);
@@ -523,16 +519,8 @@ public class HouseViewController {
                     }
                 }
             }
-
-            if (needsUpdate) {
-                pstmt.executeBatch();
-                // Refresh the list after fixing
-                dbFloors.forEach(f -> f.setRooms(fetchRoomsForFloorObj(f.getLevel())));
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+            if (needsUpdate) pstmt.executeBatch();
+        } catch (Exception e) { e.printStackTrace(); }
     }
 
     // Helper to refresh data immediately after fix

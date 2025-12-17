@@ -127,11 +127,10 @@ public class AddPropertyController {
 
     private void createInitialRooms(int propertyId) {
         try (Connection conn = DatabaseHandler.getConnection()) {
-            // FIXED SQL: Removed 'type' column
+            // FIX: Removed 'type' from the SQL query to match your database
             String sql = "INSERT INTO rooms (property_id, floor_level, room_number, price, status, payment_status) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement pstmt = conn.prepareStatement(sql);
 
-            // Loop through each floor input
             for (int i = 0; i < roomInputs.size(); i++) {
                 int floorLevel = i + 1;
                 int roomCount = 0;
@@ -143,10 +142,10 @@ public class AddPropertyController {
                     pstmt.setInt(1, propertyId);
                     pstmt.setInt(2, floorLevel);
                     pstmt.setString(3, roomNum);
-                    pstmt.setDouble(4, 0.0);       // Default Price
-                    pstmt.setString(5, "Available"); // Default Status
-                    // Removed: pstmt.setString(6, "Apartment");  <-- THIS WAS CAUSING THE ERROR
-                    pstmt.setString(6, "Pending");   // Payment Status (Now index 6)
+                    pstmt.setDouble(4, 0.0);         // Default Price
+                    pstmt.setString(5, "Available");   // Default Status
+                    // REMOVED: pstmt.setString(6, "Apartment"); <-- THIS CAUSED THE CRASH
+                    pstmt.setString(6, "Pending");     // Payment Status
 
                     pstmt.addBatch();
                 }
