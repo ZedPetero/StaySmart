@@ -4,6 +4,8 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.VBox?>
 
 <VBox spacing="20.0" styleClass="settings-content-card" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.SettingsPaymentController">
@@ -19,30 +21,32 @@
 
         <VBox spacing="8.0">
             <Label styleClass="input-label-grey" text="E-Wallet Provider" />
-            <TextField fx:id="txtProvider" promptText="Select Provider" styleClass="input-field-blue" />
+            <TextField fx:id="txtProvider" promptText="e.g. GCash, Maya, PayPal" styleClass="input-field-blue" />
         </VBox>
 
         <VBox spacing="8.0">
             <Label styleClass="input-label-grey" text="Mobile Number" />
-            <TextField fx:id="txtMobileNumber" promptText="+62 XXXX XXX XXXX" styleClass="input-field-blue" />
+            <TextField fx:id="txtMobileNumber" promptText="09XX XXX XXXX" styleClass="input-field-blue" />
         </VBox>
 
-        <Button onAction="#handleSaveEWallet" styleClass="btn-primary" text="Save E-Wallet">
+        <VBox spacing="10.0" styleClass="info-box-blue" alignment="CENTER">
+            <Label styleClass="text-highlight-purple" text="Payment QR Code" />
+            <Label styleClass="text-caption" text="Upload an image of your QR code for tenants to scan." wrapText="true"/>
+
+            <ImageView fx:id="qrPreview" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true" style="-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 0);">
+                <image>
+                    <Image url="@images/qr_placeholder.png" />
+                </image>
+            </ImageView>
+
+            <Button onAction="#handleUploadQR" styleClass="btn-secondary" text="Upload QR Image" />
+        </VBox>
+
+        <Button onAction="#handleSaveEWallet" styleClass="btn-primary" text="Save Payment Details">
             <VBox.margin>
-                <Insets bottom="10.0" />
+                <Insets top="10.0" />
             </VBox.margin>
         </Button>
-
-        <VBox spacing="10.0" styleClass="info-box-blue">
-            <Label styleClass="text-highlight-purple" text="Payment QR Code" />
-            <Label styleClass="text-caption" text="Generate a QR code for tenants to easily send payments" wrapText="true"/>
-
-            <Button onAction="#handleGenerateQR" styleClass="btn-primary" text="Generate QR Code">
-                <VBox.margin>
-                    <Insets top="5.0" />
-                </VBox.margin>
-            </Button>
-        </VBox>
 
     </VBox>
 </VBox>
