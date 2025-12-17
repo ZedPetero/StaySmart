@@ -17,7 +17,8 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
+import javafx.scene.image.ImageView;
+import javafx.scene.shape.Rectangle;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -318,7 +319,7 @@ public class HouseViewController {
         return roomPane;
     }
 
-    // 2. UPDATED: Restored Tooltip (Hover Details)
+    // 2. UPDATED: Restored Tooltip with Custom Hover Card
     private void setupRoomStatus(Room room, StackPane pane, Label lbl, String type) {
         // Clear old styles
         pane.getStyleClass().removeAll(
@@ -336,8 +337,10 @@ public class HouseViewController {
             StackPane.setAlignment(lbl, Pos.CENTER);
             pane.getChildren().add(lbl);
 
-            // Tooltip for Add Button
-            Tooltip.install(pane, new Tooltip("Click to add a new room"));
+            // Simple text tooltip for the Add button
+            Tooltip t = new Tooltip("Click to add a new room");
+            t.setStyle("-fx-font-size: 14px;");
+            Tooltip.install(pane, t);
 
         } else {
             // B. CASE: EXISTING ROOM
@@ -349,13 +352,13 @@ public class HouseViewController {
                 StackPane.setAlignment(lbl, Pos.CENTER);
                 pane.getChildren().add(lbl);
             } else {
-                // Occupied vs Vacant
+                // Occupied vs Vacant styling for the room itself
                 boolean isOccupied = room.getStatus().equalsIgnoreCase("Occupied");
                 pane.getStyleClass().add(isOccupied ? type + "-status-occupied" : type + "-status-vacant");
                 StackPane.setAlignment(lbl, Pos.CENTER);
                 pane.getChildren().add(lbl);
 
-                // Image Handling
+                // Image Handling for the room icon background
                 if (room.getImagePath() != null && !room.getImagePath().isEmpty()) {
                     File imgFile = new File(room.getImagePath());
                     if (imgFile.exists()) {
@@ -366,18 +369,20 @@ public class HouseViewController {
                                         "-fx-background-position: center; " +
                                         "-fx-background-repeat: no-repeat;"
                         );
+                        // Add a shadow to the text so it's readable over the image
                         lbl.setStyle("-fx-text-fill: white; -fx-effect: dropshadow(one-pass-box, black, 4, 1.0, 0, 0);");
                     }
                 }
 
-                // --- RESTORED HOVER DETAILS ---
-                String tooltipText = "Room: " + room.getRoomNumber() + "\n" +
-                        "Status: " + room.getStatus() + "\n" +
-                        "Price: " + room.getPrice();
-
-                Tooltip t = new Tooltip(tooltipText);
-                t.setStyle("-fx-font-size: 14px;"); // Make it readable
-                Tooltip.install(pane, t);
+                // --- NEW CUSTOM HOVER TOOLTIP ---
+                Tooltip tooltip = new Tooltip();
+                // Set the graphic content to our custom card view
+                tooltip.setGraphic(createRoomDetailHoverView(room));
+                // Remove default tooltip styling (padding, background) so only our card is visible
+                tooltip.setStyle("-fx-background-color: transparent; -fx-padding: 0; -fx-background-radius: 0; -fx-effect: null;");
+                // Show the tooltip immediately without a delay
+                tooltip.setShowDelay(javafx.util.Duration.millis(100));
+                Tooltip.install(pane, tooltip);
             }
         }
     }
@@ -578,5 +583,95 @@ public class HouseViewController {
             }
         } catch(Exception e) { e.printStackTrace(); }
         return rooms;
+    }
+
+    // --- NEW HELPER METHOD: Creates the custom hover view card ---
+    private VBox createRoomDetailHoverView(Room room) {
+        VBox card = new VBox(10);
+        card.getStyleClass().add("room-detail-card");
+
+        // 1. Image Container
+        StackPane imageContainer = new StackPane();
+        imageContainer.getStyleClass().add("room-detail-image-container");
+        if (room.getImagePath() != null && !room.getImagePath().isEmpty()) {
+            try {
+                File imgFile = new File(room.getImagePath());
+                if (imgFile.exists()) {
+                    Image img = new Image(imgFile.toURI().toString());
+                    ImageView imageView = new ImageView(img);
+                    // Set a fixed size for the image area
+                    imageView.setFitWidth(230);
+                    imageView.setFitHeight(150);
+                    imageView.setPreserveRatio(true);
+
+                    // Clip the image to have rounded corners, matching the container
+                    Rectangle clip = new Rectangle(230, 150);
+                    clip.setArcWidth(10);
+                    clip.setArcHeight(10);
+                    imageView.setClip(clip);
+
+                    imageContainer.getChildren().add(imageView);
+                }
+            } catch (Exception e) {
+                // If image fails to load, the placeholder color will show
+            }
+        }
+        card.getChildren().add(imageContainer);
+
+        // 2. Room Title
+        Label titleLabel = new Label("Room " + room.getRoomNumber());
+        titleLabel.getStyleClass().add("room-detail-title");
+        card.getChildren().add(titleLabel);
+
+        // 3. Status Pills (HBox)
+        HBox statusBox = new HBox(10);
+
+        // a) Availability Status Pill
+        String status = room.getStatus();
+        Label statusPill = new Label(status);
+        statusPill.getStyleClass().add("room-detail-status-pill");
+        statusPill.getStyleClass().add(status.equalsIgnoreCase("Occupied") ? "status-pill-occupied" : "status-pill-available");
+        statusBox.getChildren().add(statusPill);
+
+        // b) Payment Status Pill
+        String paymentStatus = room.getPaymentStatus();
+        if (paymentStatus == null || paymentStatus.isEmpty()) paymentStatus = "Pending";
+        Label paymentPill = new Label(paymentStatus);
+        paymentPill.getStyleClass().add("room-detail-status-pill");
+        paymentPill.getStyleClass().add(paymentStatus.equalsIgnoreCase("Paid") ? "status-pill-paid" : "status-pill-pending");
+        statusBox.getChildren().add(paymentPill);
+
+        card.getChildren().add(statusBox);
+
+        // 4. Price
+        // Format price to show no decimal places if it's a whole number
+        Label priceLabel = new Label("Price: " + String.format("%.0f", room.getPrice()) + "/month");
+        priceLabel.getStyleClass().add("room-detail-price");
+        card.getChildren().add(priceLabel);
+
+        // 5. Facilities Header
+        Label facilitiesLabel = new Label("Facilities:");
+        facilitiesLabel.getStyleClass().add("room-detail-facilities-label");
+        card.getChildren().add(facilitiesLabel);
+
+        // 6. Facilities List
+        VBox facilitiesList = new VBox(2);
+        String facilitiesStr = room.getFacilities();
+        if (facilitiesStr != null && !facilitiesStr.isEmpty()) {
+            // Split the comma-separated string and create a label for each
+            String[] facilities = facilitiesStr.split(",");
+            for (String facility : facilities) {
+                Label facLabel = new Label("-" + facility.trim());
+                facLabel.getStyleClass().add("room-detail-facility-item");
+                facilitiesList.getChildren().add(facLabel);
+            }
+        } else {
+            Label facLabel = new Label("- None");
+            facLabel.getStyleClass().add("room-detail-facility-item");
+            facilitiesList.getChildren().add(facLabel);
+        }
+        card.getChildren().add(facilitiesList);
+
+        return card;
     }
 }
