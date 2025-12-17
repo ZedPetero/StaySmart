@@ -6,20 +6,14 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.Rectangle?>
 
-<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+<VBox fx:id="cardContainer"
+      xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="application.PropertyCardController"
-      style="-fx-background-color: white; -fx-background-radius: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);"
+      style="-fx-background-color: white; -fx-background-radius: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5); -fx-cursor: hand;"
       prefWidth="300" minWidth="280" maxWidth="350">
 
     <StackPane alignment="TOP_RIGHT">
         <ImageView fx:id="propertyImage" fitHeight="160" fitWidth="300" pickOnBounds="true"/>
-
-        <Label fx:id="statusLabel" text="Available"
-               style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-background-radius: 5; -fx-font-size: 10px; -fx-font-weight: bold; -fx-padding: 4 8;">
-            <StackPane.margin>
-                <Insets top="10" right="10"/>
-            </StackPane.margin>
-        </Label>
 
         <clip>
             <Rectangle width="300" height="160" arcWidth="15" arcHeight="15"/>
@@ -33,10 +27,10 @@
 
         <HBox alignment="CENTER_LEFT" spacing="10">
             <VBox HBox.hgrow="ALWAYS">
-                <Label fx:id="nameLabel" text="Sunset Villa" style="-fx-font-family: 'Outfit Bold'; -fx-font-size: 16px; -fx-text-fill: #113970;"/>
-                <Label fx:id="locationLabel" text="Downtown, City Center" style="-fx-font-family: 'Outfit'; -fx-font-size: 12px; -fx-text-fill: #7d8da1;"/>
+                <Label fx:id="nameLabel" text="Property Name" style="-fx-font-family: 'Outfit Bold'; -fx-font-size: 16px; -fx-text-fill: #113970;"/>
+                <Label fx:id="locationLabel" text="Location" style="-fx-font-family: 'Outfit'; -fx-font-size: 12px; -fx-text-fill: #7d8da1;"/>
             </VBox>
-            <Label fx:id="priceLabel" text="P1,200" style="-fx-font-family: 'Outfit Bold'; -fx-font-size: 16px; -fx-text-fill: #27ae60;"/>
+            <Label fx:id="priceLabel" text="0" style="-fx-font-family: 'Outfit Bold'; -fx-font-size: 16px; -fx-text-fill: #27ae60;"/>
         </HBox>
 
         <Region prefHeight="1" style="-fx-background-color: #f0f0f0;" />
@@ -47,11 +41,11 @@
                 <Label text="DETAILS" style="-fx-font-size: 9px; -fx-font-weight: bold; -fx-text-fill: #a0a0a0;"/>
 
                 <HBox spacing="5" alignment="CENTER_LEFT">
-                    <Label fx:id="typeLabel" text="Urban" style="-fx-font-size: 11px; -fx-text-fill: #555;"/>
+                    <Label fx:id="typeLabel" text="Type" style="-fx-font-size: 11px; -fx-text-fill: #555;"/>
                 </HBox>
 
                 <HBox spacing="5" alignment="CENTER_LEFT">
-                    <Label fx:id="floorsLabel" text="2 Floors" style="-fx-font-size: 11px; -fx-text-fill: #555;"/>
+                    <Label fx:id="floorsLabel" text="Floors" style="-fx-font-size: 11px; -fx-text-fill: #555;"/>
                 </HBox>
             </VBox>
 
@@ -59,7 +53,6 @@
 
             <VBox spacing="5" HBox.hgrow="ALWAYS">
                 <Label text="AMENITIES" style="-fx-font-size: 9px; -fx-font-weight: bold; -fx-text-fill: #a0a0a0;"/>
-
                 <FlowPane fx:id="amenitiesContainer" hgap="5" vgap="5" prefWrapLength="150" />
             </VBox>
 
@@ -67,7 +60,7 @@
 
         <HBox fx:id="actionBox" spacing="10" alignment="CENTER_RIGHT" visible="false" managed="false">
             <padding><Insets top="5"/></padding>
-            <Label text="View Details" style="-fx-text-fill: #113970; -fx-font-size: 11px; -fx-underline: true; -fx-cursor: hand;" onMouseClicked="#handleView"/>
+            <Label text="View Details" style="-fx-text-fill: #113970; -fx-font-size: 11px; -fx-underline: true;"/>
         </HBox>
 
     </VBox>
