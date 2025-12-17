@@ -33,7 +33,7 @@ public class TenantDashboardController {
     }
 
     @FXML private void handleShowExplore() {
-        loadPage("ExploreRooms.fxml");
+        loadPage("ExploreProperties.fxml");
         highlightButton(btnExplore);
     }
 
