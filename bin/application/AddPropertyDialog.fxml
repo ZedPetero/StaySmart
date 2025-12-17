@@ -60,7 +60,7 @@
 
                     <VBox spacing="10">
                         <Label text="Shared Amenities" styleClass="section-header"/>
-                        <FlowPane fx:id="amenitiesContainer" hgap="15" vgap="10" prefWrapLength="400">
+                        <FlowPane fx:id="amenitiesContainer" hgap="15" vgap="10" prefWrapLength="450">
                             <padding>
                                 <Insets top="5" right="5" bottom="5" left="5"/>
                             </padding>

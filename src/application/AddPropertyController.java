@@ -45,9 +45,15 @@ public class AddPropertyController {
 
         // --- NEW: Generate Amenity Checkboxes ---
         String[] commonAmenities = {
-                "Swimming Pool", "Gym", "Parking", "Wi-Fi",
-                "24/7 Security", "Garden", "Elevator", "Pet Friendly",
-                "Air Conditioning", "Function Hall"
+                "Toilet & bath",
+                "Kitchen / cooking area",
+                "Refrigerator",
+                "Laundry area",
+                "Washing machine",
+                "CCTV cameras",
+                "Fire extinguisher",
+                "Emergency exits",
+                "Secure main entrance / gate"
         };
 
         if (amenitiesContainer != null) {
