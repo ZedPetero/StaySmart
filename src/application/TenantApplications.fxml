@@ -1,95 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.shape.*?>
 <?import javafx.geometry.Insets?>
 
 <ScrollPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="application.TenantApplicationsController"
             fitToWidth="true"
-            style="-fx-background-color: transparent; -fx-background: transparent; -fx-padding: 0; -fx-background-insets: 0;"
+            style="-fx-background-color: transparent; -fx-background: transparent; -fx-padding: 0;"
             stylesheets="@TenantApplications.css">
 
     <content>
-        <VBox spacing="25" style="-fx-background-color: transparent;">
-
-            <padding><Insets top="0" right="0" bottom="50" left="0"/></padding>
-            <Region prefHeight="10" />
-
+        <VBox spacing="25" style="-fx-background-color: transparent; -fx-padding: 20;">
             <VBox spacing="5">
                 <Label text="My Applications" styleClass="page-title"/>
                 <Label text="Track the status of your rental applications" styleClass="page-subtitle"/>
             </VBox>
 
             <HBox spacing="20" alignment="CENTER_LEFT">
-
                 <VBox styleClass="stat-card" HBox.hgrow="ALWAYS">
                     <Label text="Total" styleClass="stat-label"/>
-                    <HBox alignment="CENTER_LEFT" spacing="10">
-                        <Label text="1" styleClass="stat-number"/>
-                        <Region HBox.hgrow="ALWAYS"/>
-                        <StackPane styleClass="stat-icon-bg">
-                        </StackPane>
-                    </HBox>
+                    <Label fx:id="lblTotal" text="0" styleClass="stat-number"/>
                 </VBox>
-
                 <VBox styleClass="stat-card" HBox.hgrow="ALWAYS">
                     <Label text="Pending" styleClass="stat-label"/>
-                    <HBox alignment="CENTER_LEFT" spacing="10">
-                        <Label text="1" styleClass="stat-number"/>
-                        <Region HBox.hgrow="ALWAYS"/>
-                        <StackPane styleClass="stat-icon-bg"/>
-                    </HBox>
+                    <Label fx:id="lblPending" text="0" styleClass="stat-number"/>
                 </VBox>
-
                 <VBox styleClass="stat-card" HBox.hgrow="ALWAYS">
                     <Label text="Approved" styleClass="stat-label"/>
-                    <HBox alignment="CENTER_LEFT" spacing="10">
-                        <Label text="0" styleClass="stat-number"/>
-                        <Region HBox.hgrow="ALWAYS"/>
-                        <StackPane styleClass="stat-icon-bg"/>
-                    </HBox>
+                    <Label fx:id="lblApproved" text="0" styleClass="stat-number"/>
                 </VBox>
-
                 <VBox styleClass="stat-card" HBox.hgrow="ALWAYS">
                     <Label text="Rejected" styleClass="stat-label"/>
-                    <HBox alignment="CENTER_LEFT" spacing="10">
-                        <Label text="0" styleClass="stat-number"/>
-                        <Region HBox.hgrow="ALWAYS"/>
-                        <StackPane styleClass="stat-icon-bg"/>
-                    </HBox>
+                    <Label fx:id="lblRejected" text="0" styleClass="stat-number"/>
                 </VBox>
             </HBox>
 
-            <VBox styleClass="application-card" spacing="15">
-
-                <HBox alignment="CENTER_LEFT">
-                    <VBox spacing="2">
-                        <Label text="Fully Furnished Studio" styleClass="app-card-title"/>
-                        <Label text="Applied on: Just now" styleClass="app-card-subtitle"/>
-                    </VBox>
-                    <Region HBox.hgrow="ALWAYS"/>
-                    <Label text="Pending" styleClass="badge-pending"/>
-                </HBox>
-
-                <HBox styleClass="payment-box" alignment="CENTER_LEFT" spacing="15">
-                    <Rectangle width="24" height="24" fill="#113970" arcWidth="5" arcHeight="5"/>
-                    <Label text="Payment Method: GCash" styleClass="payment-text"/>
-                </HBox>
-
-                <VBox styleClass="message-box" spacing="5">
-                    <Label text="Your message:" styleClass="message-label"/>
-                    <Label text="Please accept me as your tenant. Thanks" styleClass="message-text"/>
-                </VBox>
-
-                <HBox styleClass="status-footer" spacing="5" alignment="CENTER_LEFT">
-                    <Label text="Status:" styleClass="status-footer-bold"/>
-                    <Label text="Your application is under review. The landlord will contact you soon." styleClass="status-footer-text"/>
-                </HBox>
-
-            </VBox>
-
+            <VBox fx:id="applicationsListContainer" spacing="15" />
         </VBox>
     </content>
 </ScrollPane>

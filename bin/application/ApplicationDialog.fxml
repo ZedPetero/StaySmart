@@ -1,38 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.image.*?>
 
 <VBox spacing="0" style="-fx-background-color: white; -fx-pref-width: 400; -fx-pref-height: 500;"
       xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="application.ApplicationDialogController">
 
     <HBox alignment="CENTER_LEFT" spacing="15" style="-fx-background-color: #113970; -fx-padding: 20;">
-        <Label fx:id="lblRoomTitle" text="Applying for Room 101" textFill="white"
-               style="-fx-font-family: 'Outfit Bold'; -fx-font-size: 18px;"/>
+        <Label fx:id="lblRoomTitle" text="Applying for Room" textFill="white"
+               style="-fx-font-weight: bold; -fx-font-size: 18px;"/>
     </HBox>
 
     <TabPane tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS" style="-fx-background-color: white;">
-
         <Tab text="Book Now">
             <VBox spacing="20">
                 <padding><Insets top="20" right="25" bottom="25" left="25"/></padding>
-
                 <VBox spacing="8">
                     <Label text="Message to Landlord" style="-fx-font-weight: bold; -fx-text-fill: #333;"/>
                     <TextArea fx:id="txtAppMessage" promptText="Hi, I am interested in renting this room..."
                               prefHeight="100" wrapText="true" style="-fx-background-radius: 5;"/>
                 </VBox>
-
                 <VBox spacing="8">
                     <Label text="Preferred Payment Method" style="-fx-font-weight: bold; -fx-text-fill: #333;"/>
                     <ComboBox fx:id="comboPayment" maxWidth="Infinity" promptText="Select payment option"/>
                 </VBox>
-
                 <Region VBox.vgrow="ALWAYS"/>
-
                 <Button text="Submit Application" onAction="#handleSubmitApplication" maxWidth="Infinity" prefHeight="45"
                         style="-fx-background-color: #113970; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;"/>
             </VBox>
@@ -41,26 +34,20 @@
         <Tab text="Request Viewing">
             <VBox spacing="20">
                 <padding><Insets top="20" right="25" bottom="25" left="25"/></padding>
-
                 <Label text="Schedule a visit to see the room in person." textFill="#666" wrapText="true"/>
-
                 <VBox spacing="8">
                     <Label text="Your Contact Number" style="-fx-font-weight: bold; -fx-text-fill: #333;"/>
                     <TextField fx:id="txtContact" promptText="0912 345 6789" prefHeight="40"/>
                 </VBox>
-
                 <VBox spacing="8">
                     <Label text="Message / Preferred Time" style="-fx-font-weight: bold; -fx-text-fill: #333;"/>
                     <TextArea fx:id="txtTourMessage" promptText="I am available this Friday afternoon..."
                               prefHeight="100" wrapText="true"/>
                 </VBox>
-
                 <Region VBox.vgrow="ALWAYS"/>
-
                 <Button text="Request Tour" onAction="#handleRequestTour" maxWidth="Infinity" prefHeight="45"
                         style="-fx-background-color: white; -fx-text-fill: #113970; -fx-border-color: #113970; -fx-border-width: 2; -fx-font-weight: bold; -fx-cursor: hand;"/>
             </VBox>
         </Tab>
-
     </TabPane>
 </VBox>

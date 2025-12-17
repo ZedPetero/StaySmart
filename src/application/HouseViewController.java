@@ -153,7 +153,17 @@ public class HouseViewController {
 
         // --- CHANGE HERE: HIDE "+" IF TENANT ---
         if (!isTenantMode) {
-            Room newRoomPlaceholder = new Room("+", "New", 0.0, "Unconfigured", "Pending", null);
+            // UPDATED: Added 0, currentProperty.getId() as the first two arguments
+            Room newRoomPlaceholder = new Room(
+                    0,
+                    currentProperty.getId(),
+                    "+",
+                    "New",
+                    0.0,
+                    "Unconfigured",
+                    "Pending",
+                    null
+            );
             roomBox.getChildren().add(createRoomNode(newRoomPlaceholder, floorLevel, existingRooms.size() + 1, type));
         }
 
@@ -340,20 +350,27 @@ public class HouseViewController {
 
     private List<Room> fetchRoomsForFloor(int propertyId, int floorLevel) {
         List<Room> rooms = new ArrayList<>();
-        String sql = "SELECT * FROM rooms WHERE property_id = ? AND floor_level = ? ORDER BY CAST(room_number AS UNSIGNED) ASC";
+        // 1. ADD id and property_id to the SELECT query
+        String sql = "SELECT id, property_id, room_number, status, price, facilities, payment_status, image_path " +
+                "FROM rooms WHERE property_id = ? AND floor_level = ? " +
+                "ORDER BY CAST(room_number AS UNSIGNED) ASC";
+
         try (Connection conn = DatabaseHandler.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, propertyId);
             pstmt.setInt(2, floorLevel);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
+                // 2. Pass 8 arguments to the constructor
                 rooms.add(new Room(
-                        rs.getString("room_number"),
-                        rs.getString("status"),
-                        rs.getDouble("price"),
-                        rs.getString("facilities"),
-                        rs.getString("payment_status"),
-                        rs.getString("image_path")
+                        rs.getInt("id"),             // Arg 1: int id
+                        rs.getInt("property_id"),    // Arg 2: int propertyId
+                        rs.getString("room_number"), // Arg 3: String
+                        rs.getString("status"),      // Arg 4: String
+                        rs.getDouble("price"),       // Arg 5: Double
+                        rs.getString("facilities"),  // Arg 6: String
+                        rs.getString("payment_status"), // Arg 7: String
+                        rs.getString("image_path")   // Arg 8: String
                 ));
             }
         } catch (Exception e) { e.printStackTrace(); }

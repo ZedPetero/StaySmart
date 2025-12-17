@@ -137,7 +137,9 @@ public class MyPropertiesController {
 
     private List<Floor> fetchFloorsAndRooms(int propertyId) {
         Map<Integer, Floor> floorMap = new HashMap<>();
-        String query = "SELECT * FROM rooms WHERE property_id = ? ORDER BY floor_level ASC, room_number ASC";
+        // 1. Updated SQL to include 'id' and 'property_id'
+        String query = "SELECT id, property_id, room_number, status, price, image_path, facilities, payment_status " +
+                "FROM rooms WHERE property_id = ? ORDER BY floor_level ASC, room_number ASC";
 
         try (Connection conn = DatabaseHandler.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
@@ -147,13 +149,17 @@ public class MyPropertiesController {
             while (rs.next()) {
                 int level = rs.getInt("floor_level");
                 Floor floor = floorMap.computeIfAbsent(level, k -> new Floor(k));
+
+                // 2. Pass exactly 8 arguments to match your updated Room model
                 Room room = new Room(
-                        rs.getString("room_number"),
-                        rs.getString("status"),
-                        rs.getDouble("price"),
-                        rs.getString("image_path"),
-                        rs.getString("facilities"),
-                        rs.getString("payment_status")
+                        rs.getInt("id"),             // Argument 1: int id
+                        rs.getInt("property_id"),    // Argument 2: int propertyId
+                        rs.getString("room_number"), // Argument 3: String
+                        rs.getString("status"),      // Argument 4: String
+                        rs.getDouble("price"),       // Argument 5: Double
+                        rs.getString("facilities"),  // Argument 6: String (Note: Check order with your Room.java)
+                        rs.getString("payment_status"), // Argument 7: String
+                        rs.getString("image_path")   // Argument 8: String
                 );
                 floor.addRoom(room);
             }

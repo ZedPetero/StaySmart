@@ -1,16 +1,19 @@
 package application.model;
 
 public class Room {
+    private int id;             // Database Primary Key
+    private int propertyId;     // Database Foreign Key
     private String roomNumber;
-    private String status;      // e.g., "Occupied", "Available"
+    private String status;
     private Double price;
-    private String type;        // e.g., "Apartment"
-    private String paymentStatus; // e.g., "Paid", "Pending"
+    private String paymentStatus;
     private String imagePath;
-    private String facilities;  // e.g., "Bed, Aircon, WiFi"
+    private String facilities;
 
-    // Constructor used in HouseViewController
-    public Room(String roomNumber, String status, Double price, String facilities, String paymentStatus, String imagePath) {
+    // Updated Constructor
+    public Room(int id, int propertyId, String roomNumber, String status, Double price, String facilities, String paymentStatus, String imagePath) {
+        this.id = id;
+        this.propertyId = propertyId;
         this.roomNumber = roomNumber;
         this.status = status;
         this.price = price;
@@ -19,25 +22,15 @@ public class Room {
         this.imagePath = imagePath;
     }
 
-    // Getters and Setters
+    // NEW GETTERS REQUIRED BY THE CONTROLLER
+    public int getId() { return id; }
+    public int getPropertyId() { return propertyId; }
+
+    // Existing Getters
     public String getRoomNumber() { return roomNumber; }
-    public void setRoomNumber(String roomNumber) { this.roomNumber = roomNumber; }
-
     public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
-
     public Double getPrice() { return price; }
-    public void setPrice(Double price) { this.price = price; }
-
-    public String getType() { return type; }
-    public void setType(String type) { this.type = type; }
-
     public String getPaymentStatus() { return paymentStatus; }
-    public void setPaymentStatus(String paymentStatus) { this.paymentStatus = paymentStatus; }
-
     public String getImagePath() { return imagePath; }
-    public void setImagePath(String imagePath) { this.imagePath = imagePath; }
-
     public String getFacilities() { return facilities; }
-    public void setFacilities(String facilities) { this.facilities = facilities; }
 }

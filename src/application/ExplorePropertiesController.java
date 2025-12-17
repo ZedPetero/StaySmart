@@ -211,12 +211,14 @@ public class ExplorePropertiesController {
 
                 // Create room
                 Room room = new Room(
+                        rs.getInt("id"),           // Get the actual ID from 'rooms' table
+                        rs.getInt("property_id"),  // Get the property ID
                         rs.getString("room_number"),
                         rs.getString("status"),
                         rs.getDouble("price"),
-                        rs.getString("image_path"),
                         rs.getString("facilities"),
-                        rs.getString("payment_status")
+                        rs.getString("payment_status"),
+                        rs.getString("image_path")
                 );
                 floor.addRoom(room);
             }
