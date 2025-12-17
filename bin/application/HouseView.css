@@ -107,6 +107,21 @@
 .rural-status-occupied { -fx-background-color: linear-gradient(to bottom, #FFE082, #FFCA28); }
 .rural-status-vacant { -fx-background-color: linear-gradient(to bottom, #B3E5FC, #81D4FA); }
 .rural-status-placeholder { -fx-background-color: #D7CCC8; -fx-border-color: #8D6E63; -fx-border-style: dashed; -fx-border-width: 2; }
+
+/* NEW: Style for the "+" room placeholder */
+.rural-status-new {
+    -fx-background-color: rgba(255, 255, 255, 0.5);
+    -fx-border-color: #8D6E63;
+    -fx-border-style: dotted;
+    -fx-border-width: 3;
+}
+/* Style the "+" label inside the new room placeholder */
+.rural-status-new .rural-label {
+    -fx-font-size: 32px; /* Larger font for the + */
+    -fx-font-weight: bold;
+    -fx-text-fill: #5D4037;
+}
+
 .rural-label { -fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: #3E2723; }
 .rural-flower-box { -fx-background-color: #4CAF50; -fx-background-radius: 0 0 5 5; -fx-border-color: #388E3C; -fx-border-width: 1; }
 
@@ -145,6 +160,21 @@
 .urban-status-occupied { -fx-background-color: #F0B27A; }
 .urban-status-vacant { -fx-background-color: #AED6F1; }
 .urban-status-placeholder { -fx-background-color: #ECF0F1; -fx-border-color: #BDC3C7; -fx-border-style: dashed; }
+
+/* NEW: Style for the "+" room placeholder */
+.urban-status-new {
+    -fx-background-color: rgba(255, 255, 255, 0.5);
+    -fx-border-color: #2C3E50;
+    -fx-border-style: dotted;
+    -fx-border-width: 3;
+}
+/* Style the "+" label inside the new room placeholder */
+.urban-status-new .urban-label {
+    -fx-font-size: 32px; /* Larger font for the + */
+    -fx-font-weight: bold;
+    -fx-text-fill: #2C3E50;
+}
+
 .urban-label { -fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: #2C3E50; }
 .urban-balcony { -fx-background-color: linear-gradient(to right, transparent 0%, transparent 80%, #2C3E50 81%, #2C3E50 100%); -fx-border-color: #2C3E50; -fx-border-width: 2 0 2 0; }
 .urban-doorstep { -fx-background-color: #7F8C8D; -fx-border-color: #34495E; -fx-border-width: 1; }

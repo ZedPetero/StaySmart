@@ -4,33 +4,43 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Floor {
+    private int id;
     private int level;
-    private int roomCount; // Stores the total capacity set in AddProperty
-    private List<Room> rooms = new ArrayList<>();
+    private int roomCount;
+    private List<Room> rooms;
 
+    // Constructor 1: Used when creating a simple floor
     public Floor(int level) {
         this.level = level;
+        this.rooms = new ArrayList<>();
     }
 
-    public void addRoom(Room room) {
-        rooms.add(room);
-    }
-
-    public List<Room> getRooms() {
-        return rooms;
-    }
-
-    public int getLevel() {
-        return level;
-    }
-
-    // ✅ FIX: Added Getter for HouseViewController
-    public int getRoomCount() {
-        return roomCount;
-    }
-
-    // ✅ FIX: Added Setter for your Database Controller/DAO
-    public void setRoomCount(int roomCount) {
+    // Constructor 2: Used when fetching from Database (Fixes your error)
+    public Floor(int id, int level, int roomCount) {
+        this.id = id;
+        this.level = level;
         this.roomCount = roomCount;
+        this.rooms = new ArrayList<>();
     }
+
+    // Method to add a room (Fixes "cannot find symbol" error)
+    public void addRoom(Room room) {
+        if (this.rooms == null) {
+            this.rooms = new ArrayList<>();
+        }
+        this.rooms.add(room);
+    }
+
+    // Getters and Setters
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+
+    public int getLevel() { return level; }
+    public void setLevel(int level) { this.level = level; }
+
+    public int getRoomCount() { return roomCount; }
+    public void setRoomCount(int roomCount) { this.roomCount = roomCount; }
+
+    public List<Room> getRooms() { return rooms; }
+    public void setRooms(List<Room> rooms) { this.rooms = rooms; }
 }

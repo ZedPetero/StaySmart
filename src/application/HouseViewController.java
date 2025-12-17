@@ -22,6 +22,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -57,14 +58,12 @@ public class HouseViewController {
         houseContainer.setSpacing(0);
 
         // 2. Configure the Parent Main ScrollPane
-        // We ensure the main window allows the house to grow TALL (Vertical Scroll)
-        // but does not CRUSH the house (FitToHeight = FALSE).
         if (houseContainer.getParent() instanceof StackPane) {
             StackPane wrapper = (StackPane) houseContainer.getParent();
             if (wrapper.getParent() instanceof ScrollPane) {
                 ScrollPane mainScroll = (ScrollPane) wrapper.getParent();
                 mainScroll.setFitToWidth(true);
-                mainScroll.setFitToHeight(false); // CRITICAL: Allows vertical scrolling of the whole house
+                mainScroll.setFitToHeight(false);
                 mainScroll.setPannable(true);
             }
         }
@@ -93,7 +92,6 @@ public class HouseViewController {
             else baseName = "urban3";
         }
 
-        // Image Finding Logic
         String[] paths = { "/images/", "/application/images/", "images/", "/" };
         String[] extensions = { ".jpg", ".png", ".jpeg" };
         Image foundImage = null;
@@ -117,7 +115,6 @@ public class HouseViewController {
             }
         }
 
-        // Apply Image (Stretched to fit window)
         if (foundImage != null) {
             BackgroundSize bgSize = new BackgroundSize(1.0, 1.0, true, true, false, false);
             BackgroundPosition bgPos = new BackgroundPosition(Side.LEFT, 0.5, true, Side.BOTTOM, 0.0, true);
@@ -150,18 +147,14 @@ public class HouseViewController {
 
     private void buildRuralHouse(List<Floor> dbFloors) {
         houseContainer.getStyleClass().removeAll("urban-style");
-
-        // 1. Add Roof
         houseContainer.getChildren().add(createRoof("rural"));
 
-        // 2. Add Floors
         int totalFloors = getFloorCount();
         for (int floorLevel = totalFloors; floorLevel >= 1; floorLevel--) {
             VBox floorContainer = createFloorContainer(floorLevel, totalFloors, dbFloors, "rural");
             houseContainer.getChildren().add(floorContainer);
         }
 
-        // 3. Add Base
         Pane base = new Pane();
         base.getStyleClass().add("rural-base");
         base.setMinHeight(25); base.setMaxHeight(25);
@@ -171,18 +164,14 @@ public class HouseViewController {
 
     private void buildUrbanHouse(List<Floor> dbFloors) {
         houseContainer.getStyleClass().removeAll("rural-style");
-
-        // 1. Add Roof
         houseContainer.getChildren().add(createRoof("urban"));
 
-        // 2. Add Floors
         int totalFloors = getFloorCount();
         for (int floorLevel = totalFloors; floorLevel >= 1; floorLevel--) {
             VBox floorContainer = createFloorContainer(floorLevel, totalFloors, dbFloors, "urban");
             houseContainer.getChildren().add(floorContainer);
         }
 
-        // 3. Add Base
         Pane base = new Pane();
         base.getStyleClass().add("urban-base");
         base.setMinHeight(25); base.setMaxHeight(25);
@@ -190,9 +179,6 @@ public class HouseViewController {
         houseContainer.getChildren().add(base);
     }
 
-    /**
-     * MISSING FUNCTION ADDED HERE: Creates the roof and forces a minimum height
-     */
     private Pane createRoof(String type) {
         Pane roof = new Pane();
         if (type.equalsIgnoreCase("rural")) {
@@ -201,12 +187,9 @@ public class HouseViewController {
         } else {
             roof.getStyleClass().add("urban-roof");
         }
-
-        // CRITICAL: Force minimum height so it doesn't get crushed
         roof.setMinHeight(80);
         roof.setPrefHeight(80);
         VBox.setVgrow(roof, Priority.NEVER);
-
         return roof;
     }
 
@@ -214,30 +197,34 @@ public class HouseViewController {
         Optional<Floor> floorData = dbFloors.stream().filter(f -> f.getLevel() == floorLevel).findFirst();
         List<Room> existingRooms = floorData.map(Floor::getRooms).orElse(List.of());
 
-        // The Container for the whole floor
         VBox floorContainer = new VBox();
         floorContainer.getStyleClass().add(type.equals("rural") ? "rural-floor-wood" : "urban-floor-container");
         floorContainer.setAlignment(Pos.BOTTOM_CENTER);
 
-        // HBox holding the rooms (scrolls horizontally)
         HBox roomBox = new HBox(15);
-        roomBox.setStyle("-fx-padding: 0 25 0 25; -fx-alignment: bottom-center;");
+        roomBox.setAlignment(Pos.BOTTOM_CENTER);
+        roomBox.setStyle("-fx-padding: 0 25 0 25;");
 
-        // Determine number of rooms
+        // 1. Determine how many rooms to render (Capacity vs Existing)
         int configuredCapacity = 0;
         if (floorData.isPresent()) configuredCapacity = floorData.get().getRoomCount();
         if (configuredCapacity == 0) configuredCapacity = fetchRoomCountForFloor(currentProperty.getId(), floorLevel);
+
         int totalItemsToRender = Math.max(configuredCapacity, existingRooms.size());
 
-        // Create Rooms
+        // 2. Render Rooms loop
         for (int i = 1; i <= totalItemsToRender; i++) {
-            String targetRoomNum = String.valueOf(i);
+            // Use format "301" matching your DB style
+            String targetRoomNum = String.format("%d%02d", floorLevel, i);
+
             Room roomToDisplay = existingRooms.stream()
                     .filter(r -> r.getRoomNumber().equals(targetRoomNum))
                     .findFirst().orElse(null);
 
+            // Ghost room if not in DB
             if (roomToDisplay == null) roomToDisplay = new Room(targetRoomNum, "Available", 0.0, "Unconfigured", "Pending", null);
 
+            // CALL NODE CREATOR (Clean Signature)
             if (type.equals("rural")) {
                 roomBox.getChildren().add(createRuralRoomNode(roomToDisplay, floorLevel, i, totalFloors));
             } else {
@@ -245,50 +232,43 @@ public class HouseViewController {
             }
         }
 
-        // WRAP ROOMS IN HORIZONTAL SCROLLPANE
+        // 3. Add the "+" Placeholder Room
+        Room newRoomPlaceholder = new Room("+", "New", 0.0, "Unconfigured", "Pending", null);
+        if (type.equals("rural")) {
+            roomBox.getChildren().add(createRuralRoomNode(newRoomPlaceholder, floorLevel, totalItemsToRender + 1, totalFloors));
+        } else {
+            roomBox.getChildren().add(createUrbanRoomNode(newRoomPlaceholder, floorLevel, totalItemsToRender + 1, totalFloors));
+        }
+
         ScrollPane scroll = new ScrollPane(roomBox);
         scroll.getStyleClass().add("floor-scroll");
-
-        // Scroll Settings: Horizontal YES, Vertical NO
         scroll.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
         scroll.setVbarPolicy(ScrollBarPolicy.NEVER);
-
-        scroll.setFitToWidth(false); // Let content grow wide
-        scroll.setFitToHeight(true); // Match height of container
+        scroll.setFitToWidth(true);
+        scroll.setFitToHeight(true);
         scroll.setPannable(true);
-
-        // Limit width of the scrolling area so it looks like a tower
         scroll.setMaxWidth(type.equals("rural") ? 400 : 420);
 
-        // Add to floor
         floorContainer.getChildren().add(scroll);
-
-        // CRITICAL FIX: Force Minimum Height on the Floor Container
-        // This prevents the rooms from being "crushed" vertically.
-        // If the screen is too small, the MAIN window will scroll vertically.
         floorContainer.setMinHeight(type.equals("rural") ? 120 : 130);
 
         return floorContainer;
     }
 
-    // ... (Keep createRuralRoomNode, createUrbanRoomNode, setupRoomStatus, fetchRoomCountForFloor, getFloorCount, openRoomEditor exactly as they were) ...
-    // ... Copy them from your previous code or let me know if you need me to paste them again ...
-
-    // FOR COMPLETENESS, here are the room nodes again so you don't lose them:
-
+    // CLEAN SIGNATURE: Removed the extra unused arguments
     private StackPane createRuralRoomNode(Room room, int floorLevel, int roomIndex, int totalFloors) {
         StackPane roomPane = new StackPane();
         roomPane.getStyleClass().add("rural-room");
         if (floorLevel == totalFloors && totalFloors > 1) roomPane.getStyleClass().add("rural-window-arched");
         else roomPane.getStyleClass().add("rural-window-rect");
 
-        String displayRoomNum = String.format("%d%02d", floorLevel, roomIndex);
+        String displayRoomNum = room.getRoomNumber().equals("+") ? "+" : room.getRoomNumber();
         Label lbl = new Label(displayRoomNum);
         lbl.getStyleClass().add("rural-label");
 
         setupRoomStatus(room, roomPane, lbl, "rural");
 
-        if (!roomPane.getStyleClass().contains("rural-status-placeholder") && floorLevel != totalFloors) {
+        if (!room.getStatus().equals("New") && !roomPane.getStyleClass().contains("rural-status-placeholder") && floorLevel != totalFloors) {
             Pane flowerBox = new Pane();
             flowerBox.getStyleClass().add("rural-flower-box");
             flowerBox.setMaxHeight(15); flowerBox.setMaxWidth(60);
@@ -296,7 +276,9 @@ public class HouseViewController {
             flowerBox.setTranslateY(5);
             roomPane.getChildren().add(flowerBox);
         }
-        roomPane.setOnMouseClicked(e -> openRoomEditor(floorLevel, room, 0));
+
+        // CLICK HANDLER: Calls openRoomEditor with just 2 arguments
+        roomPane.setOnMouseClicked(e -> openRoomEditor(floorLevel, room));
         return roomPane;
     }
 
@@ -306,13 +288,13 @@ public class HouseViewController {
         if (floorLevel == totalFloors && totalFloors > 1) roomPane.getStyleClass().add("urban-window-arched");
         else roomPane.getStyleClass().add("urban-window-rect");
 
-        String displayRoomNum = String.format("%d%02d", floorLevel, roomIndex);
+        String displayRoomNum = room.getRoomNumber().equals("+") ? "+" : room.getRoomNumber();
         Label lbl = new Label(displayRoomNum);
         lbl.getStyleClass().add("urban-label");
 
         setupRoomStatus(room, roomPane, lbl, "urban");
 
-        if (!roomPane.getStyleClass().contains("urban-status-placeholder")) {
+        if (!room.getStatus().equals("New") && !roomPane.getStyleClass().contains("urban-status-placeholder")) {
             if (floorLevel > 1) {
                 Pane balcony = new Pane();
                 balcony.getStyleClass().add("urban-balcony");
@@ -329,22 +311,67 @@ public class HouseViewController {
                 roomPane.getChildren().add(doorStep);
             }
         }
-        roomPane.setOnMouseClicked(e -> openRoomEditor(floorLevel, room, 0));
+
+        // CLICK HANDLER: Calls openRoomEditor with just 2 arguments
+        roomPane.setOnMouseClicked(e -> openRoomEditor(floorLevel, room));
         return roomPane;
     }
 
     private void setupRoomStatus(Room room, StackPane pane, Label lbl, String type) {
-        boolean isUnconfigured = room.getStatus() == null || (room.getStatus().equalsIgnoreCase("Available") && room.getPrice() == 0.0);
-        if (isUnconfigured) {
-            pane.getStyleClass().add(type + "-status-placeholder");
+        // 1. RESET: Clear all dynamic styles and manual backgrounds
+        pane.getStyleClass().removeAll(
+                type + "-status-new",
+                type + "-status-placeholder",
+                type + "-status-occupied",
+                type + "-status-vacant"
+        );
+        // Explicitly clear background image to prevent "ghost" images from previous states
+        pane.setBackground(Background.EMPTY);
+        pane.setStyle(""); // Clear inline styles
+
+        // 2. APPLY STATUS
+        if (room.getStatus().equals("New")) {
+            pane.getStyleClass().add(type + "-status-new");
             StackPane.setAlignment(lbl, Pos.CENTER);
             pane.getChildren().add(lbl);
+            Tooltip.install(pane, new Tooltip("Add a new room"));
         } else {
-            boolean isOccupied = room.getStatus().equalsIgnoreCase("Occupied");
-            pane.getStyleClass().add(isOccupied ? type + "-status-occupied" : type + "-status-vacant");
-            StackPane.setAlignment(lbl, Pos.CENTER);
-            pane.getChildren().add(lbl);
-            Tooltip.install(pane, new Tooltip("Room " + room.getRoomNumber()));
+            boolean isUnconfigured = room.getStatus() == null ||
+                    (room.getStatus().equalsIgnoreCase("Available") && room.getPrice() == 0.0) ||
+                    room.getStatus().equalsIgnoreCase("Unconfigured");
+
+            if (isUnconfigured) {
+                pane.getStyleClass().add(type + "-status-placeholder");
+                StackPane.setAlignment(lbl, Pos.CENTER);
+                pane.getChildren().add(lbl);
+            } else {
+                // OCCUPIED / VACANT
+                boolean isOccupied = room.getStatus().equalsIgnoreCase("Occupied");
+                pane.getStyleClass().add(isOccupied ? type + "-status-occupied" : type + "-status-vacant");
+                StackPane.setAlignment(lbl, Pos.CENTER);
+                pane.getChildren().add(lbl);
+
+                // 3. IMAGE HANDLING (Safe Mode)
+                // If the room has a custom image, apply it ONLY to this specific pane
+                // We use 'setStyle' on the specific ID to keep it local
+                if (room.getImagePath() != null && !room.getImagePath().isEmpty()) {
+                    File imgFile = new File(room.getImagePath());
+                    if (imgFile.exists()) {
+                        // Apply image as background, heavily constrained to containment
+                        String imageUrl = imgFile.toURI().toString();
+                        pane.setStyle(
+                                "-fx-background-image: url('" + imageUrl + "'); " +
+                                        "-fx-background-size: cover; " +
+                                        "-fx-background-position: center; " +
+                                        "-fx-background-repeat: no-repeat;"
+                        );
+                        // Ensure the label is still visible (maybe add a text shadow or background)
+                        lbl.setStyle("-fx-text-fill: white; -fx-effect: dropshadow(one-pass-box, black, 4, 1.0, 0, 0);");
+                    }
+                }
+
+                Tooltip.install(pane, new Tooltip("Room " + room.getRoomNumber() + "\n" + room.getStatus()));
+            }
         }
     }
 
@@ -369,21 +396,109 @@ public class HouseViewController {
         return totalFloors;
     }
 
-    private void openRoomEditor(int floorLevel, Room room, int currentCount) {
+    // 3. OPEN EDITOR: Calculates the correct Next ID (e.g., 103) strictly from the database
+    // CLEAN SIGNATURE: 2 arguments only. Logic calculates ID from DB.
+    private void openRoomEditor(int floorLevel, Room room) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("RoomEditor.fxml"));
             Parent page = loader.load();
             RoomEditorController controller = loader.getController();
             Stage dialogStage = new Stage();
-            dialogStage.setTitle(room == null ? "Add Room" : "Edit Room");
+            dialogStage.setTitle(room == null || room.getStatus().equals("New") ? "Add Room" : "Edit Room");
             dialogStage.initModality(Modality.WINDOW_MODAL);
             dialogStage.initOwner(houseContainer.getScene().getWindow());
             dialogStage.setScene(new Scene(page));
             controller.setDialogStage(dialogStage);
-            if (room == null) controller.setMetadata(currentProperty.getId(), floorLevel, currentCount);
-            else { controller.setMetadata(currentProperty.getId(), floorLevel, 0); controller.setRoomData(room); }
+
+            if (room == null || room.getStatus().equals("New")) {
+                // --- FIX: CALCULATE NEXT ID FROM DATABASE ---
+                int maxRoomNum = 0;
+
+                // Get the highest room number strictly from the database
+                String sql = "SELECT MAX(CAST(room_number AS UNSIGNED)) as max_num FROM rooms WHERE property_id = ? AND floor_level = ?";
+
+                try (Connection conn = DatabaseHandler.getConnection();
+                     PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                    pstmt.setInt(1, currentProperty.getId());
+                    pstmt.setInt(2, floorLevel);
+                    ResultSet rs = pstmt.executeQuery();
+                    if (rs.next()) {
+                        maxRoomNum = rs.getInt("max_num");
+                    }
+                } catch (Exception e) { e.printStackTrace(); }
+
+                // If no rooms exist, start at X01 (e.g., 301). Otherwise, add 1 to the highest found number.
+                int nextRoomNumber = (maxRoomNum == 0) ? (floorLevel * 100) + 1 : maxRoomNum + 1;
+
+                // Safety check: ensure we don't go below the floor start
+                if (nextRoomNumber < floorLevel * 100) nextRoomNumber = (floorLevel * 100) + 1;
+
+                controller.setMetadata(currentProperty.getId(), floorLevel, nextRoomNumber);
+            } else {
+                controller.setMetadata(currentProperty.getId(), floorLevel, 0);
+                controller.setRoomData(room);
+            }
+
             dialogStage.showAndWait();
-            if (controller.isSaveClicked()) MyPropertiesController.reloadHouseView(this, currentProperty);
+
+            // REFRESH: Reload the screen if they clicked save
+            if (controller.isSaveClicked()) {
+                refreshHouseData();
+            }
         } catch (IOException e) { e.printStackTrace(); }
+    }
+    // 1. REFRESH DATA: Reloads the house after you save so the new room appears instantly
+    private void refreshHouseData() {
+        List<Floor> freshFloors = new ArrayList<>();
+        // Query property_floors using the correct columns
+        String sql = "SELECT * FROM property_floors WHERE property_id = ? ORDER BY floor_number DESC";
+
+        try (Connection conn = DatabaseHandler.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, currentProperty.getId());
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                // Fetch basic floor info
+                int floorId = rs.getInt("id");
+                int level = rs.getInt("floor_number");
+                int count = rs.getInt("room_count");
+
+                Floor f = new Floor(floorId, level, count);
+
+                // Fetch the rooms for this floor
+                f.setRooms(fetchRoomsForFloor(currentProperty.getId(), level));
+
+                freshFloors.add(f);
+            }
+        } catch (Exception e) { e.printStackTrace(); }
+
+        // Rebuild the screen
+        buildHouseVisuals(freshFloors);
+    }
+
+    // 2. FETCH ROOMS: Gets the list of rooms for a specific floor
+    private List<Room> fetchRoomsForFloor(int propertyId, int floorLevel) {
+        List<Room> rooms = new ArrayList<>();
+        String sql = "SELECT * FROM rooms WHERE property_id = ? AND floor_level = ? ORDER BY CAST(room_number AS UNSIGNED) ASC";
+
+        try (Connection conn = DatabaseHandler.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, propertyId);
+            pstmt.setInt(2, floorLevel);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                rooms.add(new Room(
+                        rs.getString("room_number"),
+                        rs.getString("status"),
+                        rs.getDouble("price"),
+                        "Apartment", // Default type
+                        "None",      // Default tenant
+                        rs.getString("image_path")
+                ));
+            }
+        } catch (Exception e) { e.printStackTrace(); }
+        return rooms;
     }
 }
