@@ -2,10 +2,11 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.geometry.Insets?>
 
 <ScrollPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="application.TenantSettingsController"
             fitToWidth="true"
             style="-fx-background-color: transparent; -fx-background: transparent; -fx-padding: 0; -fx-background-insets: 0;"
             stylesheets="@TenantSettings.css">
@@ -21,42 +22,70 @@
             </VBox>
 
             <HBox styleClass="settings-tab-container" alignment="CENTER_LEFT">
-                <Button text="Security" styleClass="settings-tab-btn, settings-tab-active" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
-                <Button text="Preferences" styleClass="settings-tab-btn" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+                <Button fx:id="btnTabSecurity" text="Security" onAction="#switchTabSecurity"
+                        styleClass="settings-tab-btn, settings-tab-active" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+                <Button fx:id="btnTabPreferences" text="Preferences" onAction="#switchTabPreferences"
+                        styleClass="settings-tab-btn" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
             </HBox>
 
-            <VBox styleClass="settings-card" spacing="25">
-                <padding><Insets top="40" right="50" bottom="40" left="50"/></padding>
+            <StackPane alignment="TOP_LEFT">
 
-                <HBox spacing="15" alignment="CENTER_LEFT">
-                    <Rectangle width="24" height="21" fill="#113970" arcWidth="5" arcHeight="5"/>
-                    <Label text="Change Password" styleClass="section-title"/>
-                </HBox>
+                <VBox fx:id="viewSecurity" styleClass="settings-card" spacing="25">
+                    <padding><Insets top="40" right="50" bottom="40" left="50"/></padding>
 
-                <VBox spacing="20">
+                    <HBox spacing="15" alignment="CENTER_LEFT">
+                        <ImageView fitHeight="24" fitWidth="24" preserveRatio="true">
+                            <image><Image url="@images/icon-edit.png"/></image>
+                        </ImageView>
+                        <Label text="Change Password" styleClass="section-title"/>
+                    </HBox>
 
-                    <VBox spacing="8">
-                        <Label text="Current Password" styleClass="field-label"/>
-                        <PasswordField promptText="Enter current password" styleClass="settings-textfield"/>
+                    <VBox spacing="20">
+                        <VBox spacing="8">
+                            <Label text="Current Password" styleClass="field-label"/>
+                            <PasswordField fx:id="txtCurrentPass" promptText="Enter current password" styleClass="settings-textfield"/>
+                        </VBox>
+                        <VBox spacing="8">
+                            <Label text="New Password" styleClass="field-label"/>
+                            <PasswordField fx:id="txtNewPass" promptText="Enter new password" styleClass="settings-textfield"/>
+                        </VBox>
+                        <VBox spacing="8">
+                            <Label text="Confirm New Password" styleClass="field-label"/>
+                            <PasswordField fx:id="txtConfirmPass" promptText="Confirm new password" styleClass="settings-textfield"/>
+                        </VBox>
                     </VBox>
 
-                    <VBox spacing="8">
-                        <Label text="New Password" styleClass="field-label"/>
-                        <PasswordField promptText="Enter new password" styleClass="settings-textfield"/>
-                    </VBox>
-
-                    <VBox spacing="8">
-                        <Label text="Confirm New Password" styleClass="field-label"/>
-                        <PasswordField promptText="Confirm new password" styleClass="settings-textfield"/>
-                    </VBox>
-
+                    <Region prefHeight="10"/>
+                    <Button text="Update Password" styleClass="btn-update" onAction="#handleUpdatePassword"/>
                 </VBox>
 
-                <Region prefHeight="10"/>
+                <VBox fx:id="viewPreferences" visible="false" styleClass="settings-card" spacing="25">
+                    <padding><Insets top="40" right="50" bottom="40" left="50"/></padding>
 
-                <Button text="Update Password" styleClass="btn-update"/>
+                    <HBox spacing="15" alignment="CENTER_LEFT">
+                        <ImageView fitHeight="24" fitWidth="24" preserveRatio="true">
+                            <image><Image url="@images/icon-location.png"/></image>
+                        </ImageView>
+                        <Label text="Language &amp; Region" styleClass="section-title"/>
+                    </HBox>
 
-            </VBox>
+                    <VBox spacing="20">
+                        <VBox spacing="8">
+                            <Label text="Language" styleClass="field-label"/>
+                            <TextField fx:id="txtLanguage" promptText="English" styleClass="settings-textfield"/>
+                        </VBox>
+
+                        <VBox spacing="8">
+                            <Label text="Timezone" styleClass="field-label"/>
+                            <TextField fx:id="txtTimezone" promptText="e.g. Asia/Manila" styleClass="settings-textfield"/>
+                        </VBox>
+                    </VBox>
+
+                    <Region prefHeight="10"/>
+                    <Button text="Save Preferences" styleClass="btn-update" onAction="#handleSavePreferences"/>
+                </VBox>
+
+            </StackPane>
 
         </VBox>
     </content>

@@ -133,3 +133,27 @@
     -fx-text-fill: #635D5D;
     -fx-line-spacing: 4px; /* line-height: 18px approx */
 }
+
+.warning-box-yellow {
+    -fx-background-color: #fff9db; /* Light yellow background */
+    -fx-background-radius: 10;
+    -fx-border-color: #ffec99;
+    -fx-border-radius: 10;
+    -fx-border-width: 1;
+}
+
+/* Targets the specific TextArea for About Me */
+#txtAboutMe {
+    -fx-text-fill: #645d5d;
+    -fx-font-family: "Outfit"; /* Optional: matches your font */
+    -fx-font-size: 14px;
+}
+
+/* Removes the default white background and border from the TextArea */
+#txtAboutMe .content {
+    -fx-background-color: transparent;
+}
+
+#txtAboutMe:focused .content {
+    -fx-background-color: transparent;
+}

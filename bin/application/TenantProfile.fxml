@@ -7,6 +7,7 @@
 <?import javafx.geometry.Insets?>
 
 <ScrollPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="application.TenantProfileController"
             fitToWidth="true"
             style="-fx-background-color: transparent; -fx-background: transparent; -fx-padding: 0; -fx-background-insets: 0;"
             stylesheets="@TenantProfile.css">
@@ -26,8 +27,8 @@
                 <VBox styleClass="profile-card-left" alignment="TOP_CENTER" spacing="20" prefWidth="340" minWidth="340">
                     <padding><Insets top="40" right="30" bottom="40" left="30"/></padding>
 
-                    <StackPane styleClass="profile-image-container">
-                        <ImageView fitWidth="180" fitHeight="180" preserveRatio="false">
+                    <VBox alignment="CENTER" spacing="8" onMouseClicked="#handleUploadPhoto" style="-fx-cursor: hand;">
+                        <ImageView fx:id="profileImage" fitWidth="180" fitHeight="180" preserveRatio="false">
                             <clip>
                                 <Circle centerX="90" centerY="90" radius="90"/>
                             </clip>
@@ -35,9 +36,10 @@
                                 <Image url="@images/profile.png"/>
                             </image>
                         </ImageView>
-                    </StackPane>
+                        <Label text="Click to Change" style="-fx-text-fill: #666; -fx-font-size: 12px; -fx-underline: true;"/>
+                    </VBox>
 
-                    <Label text="Shayne Mier G. Digo" styleClass="profile-name"/>
+                    <Label fx:id="lblSideName" text="Loading..." styleClass="profile-name" wrapText="true" textAlignment="CENTER"/>
 
                     <Separator styleClass="profile-separator"/>
 
@@ -48,20 +50,20 @@
                         </columnConstraints>
 
                         <VBox alignment="CENTER" spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="0">
-                            <Label text="1" styleClass="stat-number"/>
+                            <Label text="0" styleClass="stat-number"/>
                             <Label text="Applications Sent" styleClass="stat-label" wrapText="true"/>
                         </VBox>
                         <VBox alignment="CENTER" spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="0">
-                            <Label text="8" styleClass="stat-number"/>
+                            <Label text="0" styleClass="stat-number"/>
                             <Label text="Properties Viewed" styleClass="stat-label" wrapText="true"/>
                         </VBox>
 
                         <VBox alignment="CENTER" spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="1">
-                            <Label text="12" styleClass="stat-number"/>
+                            <Label text="0" styleClass="stat-number"/>
                             <Label text="Saved Properties" styleClass="stat-label" wrapText="true"/>
                         </VBox>
                         <VBox alignment="CENTER" spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                            <Label text="45" styleClass="stat-number"/>
+                            <Label text="0" styleClass="stat-number"/>
                             <Label text="Profile Views" styleClass="stat-label" wrapText="true"/>
                         </VBox>
                     </GridPane>
@@ -70,81 +72,113 @@
                 <VBox HBox.hgrow="ALWAYS" spacing="25">
 
                     <HBox styleClass="tabs-container-right" alignment="CENTER_LEFT" spacing="0">
-                        <Button text="Personal Info" styleClass="tab-btn-right, tab-active-right" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
-                        <Button text="Emergency Contact" styleClass="tab-btn-right" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+                        <Button fx:id="btnTabPersonal" text="Personal Info" onAction="#switchTabPersonal"
+                                styleClass="tab-btn-right, tab-active-right" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+                        <Button fx:id="btnTabEmergency" text="Emergency Contact" onAction="#switchTabEmergency"
+                                styleClass="tab-btn-right" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
                     </HBox>
 
-                    <VBox styleClass="info-card-right" spacing="25">
-                        <padding><Insets top="30" right="40" bottom="40" left="40"/></padding>
+                    <StackPane>
 
-                        <HBox alignment="CENTER_LEFT">
-                            <Label text="Personal Information" styleClass="info-card-title"/>
-                            <Region HBox.hgrow="ALWAYS"/>
-                            <Button text="Edit Profile" styleClass="btn-edit-profile">
-                                <graphic>
-                                    <ImageView fitHeight="16" fitWidth="16" preserveRatio="true">
-                                        <image><Image url="@images/icon-edit.png"/></image>
-                                    </ImageView>
-                                </graphic>
-                            </Button>
-                        </HBox>
+                        <VBox fx:id="viewPersonal" styleClass="info-card-right" spacing="25">
+                            <padding><Insets top="30" right="40" bottom="40" left="40"/></padding>
 
-                        <GridPane hgap="30" vgap="20">
-                            <columnConstraints>
-                                <ColumnConstraints hgrow="ALWAYS" percentWidth="50"/>
-                                <ColumnConstraints hgrow="ALWAYS" percentWidth="50"/>
-                            </columnConstraints>
+                            <HBox alignment="CENTER_LEFT">
+                                <Label text="Personal Information" styleClass="info-card-title"/>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Button fx:id="btnEdit" text="Edit Profile" styleClass="btn-edit-profile" onAction="#handleEditToggle">
+                                    <graphic>
+                                        <ImageView fitHeight="16" fitWidth="16" preserveRatio="true">
+                                            <image><Image url="@images/icon-edit.png"/></image>
+                                        </ImageView>
+                                    </graphic>
+                                </Button>
+                            </HBox>
 
-                            <VBox spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="0">
-                                <HBox spacing="10" alignment="CENTER_LEFT">
-                                    <ImageView fitHeight="16" fitWidth="16" preserveRatio="true">
-                                        <image><Image url="@images/icon-user.png"/></image>
-                                    </ImageView>
+                            <GridPane hgap="30" vgap="20">
+                                <columnConstraints>
+                                    <ColumnConstraints hgrow="ALWAYS" percentWidth="50"/>
+                                    <ColumnConstraints hgrow="ALWAYS" percentWidth="50"/>
+                                </columnConstraints>
+
+                                <VBox spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="0">
                                     <Label text="Full Name" styleClass="field-label"/>
-                                </HBox>
-                                <TextField text="Shayne Mier G. Digo" styleClass="info-textfield" editable="false"/>
-                            </VBox>
-
-                            <VBox spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="0">
-                                <HBox spacing="10" alignment="CENTER_LEFT">
-                                    <ImageView fitHeight="16" fitWidth="16" preserveRatio="true">
-                                        <image><Image url="@images/icon-email.png"/></image>
-                                    </ImageView>
+                                    <TextField fx:id="txtFullName" styleClass="info-textfield" editable="false"/>
+                                </VBox>
+                                <VBox spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="0">
                                     <Label text="Email Address" styleClass="field-label"/>
-                                </HBox>
-                                <TextField text="shayne@example.com" styleClass="info-textfield" editable="false"/>
-                            </VBox>
-
-                            <VBox spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="1">
-                                <HBox spacing="10" alignment="CENTER_LEFT">
-                                    <ImageView fitHeight="16" fitWidth="16" preserveRatio="true">
-                                        <image><Image url="@images/icon-phone.png"/></image>
-                                    </ImageView>
+                                    <TextField fx:id="txtEmail" styleClass="info-textfield" editable="false"/>
+                                </VBox>
+                                <VBox spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="1">
                                     <Label text="Phone Number" styleClass="field-label"/>
-                                </HBox>
-                                <TextField text="0912 345 6789" styleClass="info-textfield" editable="false"/>
-                            </VBox>
-
-                            <VBox spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                <HBox spacing="10" alignment="CENTER_LEFT">
-                                    <ImageView fitHeight="16" fitWidth="16" preserveRatio="true">
-                                        <image><Image url="@images/icon-location.png"/></image>
-                                    </ImageView>
+                                    <TextField fx:id="txtPhone" styleClass="info-textfield" editable="false"/>
+                                </VBox>
+                                <VBox spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                     <Label text="Current Address" styleClass="field-label"/>
-                                </HBox>
-                                <TextField text="Davao City, Philippines" styleClass="info-textfield" editable="false"/>
-                            </VBox>
-                        </GridPane>
+                                    <TextField fx:id="txtAddress" styleClass="info-textfield" editable="false"/>
+                                </VBox>
+                            </GridPane>
 
-                        <VBox spacing="10">
-                            <Label text="About Me" styleClass="info-card-title"/>
-                            <VBox styleClass="about-me-box">
-                                <padding><Insets top="15" right="20" bottom="15" left="20"/></padding>
-                                <Label text="Responsible professional seeking long-term boarding house accommodation. Non-smoker, clean, and respectful of house rules. Looking for a quiet place near my workplace."
-                                       styleClass="about-me-text" wrapText="true"/>
+                            <VBox spacing="10">
+                                <Label text="About Me" styleClass="info-card-title"/>
+                                <VBox styleClass="about-me-box">
+                                    <padding><Insets top="15" right="20" bottom="15" left="20"/></padding>
+                                    <TextArea fx:id="txtAboutMe" wrapText="true" editable="false"
+                                              style="-fx-background-color: transparent; -fx-control-inner-background: transparent;"
+                                              prefRowCount="3"/>
+                                </VBox>
                             </VBox>
                         </VBox>
 
-                    </VBox> </VBox> </HBox> </VBox>
+                        <VBox fx:id="viewEmergency" visible="false" styleClass="info-card-right" spacing="25">
+                            <padding><Insets top="30" right="40" bottom="40" left="40"/></padding>
+
+                            <HBox alignment="CENTER_LEFT">
+                                <Label text="Emergency Contact" styleClass="info-card-title"/>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Button fx:id="btnEditEmergency" text="Edit" styleClass="btn-edit-profile" onAction="#handleEditEmergencyToggle">
+                                    <graphic>
+                                        <ImageView fitHeight="16" fitWidth="16" preserveRatio="true">
+                                            <image><Image url="@images/icon-edit.png"/></image>
+                                        </ImageView>
+                                    </graphic>
+                                </Button>
+                            </HBox>
+
+                            <GridPane hgap="30" vgap="20">
+                                <columnConstraints>
+                                    <ColumnConstraints hgrow="ALWAYS" percentWidth="50"/>
+                                    <ColumnConstraints hgrow="ALWAYS" percentWidth="50"/>
+                                </columnConstraints>
+
+                                <VBox spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                                    <Label text="Contact Name" styleClass="field-label"/>
+                                    <TextField fx:id="txtEmName" promptText="Full Name" styleClass="info-textfield" editable="false"/>
+                                </VBox>
+
+                                <VBox spacing="8" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                    <Label text="Contact Phone" styleClass="field-label"/>
+                                    <TextField fx:id="txtEmPhone" promptText="09XX XXX XXXX" styleClass="info-textfield" editable="false"/>
+                                </VBox>
+
+                                <VBox spacing="8" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.columnSpan="2">
+                                    <Label text="Relationship" styleClass="field-label"/>
+                                    <TextField fx:id="txtEmRelation" promptText="e.g. Parent, Guardian, Sibling" styleClass="info-textfield" editable="false"/>
+                                </VBox>
+                            </GridPane>
+
+                            <VBox styleClass="warning-box-yellow" spacing="10">
+                                <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+                                <Label text="Why We Need this Information" style="-fx-font-weight: bold; -fx-text-fill: #113970; -fx-font-size: 14px;"/>
+                                <Label text="Emergency contact information is required by landlords to ensure your safety and provide a point of contact in case of emergencies. This information is kept confidential and only shared with landlords after your application is approved."
+                                       wrapText="true" style="-fx-text-fill: #113970;"/>
+                            </VBox>
+                        </VBox>
+
+                    </StackPane>
+
+                </VBox>
+            </HBox>
+        </VBox>
     </content>
 </ScrollPane>
