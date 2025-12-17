@@ -45,6 +45,12 @@ public class HouseViewController {
     public void setupPropertyData(Property property, List<Floor> dbFloors) {
         this.currentProperty = property;
         propertyNameLabel.setText(property.getName());
+
+        // --- ADD THIS LINE TO FIX OLD PROPERTIES ---
+        ensureRoomsExistInDatabase(dbFloors);
+        // ------------------------------------------
+
+        // Refresh existing visuals
         buildHouseVisuals(dbFloors);
     }
 
@@ -193,9 +199,16 @@ public class HouseViewController {
         return roof;
     }
 
+    // 1. CLEAN RENDERER: Just shows what is in the database
     private VBox createFloorContainer(int floorLevel, int totalFloors, List<Floor> dbFloors, String type) {
         Optional<Floor> floorData = dbFloors.stream().filter(f -> f.getLevel() == floorLevel).findFirst();
-        List<Room> existingRooms = floorData.map(Floor::getRooms).orElse(List.of());
+        List<Room> existingRooms = floorData.map(Floor::getRooms).orElse(new ArrayList<>());
+
+        // Sort naturally: 101, 102, 103
+        existingRooms.sort(Comparator.comparingInt(r -> {
+            try { return Integer.parseInt(r.getRoomNumber()); }
+            catch (NumberFormatException e) { return 9999; }
+        }));
 
         VBox floorContainer = new VBox();
         floorContainer.getStyleClass().add(type.equals("rural") ? "rural-floor-wood" : "urban-floor-container");
@@ -205,39 +218,22 @@ public class HouseViewController {
         roomBox.setAlignment(Pos.BOTTOM_CENTER);
         roomBox.setStyle("-fx-padding: 0 25 0 25;");
 
-        // 1. Determine how many rooms to render (Capacity vs Existing)
-        int configuredCapacity = 0;
-        if (floorData.isPresent()) configuredCapacity = floorData.get().getRoomCount();
-        if (configuredCapacity == 0) configuredCapacity = fetchRoomCountForFloor(currentProperty.getId(), floorLevel);
-
-        int totalItemsToRender = Math.max(configuredCapacity, existingRooms.size());
-
-        // 2. Render Rooms loop
-        for (int i = 1; i <= totalItemsToRender; i++) {
-            // Use format "301" matching your DB style
-            String targetRoomNum = String.format("%d%02d", floorLevel, i);
-
-            Room roomToDisplay = existingRooms.stream()
-                    .filter(r -> r.getRoomNumber().equals(targetRoomNum))
-                    .findFirst().orElse(null);
-
-            // Ghost room if not in DB
-            if (roomToDisplay == null) roomToDisplay = new Room(targetRoomNum, "Available", 0.0, "Unconfigured", "Pending", null);
-
-            // CALL NODE CREATOR (Clean Signature)
+        // Display REAL rooms only
+        for (int i = 0; i < existingRooms.size(); i++) {
+            Room room = existingRooms.get(i);
             if (type.equals("rural")) {
-                roomBox.getChildren().add(createRuralRoomNode(roomToDisplay, floorLevel, i, totalFloors));
+                roomBox.getChildren().add(createRuralRoomNode(room, floorLevel, i, totalFloors));
             } else {
-                roomBox.getChildren().add(createUrbanRoomNode(roomToDisplay, floorLevel, i, totalFloors));
+                roomBox.getChildren().add(createUrbanRoomNode(room, floorLevel, i, totalFloors));
             }
         }
 
-        // 3. Add the "+" Placeholder Room
+        // Always add "+" button at the end
         Room newRoomPlaceholder = new Room("+", "New", 0.0, "Unconfigured", "Pending", null);
         if (type.equals("rural")) {
-            roomBox.getChildren().add(createRuralRoomNode(newRoomPlaceholder, floorLevel, totalItemsToRender + 1, totalFloors));
+            roomBox.getChildren().add(createRuralRoomNode(newRoomPlaceholder, floorLevel, existingRooms.size() + 1, totalFloors));
         } else {
-            roomBox.getChildren().add(createUrbanRoomNode(newRoomPlaceholder, floorLevel, totalItemsToRender + 1, totalFloors));
+            roomBox.getChildren().add(createUrbanRoomNode(newRoomPlaceholder, floorLevel, existingRooms.size() + 1, totalFloors));
         }
 
         ScrollPane scroll = new ScrollPane(roomBox);
@@ -396,8 +392,7 @@ public class HouseViewController {
         return totalFloors;
     }
 
-    // 3. OPEN EDITOR: Calculates the correct Next ID (e.g., 103) strictly from the database
-    // CLEAN SIGNATURE: 2 arguments only. Logic calculates ID from DB.
+    // 2. CLEAN EDITOR OPENER: Only checks DB for highest number
     private void openRoomEditor(int floorLevel, Room room) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("RoomEditor.fxml"));
@@ -411,10 +406,8 @@ public class HouseViewController {
             controller.setDialogStage(dialogStage);
 
             if (room == null || room.getStatus().equals("New")) {
-                // --- FIX: CALCULATE NEXT ID FROM DATABASE ---
-                int maxRoomNum = 0;
-
-                // Get the highest room number strictly from the database
+                // Find highest real number
+                int dbMaxRoomNum = 0;
                 String sql = "SELECT MAX(CAST(room_number AS UNSIGNED)) as max_num FROM rooms WHERE property_id = ? AND floor_level = ?";
 
                 try (Connection conn = DatabaseHandler.getConnection();
@@ -422,16 +415,12 @@ public class HouseViewController {
                     pstmt.setInt(1, currentProperty.getId());
                     pstmt.setInt(2, floorLevel);
                     ResultSet rs = pstmt.executeQuery();
-                    if (rs.next()) {
-                        maxRoomNum = rs.getInt("max_num");
-                    }
+                    if (rs.next()) dbMaxRoomNum = rs.getInt("max_num");
                 } catch (Exception e) { e.printStackTrace(); }
 
-                // If no rooms exist, start at X01 (e.g., 301). Otherwise, add 1 to the highest found number.
-                int nextRoomNumber = (maxRoomNum == 0) ? (floorLevel * 100) + 1 : maxRoomNum + 1;
-
-                // Safety check: ensure we don't go below the floor start
-                if (nextRoomNumber < floorLevel * 100) nextRoomNumber = (floorLevel * 100) + 1;
+                // Determine next ID
+                int nextRoomNumber = (dbMaxRoomNum == 0) ? (floorLevel * 100) + 1 : dbMaxRoomNum + 1;
+                if (nextRoomNumber < (floorLevel * 100) + 1) nextRoomNumber = (floorLevel * 100) + 1;
 
                 controller.setMetadata(currentProperty.getId(), floorLevel, nextRoomNumber);
             } else {
@@ -440,13 +429,10 @@ public class HouseViewController {
             }
 
             dialogStage.showAndWait();
-
-            // REFRESH: Reload the screen if they clicked save
-            if (controller.isSaveClicked()) {
-                refreshHouseData();
-            }
+            if (controller.isSaveClicked()) refreshHouseData();
         } catch (IOException e) { e.printStackTrace(); }
     }
+
     // 1. REFRESH DATA: Reloads the house after you save so the new room appears instantly
     private void refreshHouseData() {
         List<Floor> freshFloors = new ArrayList<>();
@@ -499,6 +485,76 @@ public class HouseViewController {
                 ));
             }
         } catch (Exception e) { e.printStackTrace(); }
+        return rooms;
+    }
+
+    // This creates the database rows if they are missing (Fixes "Ghost" rooms for old properties)
+    private void ensureRoomsExistInDatabase(List<Floor> dbFloors) {
+        try (Connection conn = DatabaseHandler.getConnection()) {
+            String insertSql = "INSERT INTO rooms (property_id, floor_level, room_number, price, status, payment_status) VALUES (?, ?, ?, ?, ?, ?)";
+            PreparedStatement pstmt = conn.prepareStatement(insertSql);
+            boolean needsUpdate = false;
+
+            for (Floor floor : dbFloors) {
+                // Check if rooms actually exist in DB
+                int existingCount = 0;
+                String checkSql = "SELECT COUNT(*) FROM rooms WHERE property_id = ? AND floor_level = ?";
+                try (PreparedStatement checkStmt = conn.prepareStatement(checkSql)) {
+                    checkStmt.setInt(1, currentProperty.getId());
+                    checkStmt.setInt(2, floor.getLevel());
+                    ResultSet rs = checkStmt.executeQuery();
+                    if (rs.next()) existingCount = rs.getInt(1);
+                }
+
+                // If DB is empty but Floor says it has rooms -> Create them!
+                if (existingCount == 0 && floor.getRoomCount() > 0) {
+                    System.out.println("Fixing missing rooms for Floor " + floor.getLevel());
+                    for (int i = 1; i <= floor.getRoomCount(); i++) {
+                        String roomNum = String.format("%d%02d", floor.getLevel(), i);
+
+                        pstmt.setInt(1, currentProperty.getId());
+                        pstmt.setInt(2, floor.getLevel());
+                        pstmt.setString(3, roomNum);
+                        pstmt.setDouble(4, 0.0);
+                        pstmt.setString(5, "Available");
+                        pstmt.setString(6, "Pending");
+                        pstmt.addBatch();
+                        needsUpdate = true;
+                    }
+                }
+            }
+
+            if (needsUpdate) {
+                pstmt.executeBatch();
+                // Refresh the list after fixing
+                dbFloors.forEach(f -> f.setRooms(fetchRoomsForFloorObj(f.getLevel())));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Helper to refresh data immediately after fix
+    private List<Room> fetchRoomsForFloorObj(int floorLevel) {
+        List<Room> rooms = new ArrayList<>();
+        String sql = "SELECT * FROM rooms WHERE property_id = ? AND floor_level = ?";
+        try (Connection conn = DatabaseHandler.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, currentProperty.getId());
+            pstmt.setInt(2, floorLevel);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                rooms.add(new Room(
+                        rs.getString("room_number"),
+                        rs.getString("status"),
+                        rs.getDouble("price"),
+                        rs.getString("facilities"),
+                        rs.getString("payment_status"),
+                        rs.getString("image_path")
+                ));
+            }
+        } catch(Exception e) { e.printStackTrace(); }
         return rooms;
     }
 }

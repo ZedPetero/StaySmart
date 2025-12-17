@@ -24,16 +24,13 @@ public class AddPropertyController {
     @FXML private VBox dynamicRoomContainer;
     @FXML private Label lblImageName;
 
-    // 🟢 CHANGE 1: We store the actual File object, not just the path string
     private File selectedImageFile = null;
-
     private boolean saveClicked = false;
     private List<TextField> roomInputs = new ArrayList<>();
 
     @FXML
     public void initialize() {
-        // Setup ComboBox (Urban, Rural, Apartment, etc.)
-        cmbType.getItems().addAll( "Urban", "Rural");
+        cmbType.getItems().addAll("Urban", "Rural");
         cmbType.getSelectionModel().selectFirst();
 
         txtFloors.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -58,31 +55,22 @@ public class AddPropertyController {
                 row.getChildren().addAll(lbl, input);
                 dynamicRoomContainer.getChildren().add(row);
             }
-        } catch (NumberFormatException e) {
-            // Ignore non-numbers
-        }
+        } catch (NumberFormatException e) { }
     }
 
-    // --- Image Picker ---
     @FXML
     private void handleImageUpload() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select Property Image");
-        fileChooser.getExtensionFilters().add(
-                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg")
-        );
-
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"));
         Stage stage = (Stage) txtName.getScene().getWindow();
         File file = fileChooser.showOpenDialog(stage);
-
         if (file != null) {
-            // 🟢 CHANGE 2: Save the file object so we can read it later
             selectedImageFile = file;
             lblImageName.setText(file.getName());
         }
     }
 
-    // --- Save to Database ---
     @FXML
     private void handleSave() {
         if (txtName.getText().isEmpty() || txtLocation.getText().isEmpty() || txtPrice.getText().isEmpty()) {
@@ -99,32 +87,26 @@ public class AddPropertyController {
             pstmt.setDouble(3, Double.parseDouble(txtPrice.getText().replace(",", "")));
             pstmt.setString(4, cmbType.getValue());
             pstmt.setString(5, txtFloors.getText());
-
-            if (selectedImageFile != null) {
-                pstmt.setString(6, selectedImageFile.getAbsolutePath());
-            } else {
-                pstmt.setString(6, null);
-            }
+            pstmt.setString(6, selectedImageFile != null ? selectedImageFile.getAbsolutePath() : null);
 
             pstmt.executeUpdate();
 
-            // Handle Dynamic Floors logic
             ResultSet rs = pstmt.getGeneratedKeys();
             if (rs.next()) {
                 int newPropertyId = rs.getInt(1);
+                // 1. Save the floor configuration
                 saveFloors(newPropertyId);
+                // 2. ACTUALLY CREATE THE ROOMS IN DB
+                createInitialRooms(newPropertyId);
             }
 
             saveClicked = true;
             closeWindow();
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception e) { e.printStackTrace(); }
     }
 
     private void saveFloors(int propertyId) {
-        // Keeps your existing logic for the property_floors table
         try (Connection conn = DatabaseHandler.getConnection()) {
             String sql = "INSERT INTO property_floors (property_id, floor_number, room_count) VALUES (?, ?, ?)";
             PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -140,22 +122,45 @@ public class AddPropertyController {
                 pstmt.addBatch();
             }
             pstmt.executeBatch();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception e) { e.printStackTrace(); }
     }
 
-    @FXML
-    private void handleCancel() {
-        closeWindow();
+    private void createInitialRooms(int propertyId) {
+        try (Connection conn = DatabaseHandler.getConnection()) {
+            // FIXED SQL: Removed 'type' column
+            String sql = "INSERT INTO rooms (property_id, floor_level, room_number, price, status, payment_status) VALUES (?, ?, ?, ?, ?, ?)";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+
+            // Loop through each floor input
+            for (int i = 0; i < roomInputs.size(); i++) {
+                int floorLevel = i + 1;
+                int roomCount = 0;
+                try { roomCount = Integer.parseInt(roomInputs.get(i).getText()); } catch(Exception e){}
+
+                for (int r = 1; r <= roomCount; r++) {
+                    String roomNum = String.format("%d%02d", floorLevel, r);
+
+                    pstmt.setInt(1, propertyId);
+                    pstmt.setInt(2, floorLevel);
+                    pstmt.setString(3, roomNum);
+                    pstmt.setDouble(4, 0.0);       // Default Price
+                    pstmt.setString(5, "Available"); // Default Status
+                    // Removed: pstmt.setString(6, "Apartment");  <-- THIS WAS CAUSING THE ERROR
+                    pstmt.setString(6, "Pending");   // Payment Status (Now index 6)
+
+                    pstmt.addBatch();
+                }
+            }
+            pstmt.executeBatch();
+        } catch (Exception e) { e.printStackTrace(); }
     }
+
+    @FXML private void handleCancel() { closeWindow(); }
 
     private void closeWindow() {
         Stage stage = (Stage) txtName.getScene().getWindow();
         stage.close();
     }
 
-    public boolean isSaveClicked() {
-        return saveClicked;
-    }
+    public boolean isSaveClicked() { return saveClicked; }
 }

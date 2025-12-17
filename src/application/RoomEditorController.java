@@ -38,12 +38,12 @@ public class RoomEditorController {
         this.dialogStage = dialogStage;
     }
 
-    // Logic: Pass the count of existing rooms to determine the next number
-    public void setMetadata(int propertyId, int floorLevel, int existingRoomCount) {
+    // Logic: Use the calculated next room number directly
+    public void setMetadata(int propertyId, int floorLevel, int nextRoomNumber) {
         this.propertyId = propertyId;
         this.floorLevel = floorLevel;
-        // Auto-Generate ID: If there are 0 rooms, this is Room 1.
-        this.txtRoomNumber.setText(String.valueOf(existingRoomCount + 1));
+        // Use the calculated room number directly (e.g., 103) instead of adding 1
+        this.txtRoomNumber.setText(String.valueOf(nextRoomNumber));
     }
 
     public void setRoomData(Room room) {
