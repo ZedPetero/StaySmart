@@ -56,19 +56,16 @@ public class HouseViewController {
         propertyNameLabel.setText(property.getName());
         ensureRoomsExistInDatabase(dbFloors);
 
-        // --- KEY FIX: Force Window Size ---
-        // This ensures the Tenant sees exactly what the Landlord sees
+        // KEEPING THIS: Forces the window to be wide enough so the layout doesn't break
         forceWindowDimensions();
 
         refreshHouseData();
     }
 
     private void forceWindowDimensions() {
-        // Run later ensures the Stage is ready before we resize it
         Platform.runLater(() -> {
             if (houseContainer.getScene() != null && houseContainer.getScene().getWindow() instanceof Stage) {
                 Stage stage = (Stage) houseContainer.getScene().getWindow();
-                // If the window is too narrow (like in your tenant screenshot), force it to be wide
                 if (stage.getWidth() < 800) {
                     stage.setWidth(950);
                     stage.setHeight(750);
@@ -81,10 +78,9 @@ public class HouseViewController {
     private void buildHouseVisuals(List<Floor> floors) {
         houseContainer.getChildren().clear();
 
-        // 1. Structure Container (VBox)
+        // 1. Structure Container
         VBox buildingVBox = new VBox();
         buildingVBox.setAlignment(Pos.BOTTOM_CENTER);
-        // Allow width to stretch so it looks like the landlord view
         buildingVBox.setMaxWidth(Double.MAX_VALUE);
 
         // A. Roof
@@ -99,7 +95,7 @@ public class HouseViewController {
             buildingVBox.getChildren().add(createFloorContainer(f.getLevel(), floors.size(), floors, type));
         }
 
-        // C. Base (The Ground)
+        // C. Base
         Pane base = new Pane();
         String baseClass = currentProperty.getType().equalsIgnoreCase("Rural") ? "rural-base" : "urban-base";
         base.getStyleClass().add(baseClass);
@@ -107,23 +103,17 @@ public class HouseViewController {
         base.setMaxWidth(Double.MAX_VALUE);
         buildingVBox.getChildren().add(base);
 
-        // 2. Layout Wrapper (StackPane)
-        // This StackPane ensures the building sticks to the BOTTOM of the viewport
+        // 2. Layout Wrapper (Keeps base grounded)
         StackPane scrollContent = new StackPane(buildingVBox);
         scrollContent.setAlignment(Pos.BOTTOM_CENTER);
         scrollContent.setStyle("-fx-background-color: transparent;");
 
-        // 3. Main ScrollPane
+        // 3. ScrollPane
         ScrollPane mainScroll = new ScrollPane(scrollContent);
-
-        // FitToHeight + StackPane Alignment BOTTOM = Building sits on the ground
         mainScroll.setFitToHeight(true);
         mainScroll.setFitToWidth(true);
-
         mainScroll.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
         mainScroll.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
-
-        // Invisible scrollpane styling
         mainScroll.setStyle("-fx-background: transparent; -fx-background-color: transparent; -fx-padding: 0;");
         mainScroll.setViewportBounds(null);
 
@@ -161,10 +151,11 @@ public class HouseViewController {
             roomBox.getChildren().add(createRoomNode(room, floorLevel, i, type));
         }
 
-        // --- VISUAL CONSISTENCY: Add "+" Button for Tenant too ---
-        // This ensures the layout width is identical to the Owner's view.
-        Room newRoomPlaceholder = new Room("+", "New", 0.0, "Unconfigured", "Pending", null);
-        roomBox.getChildren().add(createRoomNode(newRoomPlaceholder, floorLevel, existingRooms.size() + 1, type));
+        // --- CHANGE HERE: HIDE "+" IF TENANT ---
+        if (!isTenantMode) {
+            Room newRoomPlaceholder = new Room("+", "New", 0.0, "Unconfigured", "Pending", null);
+            roomBox.getChildren().add(createRoomNode(newRoomPlaceholder, floorLevel, existingRooms.size() + 1, type));
+        }
 
         // Horizontal Scroll for Rooms
         ScrollPane floorScroll = new ScrollPane(roomBox);
@@ -209,14 +200,11 @@ public class HouseViewController {
 
         setupRoomStatus(room, roomPane, lbl, stylePrefix);
 
-        // --- CLICK LOGIC ---
         roomPane.setOnMouseClicked(e -> {
             if (room.getStatus().equals("New")) {
-                // VISIBLE FOR BOTH, BUT ONLY WORKS FOR OWNER
                 if (!isTenantMode) {
                     openRoomEditor(floorLevel, room);
                 }
-                // Tenant clicks do nothing on "+"
             } else {
                 if (isTenantMode) {
                     openApplicationDialog(room);
@@ -241,7 +229,7 @@ public class HouseViewController {
             pane.getStyleClass().add(type + "-status-new");
             StackPane.setAlignment(lbl, Pos.CENTER);
             pane.getChildren().add(lbl);
-            Tooltip.install(pane, new Tooltip(isTenantMode ? "Empty Slot" : "Click to add a new room"));
+            Tooltip.install(pane, new Tooltip("Click to add a new room"));
         } else {
             boolean isUnconfigured = room.getStatus() == null || room.getStatus().equalsIgnoreCase("Unconfigured");
             if (isUnconfigured) {
@@ -266,7 +254,7 @@ public class HouseViewController {
         }
     }
 
-    // --- HELPER METHODS REMAIN STANDARD ---
+    // --- STANDARD HELPER METHODS ---
 
     private int calculateNextRoomNumber(int floorLevel) {
         int maxRoom = 0;
@@ -437,7 +425,6 @@ public class HouseViewController {
             }
         }
         if (foundImage != null) {
-            // Using stretch (100% width/height) to ensure it fills the pane fully.
             BackgroundSize bgSize = new BackgroundSize(1.0, 1.0, true, true, false, false);
             BackgroundPosition bgPos = new BackgroundPosition(Side.LEFT, 0.5, true, Side.BOTTOM, 0.0, true);
             BackgroundImage bgImg = new BackgroundImage(foundImage, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, bgPos, bgSize);
