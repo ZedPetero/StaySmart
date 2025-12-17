@@ -2,6 +2,7 @@ package application;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -23,11 +24,13 @@ public class AddPropertyController {
     @FXML private TextField txtFloors;
     @FXML private VBox dynamicRoomContainer;
     @FXML private Label lblImageName;
-
+    // NEW CONTAINER FOR CHECKBOXES
+    @FXML private FlowPane amenitiesContainer;
     private File selectedImageFile = null;
     private boolean saveClicked = false;
     private List<TextField> roomInputs = new ArrayList<>();
-
+    // List to track the checkboxes so we can read them later
+    private List<CheckBox> amenityCheckBoxes = new ArrayList<>();
     @FXML
     public void initialize() {
         cmbType.getItems().addAll("Urban", "Rural");
@@ -36,6 +39,25 @@ public class AddPropertyController {
         txtFloors.textProperty().addListener((observable, oldValue, newValue) -> {
             generateRoomInputs(newValue);
         });
+
+        // --- NEW: Generate Amenity Checkboxes ---
+        String[] commonAmenities = {
+                "Swimming Pool", "Gym", "Parking", "Wi-Fi",
+                "24/7 Security", "Garden", "Elevator", "Pet Friendly",
+                "Air Conditioning", "Function Hall"
+        };
+
+        if (amenitiesContainer != null) {
+            amenitiesContainer.setHgap(10);
+            amenitiesContainer.setVgap(10);
+
+            for (String amenity : commonAmenities) {
+                CheckBox cb = new CheckBox(amenity);
+                cb.setStyle("-fx-text-fill: #333; -fx-font-size: 12px;");
+                amenityCheckBoxes.add(cb);
+                amenitiesContainer.getChildren().add(cb);
+            }
+        }
     }
 
     private void generateRoomInputs(String floorCountStr) {
@@ -78,8 +100,19 @@ public class AddPropertyController {
             return;
         }
 
+        // --- NEW: Collect Selected Amenities ---
+        StringBuilder amenitiesBuilder = new StringBuilder();
+        for (CheckBox cb : amenityCheckBoxes) {
+            if (cb.isSelected()) {
+                if (amenitiesBuilder.length() > 0) amenitiesBuilder.append(", ");
+                amenitiesBuilder.append(cb.getText());
+            }
+        }
+        String amenitiesString = amenitiesBuilder.toString();
+
         try (Connection conn = DatabaseHandler.getConnection()) {
-            String sql = "INSERT INTO properties (name, location, price, type, floors, image_path) VALUES (?, ?, ?, ?, ?, ?)";
+            // UPDATED SQL: Added amenities column
+            String sql = "INSERT INTO properties (name, location, price, type, floors, image_path, landlord_id, amenities) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
             PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             pstmt.setString(1, txtName.getText());
@@ -88,15 +121,17 @@ public class AddPropertyController {
             pstmt.setString(4, cmbType.getValue());
             pstmt.setString(5, txtFloors.getText());
             pstmt.setString(6, selectedImageFile != null ? selectedImageFile.getAbsolutePath() : null);
+            pstmt.setInt(7, LoginController.getCurrentUser().getId());
+
+            // Set the amenities string
+            pstmt.setString(8, amenitiesString);
 
             pstmt.executeUpdate();
 
             ResultSet rs = pstmt.getGeneratedKeys();
             if (rs.next()) {
                 int newPropertyId = rs.getInt(1);
-                // 1. Save the floor configuration
                 saveFloors(newPropertyId);
-                // 2. ACTUALLY CREATE THE ROOMS IN DB
                 createInitialRooms(newPropertyId);
             }
 
@@ -127,7 +162,6 @@ public class AddPropertyController {
 
     private void createInitialRooms(int propertyId) {
         try (Connection conn = DatabaseHandler.getConnection()) {
-            // FIX: Removed 'type' from the SQL query to match your database
             String sql = "INSERT INTO rooms (property_id, floor_level, room_number, price, status, payment_status) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement pstmt = conn.prepareStatement(sql);
 
@@ -144,7 +178,6 @@ public class AddPropertyController {
                     pstmt.setString(3, roomNum);
                     pstmt.setDouble(4, 0.0);         // Default Price
                     pstmt.setString(5, "Available");   // Default Status
-                    // REMOVED: pstmt.setString(6, "Apartment"); <-- THIS CAUSED THE CRASH
                     pstmt.setString(6, "Pending");     // Payment Status
 
                     pstmt.addBatch();

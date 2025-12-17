@@ -23,27 +23,27 @@ import java.util.regex.Pattern;
 
 public class LoginController {
 
-    // Note: In SceneBuilder, change the Prompt Text of this field to "Email Address"
     @FXML private TextField usernameField;
     @FXML private PasswordField passwordField;
     @FXML private CheckBox rememberCheck;
     @FXML private Button loginButton;
     @FXML private Circle bgCircle;
 
+    // --- STORE USER SESSION HERE ---
     private static User currentUser;
 
     public static User getCurrentUser() {
         return currentUser;
     }
-    // Add this inside LoginController.java
+
     public static void setCurrentUser(User user) {
         currentUser = user;
     }
+
     @FXML
     private void initialize() {
         usernameField.setOnAction(e -> passwordField.requestFocus());
 
-        // Setup background effects
         if (bgCircle != null) {
             RadialGradient gradient = new RadialGradient(
                     0, 0, 0.5, 0.5, 0.5, true, CycleMethod.NO_CYCLE,
@@ -63,31 +63,26 @@ public class LoginController {
 
     @FXML
     private void onLogin(ActionEvent event) {
-        // 1. Get Input (Treating usernameField as Email)
         String emailInput = usernameField.getText() == null ? "" : usernameField.getText().trim();
         String password = passwordField.getText() == null ? "" : passwordField.getText();
 
-        // 2. Validate Empty Fields
         if (emailInput.isEmpty() || password.isEmpty()) {
             showAlert(Alert.AlertType.WARNING, "Validation", "Please enter both email and password.");
             return;
         }
 
-        // 3. Validate Email Format
         if (!isValidEmail(emailInput)) {
-            showAlert(Alert.AlertType.ERROR, "Invalid Format", "Please enter a valid email address (e.g., name@email.com).");
+            showAlert(Alert.AlertType.ERROR, "Invalid Format", "Please enter a valid email address.");
             return;
         }
 
-        // 4. Authenticate using Email and Password
-        // Ensure your AuthService SQL query uses 'email' column!
         User user = AuthService.authenticate(emailInput, password);
 
         if (user != null) {
-            currentUser = user;
+            currentUser = user; // SAVE THE USER
             System.out.println("DEBUG: User role is: '" + user.getRole() + "'");
             showAlert(Alert.AlertType.INFORMATION, "Login Successful",
-                    "Welcome, " + user.getFullname() + "!"); // Showing Fullname is nicer
+                    "Welcome, " + user.getFullname() + "!");
 
             loadMainApplication(event);
 
@@ -96,21 +91,14 @@ public class LoginController {
         }
     }
 
-    // --- VALIDATION HELPERS ---
-
-    // Checks for format: text @ text . text
     private boolean isValidEmail(String email) {
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
         return Pattern.compile(emailRegex).matcher(email).matches();
     }
 
-    // Checks if string contains only digits and is at least 7 characters
     public static boolean isValidPhoneNumber(String phone) {
-        // Allow optional + at start, then only digits
         return phone.matches("^\\+?[0-9]+$") && phone.length() >= 7;
     }
-
-    // --------------------------
 
     @FXML
     private void onCancel(ActionEvent event) {
@@ -152,7 +140,6 @@ public class LoginController {
             Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             currentStage.close();
 
-            // Font loading...
             try {
                 Font.loadFont(getClass().getResourceAsStream("/fonts/Outfit-Regular.ttf"), 10);
                 Font.loadFont(getClass().getResourceAsStream("/fonts/Outfit-Medium.ttf"), 10);

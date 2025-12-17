@@ -394,11 +394,20 @@ public class HouseViewController {
 
     private void setDynamicBackground(String type, int totalRooms) {
         String baseName = "";
+        int floorCount = getFloorCount();
+
         if (type != null && type.equalsIgnoreCase("Rural")) {
-            if (totalRooms <= 2) baseName = "rural1";
-            else if (totalRooms <= 4) baseName = "rural2";
-            else baseName = "rural3";
+            // FIXED LOGIC: Based on Floor Count
+            if (floorCount <= 2) {
+                baseName = "rural1";
+            } else if (floorCount <= 5) {
+                baseName = "rural2";
+            } else {
+                baseName = "rural3"; // 6 floors and above
+            }
         } else {
+            // Keep Urban logic based on density/rooms if you prefer, or change to floors too.
+            // Currently keeping your old Urban logic:
             if (totalRooms <= 3) baseName = "urban1";
             else if (totalRooms <= 6) baseName = "urban2";
             else baseName = "urban3";

@@ -79,7 +79,8 @@ public class ExplorePropertiesController {
                         rs.getDouble("price"), // Database has price column
                         rs.getString("type"),
                         rs.getString("floors"), // Usually "total_floors" in DB, check your column name
-                        rs.getString("image_path")
+                        rs.getString("image_path"),
+                        rs.getString("amenities")
                 );
 
                 // Create the Card UI (Mimicking Landlord View)

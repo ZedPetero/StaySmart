@@ -33,11 +33,17 @@ public class MyPropertiesController {
 
     public void loadPropertiesFromDatabase() {
         propertiesGrid.getChildren().clear();
-        String query = "SELECT * FROM properties";
+
+        // --- UPDATED SQL: Filter by landlord_id ---
+        String query = "SELECT * FROM properties WHERE landlord_id = ?";
 
         try (Connection conn = DatabaseHandler.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(query);
-             ResultSet rs = pstmt.executeQuery()) {
+             PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+            // --- GET CURRENT USER ID ---
+            pstmt.setInt(1, LoginController.getCurrentUser().getId());
+
+            ResultSet rs = pstmt.executeQuery();
 
             int column = 0;
             int row = 1;
@@ -52,7 +58,8 @@ public class MyPropertiesController {
                         rs.getDouble("price"),
                         rs.getString("type"),
                         rs.getString("floors"),
-                        rs.getString("image_path")
+                        rs.getString("image_path"),
+                        rs.getString("amenities")
                 );
 
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("PropertyCard.fxml"));
@@ -85,9 +92,6 @@ public class MyPropertiesController {
         }
     }
 
-    /**
-     * CHANGED: This is now PUBLIC so the Main Dashboard can call it.
-     */
     public void handleAddProperty() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("AddPropertyDialog.fxml"));
