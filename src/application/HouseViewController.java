@@ -53,36 +53,48 @@ public class HouseViewController {
         refreshHouseData();
     }
 
-    private void buildHouseVisuals(List<Floor> dbFloors) {
+    // 1. UPDATED: Background Logic Restored
+    private void buildHouseVisuals(List<Floor> floors) {
         houseContainer.getChildren().clear();
-        String type = currentProperty.getType();
 
-        // 1. Setup Main Container
-        houseContainer.setAlignment(Pos.BOTTOM_CENTER);
-        houseContainer.setFillWidth(true);
-        houseContainer.setSpacing(0);
-
-        // 2. Configure the Parent Main ScrollPane
-        if (houseContainer.getParent() instanceof StackPane) {
-            StackPane wrapper = (StackPane) houseContainer.getParent();
-            if (wrapper.getParent() instanceof ScrollPane) {
-                ScrollPane mainScroll = (ScrollPane) wrapper.getParent();
-                mainScroll.setFitToWidth(true);
-                mainScroll.setFitToHeight(false);
-                mainScroll.setPannable(true);
-            }
-        }
-
-        // 3. Background Setup
-        int totalRooms = calculateTotalRooms(dbFloors);
-        setDynamicBackground(type, totalRooms);
-
-        // 4. Build House
-        if (type != null && type.equalsIgnoreCase("Rural")) {
-            buildRuralHouse(dbFloors);
+        // A. Setup Roof
+        StackPane roof = new StackPane();
+        if (currentProperty.getType().equalsIgnoreCase("Rural")) {
+            roof.getStyleClass().add("rural-roof");
         } else {
-            buildUrbanHouse(dbFloors);
+            roof.getStyleClass().add("urban-roof");
         }
+
+        Label nameLabel = new Label(currentProperty.getName());
+        nameLabel.getStyleClass().add("property-title");
+        roof.getChildren().add(nameLabel);
+
+        houseContainer.getChildren().add(roof);
+
+        // B. Setup Floors
+        String type = currentProperty.getType().equalsIgnoreCase("Rural") ? "rural" : "urban";
+        for (Floor f : floors) {
+            houseContainer.getChildren().add(createFloorContainer(f.getLevel(), floors.size(), floors, type));
+        }
+
+        // C. Base (Bottom Bar)
+        Pane base = new Pane();
+        if (currentProperty.getType().equalsIgnoreCase("Rural")) {
+            base.getStyleClass().add("rural-base");
+        } else {
+            base.getStyleClass().add("urban-base");
+        }
+        base.setMinHeight(25); base.setMaxHeight(25);
+        base.setMaxWidth(Double.MAX_VALUE);
+        houseContainer.getChildren().add(base);
+
+        // D. RESTORED: Calculate rooms and set Background
+        int totalRooms = 0;
+        for(Floor f : floors) totalRooms += f.getRoomCount();
+        // Fallback calculation if dbFloors is empty but property exists
+        if(totalRooms == 0) totalRooms = calculateTotalRooms(floors);
+
+        setDynamicBackground(currentProperty.getType(), totalRooms);
     }
 
     private void setDynamicBackground(String type, int totalRooms) {
@@ -198,12 +210,11 @@ public class HouseViewController {
         return roof;
     }
 
-    // 1. CLEAN RENDERER: Just shows what is in the database
+    // 2. UPDATED: Full method with Scrollbar Color classes added
     private VBox createFloorContainer(int floorLevel, int totalFloors, List<Floor> dbFloors, String type) {
         Optional<Floor> floorData = dbFloors.stream().filter(f -> f.getLevel() == floorLevel).findFirst();
         List<Room> existingRooms = floorData.map(Floor::getRooms).orElse(new ArrayList<>());
 
-        // Sort naturally: 101, 102, 103
         existingRooms.sort(Comparator.comparingInt(r -> {
             try { return Integer.parseInt(r.getRoomNumber()); }
             catch (NumberFormatException e) { return 9999; }
@@ -217,7 +228,7 @@ public class HouseViewController {
         roomBox.setAlignment(Pos.BOTTOM_CENTER);
         roomBox.setStyle("-fx-padding: 0 25 0 25;");
 
-        // Display REAL rooms only
+        // Add Rooms
         for (int i = 0; i < existingRooms.size(); i++) {
             Room room = existingRooms.get(i);
             if (type.equals("rural")) {
@@ -227,7 +238,7 @@ public class HouseViewController {
             }
         }
 
-        // Always add "+" button at the end
+        // Add "+" Button
         Room newRoomPlaceholder = new Room("+", "New", 0.0, "Unconfigured", "Pending", null);
         if (type.equals("rural")) {
             roomBox.getChildren().add(createRuralRoomNode(newRoomPlaceholder, floorLevel, existingRooms.size() + 1, totalFloors));
@@ -236,12 +247,25 @@ public class HouseViewController {
         }
 
         ScrollPane scroll = new ScrollPane(roomBox);
-        scroll.getStyleClass().add("floor-scroll");
+
+        // NEW: Tag the scrollpane so CSS can color it
+        if (type.equals("rural")) {
+            scroll.getStyleClass().add("rural-scroll");
+        } else {
+            scroll.getStyleClass().add("urban-scroll");
+        }
+
         scroll.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
         scroll.setVbarPolicy(ScrollBarPolicy.NEVER);
         scroll.setFitToWidth(true);
         scroll.setFitToHeight(true);
         scroll.setPannable(true);
+
+        // Block vertical scrolling
+        scroll.addEventFilter(javafx.scene.input.ScrollEvent.SCROLL, event -> {
+            if (event.getDeltaY() != 0) event.consume();
+        });
+
         scroll.setMaxWidth(type.equals("rural") ? 400 : 420);
 
         floorContainer.getChildren().add(scroll);
@@ -250,12 +274,19 @@ public class HouseViewController {
         return floorContainer;
     }
 
-    // CLEAN SIGNATURE: Removed the extra unused arguments
+    // 2. UPDATED: Adds "rural-window-door" for Ground Floor
     private StackPane createRuralRoomNode(Room room, int floorLevel, int roomIndex, int totalFloors) {
         StackPane roomPane = new StackPane();
         roomPane.getStyleClass().add("rural-room");
-        if (floorLevel == totalFloors && totalFloors > 1) roomPane.getStyleClass().add("rural-window-arched");
-        else roomPane.getStyleClass().add("rural-window-rect");
+
+        // --- PATTERN LOGIC ---
+        if (floorLevel == 1) {
+            roomPane.getStyleClass().add("rural-window-door"); // Ground Floor = Door
+        } else if (floorLevel == totalFloors && totalFloors > 1) {
+            roomPane.getStyleClass().add("rural-window-arched"); // Top Floor = Arched
+        } else {
+            roomPane.getStyleClass().add("rural-window-rect"); // Middle = Rect
+        }
 
         String displayRoomNum = room.getRoomNumber().equals("+") ? "+" : room.getRoomNumber();
         Label lbl = new Label(displayRoomNum);
@@ -263,76 +294,53 @@ public class HouseViewController {
 
         setupRoomStatus(room, roomPane, lbl, "rural");
 
-        if (!room.getStatus().equals("New") && !roomPane.getStyleClass().contains("rural-status-placeholder") && floorLevel != totalFloors) {
-            Pane flowerBox = new Pane();
-            flowerBox.getStyleClass().add("rural-flower-box");
-            flowerBox.setMaxHeight(15); flowerBox.setMaxWidth(60);
-            StackPane.setAlignment(flowerBox, Pos.BOTTOM_CENTER);
-            flowerBox.setTranslateY(5);
-            roomPane.getChildren().add(flowerBox);
-        }
-
-        // CLICK HANDLER: Calls openRoomEditor with just 2 arguments
         roomPane.setOnMouseClicked(e -> openRoomEditor(floorLevel, room));
         return roomPane;
     }
 
+    // 3. UPDATED: Adds "urban-window-door" for Ground Floor
     private StackPane createUrbanRoomNode(Room room, int floorLevel, int roomIndex, int totalFloors) {
         StackPane roomPane = new StackPane();
         roomPane.getStyleClass().add("urban-room");
-        if (floorLevel == totalFloors && totalFloors > 1) roomPane.getStyleClass().add("urban-window-arched");
-        else roomPane.getStyleClass().add("urban-window-rect");
+
+        // --- PATTERN LOGIC ---
+        if (floorLevel == 1) {
+            roomPane.getStyleClass().add("urban-window-door"); // Ground Floor = Door
+        } else if (floorLevel == totalFloors && totalFloors > 1) {
+            roomPane.getStyleClass().add("urban-window-arched"); // Top Floor = Arched
+        } else {
+            roomPane.getStyleClass().add("urban-window-rect"); // Middle = Rect
+        }
 
         String displayRoomNum = room.getRoomNumber().equals("+") ? "+" : room.getRoomNumber();
         Label lbl = new Label(displayRoomNum);
         lbl.getStyleClass().add("urban-label");
 
         setupRoomStatus(room, roomPane, lbl, "urban");
-
-        if (!room.getStatus().equals("New") && !roomPane.getStyleClass().contains("urban-status-placeholder")) {
-            if (floorLevel > 1) {
-                Pane balcony = new Pane();
-                balcony.getStyleClass().add("urban-balcony");
-                balcony.setMaxHeight(25); balcony.setMaxWidth(70);
-                StackPane.setAlignment(balcony, Pos.BOTTOM_CENTER);
-                balcony.setTranslateY(10);
-                roomPane.getChildren().add(balcony);
-            } else if (floorLevel == 1) {
-                Pane doorStep = new Pane();
-                doorStep.getStyleClass().add("urban-doorstep");
-                doorStep.setMaxHeight(5); doorStep.setMaxWidth(70);
-                StackPane.setAlignment(doorStep, Pos.BOTTOM_CENTER);
-                doorStep.setTranslateY(3);
-                roomPane.getChildren().add(doorStep);
-            }
-        }
-
-        // CLICK HANDLER: Calls openRoomEditor with just 2 arguments
         roomPane.setOnMouseClicked(e -> openRoomEditor(floorLevel, room));
         return roomPane;
     }
 
+    // 3. FIX COLORS: "Available" is now treated as Vacant (Green), even if price is 0
     private void setupRoomStatus(Room room, StackPane pane, Label lbl, String type) {
-        // 1. RESET: Clear all dynamic styles and manual backgrounds
         pane.getStyleClass().removeAll(
                 type + "-status-new",
                 type + "-status-placeholder",
                 type + "-status-occupied",
                 type + "-status-vacant"
         );
-        // Explicitly clear background image to prevent "ghost" images from previous states
         pane.setBackground(Background.EMPTY);
-        pane.setStyle(""); // Clear inline styles
+        pane.setStyle("");
 
-        // 2. APPLY STATUS
         if (room.getStatus().equals("New")) {
             pane.getStyleClass().add(type + "-status-new");
             StackPane.setAlignment(lbl, Pos.CENTER);
             pane.getChildren().add(lbl);
             Tooltip.install(pane, new Tooltip("Add a new room"));
         } else {
+            // FIX: Removed logic that treated "Price 0.0" as a placeholder.
+            // Now, only explicitly "Unconfigured" or null status is a placeholder.
             boolean isUnconfigured = room.getStatus() == null ||
-                    (room.getStatus().equalsIgnoreCase("Available") && room.getPrice() == 0.0) ||
                     room.getStatus().equalsIgnoreCase("Unconfigured");
 
             if (isUnconfigured) {
@@ -340,19 +348,15 @@ public class HouseViewController {
                 StackPane.setAlignment(lbl, Pos.CENTER);
                 pane.getChildren().add(lbl);
             } else {
-                // OCCUPIED / VACANT
+                // OCCUPIED = RED, AVAILABLE = GREEN (Handled in CSS)
                 boolean isOccupied = room.getStatus().equalsIgnoreCase("Occupied");
                 pane.getStyleClass().add(isOccupied ? type + "-status-occupied" : type + "-status-vacant");
                 StackPane.setAlignment(lbl, Pos.CENTER);
                 pane.getChildren().add(lbl);
 
-                // 3. IMAGE HANDLING (Safe Mode)
-                // If the room has a custom image, apply it ONLY to this specific pane
-                // We use 'setStyle' on the specific ID to keep it local
                 if (room.getImagePath() != null && !room.getImagePath().isEmpty()) {
                     File imgFile = new File(room.getImagePath());
                     if (imgFile.exists()) {
-                        // Apply image as background, heavily constrained to containment
                         String imageUrl = imgFile.toURI().toString();
                         pane.setStyle(
                                 "-fx-background-image: url('" + imageUrl + "'); " +
@@ -360,11 +364,9 @@ public class HouseViewController {
                                         "-fx-background-position: center; " +
                                         "-fx-background-repeat: no-repeat;"
                         );
-                        // Ensure the label is still visible (maybe add a text shadow or background)
                         lbl.setStyle("-fx-text-fill: white; -fx-effect: dropshadow(one-pass-box, black, 4, 1.0, 0, 0);");
                     }
                 }
-
                 Tooltip.install(pane, new Tooltip("Room " + room.getRoomNumber() + "\n" + room.getStatus()));
             }
         }

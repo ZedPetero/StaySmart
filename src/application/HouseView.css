@@ -23,21 +23,46 @@
     -fx-background-radius: 5;
 }
 
-/* Style the Horizontal Scrollbars (Inside Floors) to be subtle */
-.floor-scroll > .scroll-bar:horizontal {
-    -fx-background-color: transparent; /* Transparent track */
-    -fx-padding: 0;
+/* =============================================================================
+   CUSTOM SCROLLBAR COLORS (Added Request)
+   ============================================================================= */
+
+/* 1. Rural Scrollbar (BROWN) */
+.rural-scroll > .scroll-bar:horizontal {
+    -fx-background-color: transparent;
 }
-.floor-scroll > .scroll-bar:horizontal .thumb {
-    -fx-background-color: rgba(255, 255, 255, 0.4); /* Semi-transparent white thumb */
+.rural-scroll > .scroll-bar:horizontal .thumb {
+    -fx-background-color: #8D6E63; /* Brown */
     -fx-background-radius: 4px;
 }
-/* Hide scrollbar arrows */
-.floor-scroll > .scroll-bar > .increment-button,
-.floor-scroll > .scroll-bar > .decrement-button {
+.rural-scroll > .scroll-bar:horizontal .track {
+    -fx-background-color: rgba(141, 110, 99, 0.2); /* Faint brown track */
+    -fx-background-radius: 4px;
+}
+
+/* 2. Urban Scrollbar (GREY) */
+.urban-scroll > .scroll-bar:horizontal {
+    -fx-background-color: transparent;
+}
+.urban-scroll > .scroll-bar:horizontal .thumb {
+    -fx-background-color: #7F8C8D; /* Grey */
+    -fx-background-radius: 4px;
+}
+.urban-scroll > .scroll-bar:horizontal .track {
+    -fx-background-color: rgba(127, 140, 141, 0.2); /* Faint grey track */
+    -fx-background-radius: 4px;
+}
+
+/* Hide scrollbar arrows for both */
+.scroll-bar > .increment-button,
+.scroll-bar > .decrement-button {
     -fx-padding: 0;
     -fx-background-color: transparent;
 }
+
+/* =============================================================================
+   UI ELEMENTS
+   ============================================================================= */
 
 /* Make the VBox holding the house transparent */
 .house-container-vbox {
@@ -47,7 +72,6 @@
     -fx-spacing: 0;
 }
 
-/* UI Elements */
 .label {
     -fx-text-fill: #2C3E50;
     -fx-font-size: 14px;
@@ -104,26 +128,33 @@
 }
 .rural-window-arched { -fx-background-radius: 35 35 0 0; -fx-border-radius: 35 35 0 0; -fx-border-color: #5D4037; -fx-border-width: 4; }
 .rural-window-rect { -fx-background-radius: 2px; -fx-border-color: #5D4037; -fx-border-width: 4; }
-.rural-status-occupied { -fx-background-color: linear-gradient(to bottom, #FFE082, #FFCA28); }
-.rural-status-vacant { -fx-background-color: linear-gradient(to bottom, #B3E5FC, #81D4FA); }
+
+/* Occupied = RED */
+.rural-status-occupied {
+    -fx-background-color: linear-gradient(to bottom, #E74C3C, #C0392B);
+}
+
+/* Vacant = GREEN */
+.rural-status-vacant {
+    -fx-background-color: linear-gradient(to bottom, #4CAF50, #388E3C);
+}
+
 .rural-status-placeholder { -fx-background-color: #D7CCC8; -fx-border-color: #8D6E63; -fx-border-style: dashed; -fx-border-width: 2; }
 
-/* NEW: Style for the "+" room placeholder */
+/* Style for the "+" room placeholder */
 .rural-status-new {
     -fx-background-color: rgba(255, 255, 255, 0.5);
     -fx-border-color: #8D6E63;
     -fx-border-style: dotted;
     -fx-border-width: 3;
 }
-/* Style the "+" label inside the new room placeholder */
 .rural-status-new .rural-label {
-    -fx-font-size: 32px; /* Larger font for the + */
+    -fx-font-size: 32px;
     -fx-font-weight: bold;
     -fx-text-fill: #5D4037;
 }
 
 .rural-label { -fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: #3E2723; }
-.rural-flower-box { -fx-background-color: #4CAF50; -fx-background-radius: 0 0 5 5; -fx-border-color: #388E3C; -fx-border-width: 1; }
 
 
 /* =============================================================================
@@ -157,27 +188,85 @@
 }
 .urban-window-arched { -fx-background-radius: 35 35 0 0; -fx-border-radius: 35 35 0 0; -fx-border-color: #34495E; -fx-border-width: 3; }
 .urban-window-rect { -fx-background-radius: 0; -fx-border-color: #34495E; -fx-border-width: 3; }
-.urban-status-occupied { -fx-background-color: #F0B27A; }
-.urban-status-vacant { -fx-background-color: #AED6F1; }
+
+/* Occupied = RED */
+.urban-status-occupied {
+    -fx-background-color: #E74C3C;
+}
+
+/* Vacant = GREEN */
+.urban-status-vacant {
+    -fx-background-color: #4CAF50;
+}
+
 .urban-status-placeholder { -fx-background-color: #ECF0F1; -fx-border-color: #BDC3C7; -fx-border-style: dashed; }
 
-/* NEW: Style for the "+" room placeholder */
+/* Style for the "+" room placeholder */
 .urban-status-new {
     -fx-background-color: rgba(255, 255, 255, 0.5);
     -fx-border-color: #2C3E50;
     -fx-border-style: dotted;
     -fx-border-width: 3;
 }
-/* Style the "+" label inside the new room placeholder */
 .urban-status-new .urban-label {
-    -fx-font-size: 32px; /* Larger font for the + */
+    -fx-font-size: 32px;
     -fx-font-weight: bold;
     -fx-text-fill: #2C3E50;
 }
 
 .urban-label { -fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: #2C3E50; }
-.urban-balcony { -fx-background-color: linear-gradient(to right, transparent 0%, transparent 80%, #2C3E50 81%, #2C3E50 100%); -fx-border-color: #2C3E50; -fx-border-width: 2 0 2 0; }
-.urban-doorstep { -fx-background-color: #7F8C8D; -fx-border-color: #34495E; -fx-border-width: 1; }
 
-.floor-scroll { -fx-background-color: transparent; -fx-background: transparent; -fx-padding: 0; }
-.floor-scroll > .viewport { -fx-background-color: transparent; }
+/* =============================================================================
+   RURAL PATTERNS
+   ============================================================================= */
+
+/* 1. TOP FLOOR (Arched) */
+.rural-window-arched {
+    -fx-background-radius: 35 35 0 0;
+    -fx-border-radius: 35 35 0 0;
+    -fx-border-color: #5D4037;
+    -fx-border-width: 4;
+}
+
+/* 2. MIDDLE FLOORS (Rectangular Window) */
+.rural-window-rect {
+    -fx-background-radius: 2px;
+    -fx-border-color: #5D4037;
+    -fx-border-width: 4;
+}
+
+/* 3. GROUND FLOOR (Door Style) - NEW! */
+.rural-window-door {
+    -fx-background-radius: 4px 4px 0 0; /* Slightly rounded top */
+    -fx-border-color: #5D4037;
+    -fx-border-width: 5 5 0 5; /* Thicker sides, NO bottom border (connects to ground) */
+    -fx-min-height: 85px; /* Slightly taller to look like a door */
+}
+
+
+/* =============================================================================
+   URBAN PATTERNS
+   ============================================================================= */
+
+/* 1. TOP FLOOR (Arched) */
+.urban-window-arched {
+    -fx-background-radius: 35 35 0 0;
+    -fx-border-radius: 35 35 0 0;
+    -fx-border-color: #34495E;
+    -fx-border-width: 3;
+}
+
+/* 2. MIDDLE FLOORS (Rectangular Window) */
+.urban-window-rect {
+    -fx-background-radius: 0;
+    -fx-border-color: #34495E;
+    -fx-border-width: 3;
+}
+
+/* 3. GROUND FLOOR (Door Style) - NEW! */
+.urban-window-door {
+    -fx-background-radius: 2px 2px 0 0;
+    -fx-border-color: #2C3E50;
+    -fx-border-width: 4 4 0 4; /* Thicker frame, NO bottom border */
+    -fx-min-height: 90px; /* Taller */
+}
