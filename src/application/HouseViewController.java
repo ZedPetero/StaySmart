@@ -17,7 +17,8 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
+import javafx.scene.image.ImageView;
+import javafx.scene.shape.Rectangle;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -53,7 +54,7 @@ public class HouseViewController {
         refreshHouseData();
     }
 
-    // 1. UPDATED: Background Logic Restored
+    // 1. UPDATED: Title removed from Roof
     private void buildHouseVisuals(List<Floor> floors) {
         houseContainer.getChildren().clear();
 
@@ -65,9 +66,7 @@ public class HouseViewController {
             roof.getStyleClass().add("urban-roof");
         }
 
-        Label nameLabel = new Label(currentProperty.getName());
-        nameLabel.getStyleClass().add("property-title");
-        roof.getChildren().add(nameLabel);
+        // [REMOVED] The label code is deleted here.
 
         houseContainer.getChildren().add(roof);
 
@@ -88,10 +87,9 @@ public class HouseViewController {
         base.setMaxWidth(Double.MAX_VALUE);
         houseContainer.getChildren().add(base);
 
-        // D. RESTORED: Calculate rooms and set Background
+        // D. Background Logic
         int totalRooms = 0;
         for(Floor f : floors) totalRooms += f.getRoomCount();
-        // Fallback calculation if dbFloors is empty but property exists
         if(totalRooms == 0) totalRooms = calculateTotalRooms(floors);
 
         setDynamicBackground(currentProperty.getType(), totalRooms);
@@ -321,8 +319,9 @@ public class HouseViewController {
         return roomPane;
     }
 
-    // 3. FIX COLORS: "Available" is now treated as Vacant (Green), even if price is 0
+    // 2. UPDATED: Restored Tooltip with Custom Hover Card
     private void setupRoomStatus(Room room, StackPane pane, Label lbl, String type) {
+        // Clear old styles
         pane.getStyleClass().removeAll(
                 type + "-status-new",
                 type + "-status-placeholder",
@@ -332,14 +331,19 @@ public class HouseViewController {
         pane.setBackground(Background.EMPTY);
         pane.setStyle("");
 
+        // A. CASE: NEW ROOM (+)
         if (room.getStatus().equals("New")) {
             pane.getStyleClass().add(type + "-status-new");
             StackPane.setAlignment(lbl, Pos.CENTER);
             pane.getChildren().add(lbl);
-            Tooltip.install(pane, new Tooltip("Add a new room"));
+
+            // Simple text tooltip for the Add button
+            Tooltip t = new Tooltip("Click to add a new room");
+            t.setStyle("-fx-font-size: 14px;");
+            Tooltip.install(pane, t);
+
         } else {
-            // FIX: Removed logic that treated "Price 0.0" as a placeholder.
-            // Now, only explicitly "Unconfigured" or null status is a placeholder.
+            // B. CASE: EXISTING ROOM
             boolean isUnconfigured = room.getStatus() == null ||
                     room.getStatus().equalsIgnoreCase("Unconfigured");
 
@@ -348,12 +352,13 @@ public class HouseViewController {
                 StackPane.setAlignment(lbl, Pos.CENTER);
                 pane.getChildren().add(lbl);
             } else {
-                // OCCUPIED = RED, AVAILABLE = GREEN (Handled in CSS)
+                // Occupied vs Vacant styling for the room itself
                 boolean isOccupied = room.getStatus().equalsIgnoreCase("Occupied");
                 pane.getStyleClass().add(isOccupied ? type + "-status-occupied" : type + "-status-vacant");
                 StackPane.setAlignment(lbl, Pos.CENTER);
                 pane.getChildren().add(lbl);
 
+                // Image Handling for the room icon background
                 if (room.getImagePath() != null && !room.getImagePath().isEmpty()) {
                     File imgFile = new File(room.getImagePath());
                     if (imgFile.exists()) {
@@ -364,10 +369,20 @@ public class HouseViewController {
                                         "-fx-background-position: center; " +
                                         "-fx-background-repeat: no-repeat;"
                         );
+                        // Add a shadow to the text so it's readable over the image
                         lbl.setStyle("-fx-text-fill: white; -fx-effect: dropshadow(one-pass-box, black, 4, 1.0, 0, 0);");
                     }
                 }
-                Tooltip.install(pane, new Tooltip("Room " + room.getRoomNumber() + "\n" + room.getStatus()));
+
+                // --- NEW CUSTOM HOVER TOOLTIP ---
+                Tooltip tooltip = new Tooltip();
+                // Set the graphic content to our custom card view
+                tooltip.setGraphic(createRoomDetailHoverView(room));
+                // Remove default tooltip styling (padding, background) so only our card is visible
+                tooltip.setStyle("-fx-background-color: transparent; -fx-padding: 0; -fx-background-radius: 0; -fx-effect: null;");
+                // Show the tooltip immediately without a delay
+                tooltip.setShowDelay(javafx.util.Duration.millis(100));
+                Tooltip.install(pane, tooltip);
             }
         }
     }
@@ -393,21 +408,34 @@ public class HouseViewController {
         return totalFloors;
     }
 
-    // 2. CLEAN EDITOR OPENER: Only checks DB for highest number
+    // In HouseViewController.java
+
     private void openRoomEditor(int floorLevel, Room room) {
         try {
+            // 1. Load FXML (Ensure the path matches your project structure, likely just "RoomEditor.fxml" if in same folder)
             FXMLLoader loader = new FXMLLoader(getClass().getResource("RoomEditor.fxml"));
             Parent page = loader.load();
+
+            // 2. Get Controller (No 'controllers.' prefix needed)
             RoomEditorController controller = loader.getController();
+
+            // 3. Setup Stage
             Stage dialogStage = new Stage();
             dialogStage.setTitle(room == null || room.getStatus().equals("New") ? "Add Room" : "Edit Room");
             dialogStage.initModality(Modality.WINDOW_MODAL);
             dialogStage.initOwner(houseContainer.getScene().getWindow());
-            dialogStage.setScene(new Scene(page));
+
+            // Transparent style for the "Blue Card" look
+            Scene scene = new Scene(page);
+            scene.setFill(javafx.scene.paint.Color.TRANSPARENT);
+            dialogStage.setScene(scene);
+            dialogStage.initStyle(javafx.stage.StageStyle.TRANSPARENT);
+
             controller.setDialogStage(dialogStage);
 
+            // 4. Pass Data to Controller
             if (room == null || room.getStatus().equals("New")) {
-                // Find highest real number
+                // --- NEW ROOM LOGIC: Calculate Next ID ---
                 int dbMaxRoomNum = 0;
                 String sql = "SELECT MAX(CAST(room_number AS UNSIGNED)) as max_num FROM rooms WHERE property_id = ? AND floor_level = ?";
 
@@ -419,19 +447,28 @@ public class HouseViewController {
                     if (rs.next()) dbMaxRoomNum = rs.getInt("max_num");
                 } catch (Exception e) { e.printStackTrace(); }
 
-                // Determine next ID
                 int nextRoomNumber = (dbMaxRoomNum == 0) ? (floorLevel * 100) + 1 : dbMaxRoomNum + 1;
                 if (nextRoomNumber < (floorLevel * 100) + 1) nextRoomNumber = (floorLevel * 100) + 1;
 
+                // Pass ID for creation
                 controller.setMetadata(currentProperty.getId(), floorLevel, nextRoomNumber);
             } else {
-                controller.setMetadata(currentProperty.getId(), floorLevel, 0);
+                // --- EXISTING ROOM LOGIC ---
+                controller.setMetadata(currentProperty.getId(), floorLevel, 0); // ID ignored for edit
                 controller.setRoomData(room);
             }
 
+            // 5. Show and Wait
             dialogStage.showAndWait();
-            if (controller.isSaveClicked()) refreshHouseData();
-        } catch (IOException e) { e.printStackTrace(); }
+
+            // 6. Refresh if Saved
+            if (controller.isSaveClicked()) {
+                refreshHouseData();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void refreshHouseData() {
@@ -546,5 +583,95 @@ public class HouseViewController {
             }
         } catch(Exception e) { e.printStackTrace(); }
         return rooms;
+    }
+
+    // --- NEW HELPER METHOD: Creates the custom hover view card ---
+    private VBox createRoomDetailHoverView(Room room) {
+        VBox card = new VBox(10);
+        card.getStyleClass().add("room-detail-card");
+
+        // 1. Image Container
+        StackPane imageContainer = new StackPane();
+        imageContainer.getStyleClass().add("room-detail-image-container");
+        if (room.getImagePath() != null && !room.getImagePath().isEmpty()) {
+            try {
+                File imgFile = new File(room.getImagePath());
+                if (imgFile.exists()) {
+                    Image img = new Image(imgFile.toURI().toString());
+                    ImageView imageView = new ImageView(img);
+                    // Set a fixed size for the image area
+                    imageView.setFitWidth(230);
+                    imageView.setFitHeight(150);
+                    imageView.setPreserveRatio(true);
+
+                    // Clip the image to have rounded corners, matching the container
+                    Rectangle clip = new Rectangle(230, 150);
+                    clip.setArcWidth(10);
+                    clip.setArcHeight(10);
+                    imageView.setClip(clip);
+
+                    imageContainer.getChildren().add(imageView);
+                }
+            } catch (Exception e) {
+                // If image fails to load, the placeholder color will show
+            }
+        }
+        card.getChildren().add(imageContainer);
+
+        // 2. Room Title
+        Label titleLabel = new Label("Room " + room.getRoomNumber());
+        titleLabel.getStyleClass().add("room-detail-title");
+        card.getChildren().add(titleLabel);
+
+        // 3. Status Pills (HBox)
+        HBox statusBox = new HBox(10);
+
+        // a) Availability Status Pill
+        String status = room.getStatus();
+        Label statusPill = new Label(status);
+        statusPill.getStyleClass().add("room-detail-status-pill");
+        statusPill.getStyleClass().add(status.equalsIgnoreCase("Occupied") ? "status-pill-occupied" : "status-pill-available");
+        statusBox.getChildren().add(statusPill);
+
+        // b) Payment Status Pill
+        String paymentStatus = room.getPaymentStatus();
+        if (paymentStatus == null || paymentStatus.isEmpty()) paymentStatus = "Pending";
+        Label paymentPill = new Label(paymentStatus);
+        paymentPill.getStyleClass().add("room-detail-status-pill");
+        paymentPill.getStyleClass().add(paymentStatus.equalsIgnoreCase("Paid") ? "status-pill-paid" : "status-pill-pending");
+        statusBox.getChildren().add(paymentPill);
+
+        card.getChildren().add(statusBox);
+
+        // 4. Price
+        // Format price to show no decimal places if it's a whole number
+        Label priceLabel = new Label("Price: " + String.format("%.0f", room.getPrice()) + "/month");
+        priceLabel.getStyleClass().add("room-detail-price");
+        card.getChildren().add(priceLabel);
+
+        // 5. Facilities Header
+        Label facilitiesLabel = new Label("Facilities:");
+        facilitiesLabel.getStyleClass().add("room-detail-facilities-label");
+        card.getChildren().add(facilitiesLabel);
+
+        // 6. Facilities List
+        VBox facilitiesList = new VBox(2);
+        String facilitiesStr = room.getFacilities();
+        if (facilitiesStr != null && !facilitiesStr.isEmpty()) {
+            // Split the comma-separated string and create a label for each
+            String[] facilities = facilitiesStr.split(",");
+            for (String facility : facilities) {
+                Label facLabel = new Label("-" + facility.trim());
+                facLabel.getStyleClass().add("room-detail-facility-item");
+                facilitiesList.getChildren().add(facLabel);
+            }
+        } else {
+            Label facLabel = new Label("- None");
+            facLabel.getStyleClass().add("room-detail-facility-item");
+            facilitiesList.getChildren().add(facLabel);
+        }
+        card.getChildren().add(facilitiesList);
+
+        return card;
     }
 }

@@ -270,3 +270,67 @@
     -fx-border-width: 4 4 0 4; /* Thicker frame, NO bottom border */
     -fx-min-height: 90px; /* Taller */
 }
+
+/* =============================================================================
+   ROOM DETAIL HOVER CARD
+   ============================================================================= */
+/* The main card container */
+.room-detail-card {
+    -fx-background-color: #D0E8F8; /* Light blue background from image */
+    -fx-background-radius: 15px;
+    -fx-border-radius: 15px;
+    -fx-padding: 20px;
+    /* Add a subtle shadow for depth */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 10, 0, 0, 5);
+    -fx-min-width: 250px;
+}
+
+/* Placeholder for when there is no image, or container for the image */
+.room-detail-image-container {
+    -fx-background-color: #A0C0D0; /* Darker blue-grey placeholder */
+    -fx-background-radius: 10px;
+    -fx-min-height: 150px;
+    -fx-pref-height: 150px;
+    -fx-max-height: 150px;
+    -fx-alignment: center;
+}
+
+/* "Room 1" Title */
+.room-detail-title {
+    -fx-text-fill: #154360; /* Dark blue text */
+    -fx-font-size: 22px;
+    -fx-font-family: "serif"; /* Looks like a serif font in the reference */
+}
+
+/* The small colored status boxes */
+.room-detail-status-pill {
+    -fx-padding: 4px 12px;
+    -fx-background-radius: 12px;
+    -fx-text-fill: #154360;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+.status-pill-available { -fx-background-color: #90EE90; } /* Light green */
+.status-pill-occupied { -fx-background-color: #F08080; } /* Light red */
+.status-pill-pending { -fx-background-color: #FAD7A0; } /* Peach/Orange */
+.status-pill-paid { -fx-background-color: #90EE90; } /* Light green */
+
+/* "Price: ..." label */
+.room-detail-price {
+    -fx-text-fill: #154360;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+}
+
+/* "Facilities:" header */
+.room-detail-facilities-label {
+    -fx-text-fill: #154360;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+}
+
+/* Individual facility items in the list */
+.room-detail-facility-item {
+    -fx-text-fill: #154360;
+    -fx-font-size: 13px;
+}
