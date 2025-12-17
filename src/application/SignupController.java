@@ -10,148 +10,106 @@ import javafx.event.ActionEvent;
 import javafx.stage.Stage;
 import javafx.scene.Node;
 import javafx.application.Platform;
+import java.util.regex.Pattern;
 
 public class SignupController {
 
-    @FXML private TextField usernameField;
-    @FXML private PasswordField passwordField;
+    @FXML private TextField fullNameField;
     @FXML private TextField contactField;
-    @FXML private Button signupButton;
-    @FXML private Button backButton;
+    @FXML private TextField emailField;
     @FXML private ComboBox<String> ownershipCombo;
+    @FXML private PasswordField passwordField;
+    @FXML private PasswordField confirmPasswordField;
+    @FXML private Button signupButton;
 
     @FXML
     private void initialize() {
-        // Populate ComboBox with only Tenant and Owner
         ownershipCombo.getItems().addAll("Tenant", "Owner");
-
-        // Enter key navigation
-        if (usernameField != null && passwordField != null && contactField != null) {
-            usernameField.setOnAction(e -> passwordField.requestFocus());
-            passwordField.setOnAction(e -> contactField.requestFocus());
-            contactField.setOnAction(e -> onSignup(null));
-        }
+        Platform.runLater(() -> fullNameField.requestFocus());
     }
 
     @FXML
     private void onSignup(ActionEvent event) {
-        String username = usernameField.getText() == null ? "" : usernameField.getText().trim();
-        String password = passwordField.getText() == null ? "" : passwordField.getText();
-        String contactNumber = contactField.getText() == null ? "" : contactField.getText().trim();
+        // 1. Get Inputs
+        String fullname = fullNameField.getText().trim();
+        String contact = contactField.getText().trim();
+        String email = emailField.getText().trim();
+        String type = ownershipCombo.getValue();
+        String pass = passwordField.getText();
+        String confirmPass = confirmPasswordField.getText();
 
-        // Get selected role based on ownership type
-        // Owner = owner, Tenant = tenant
-        String role = "tenant"; // default to tenant
-        String ownershipType = ownershipCombo.getValue();
-        if (ownershipType != null && ownershipType.equals("Owner")) {
-            role = "owner";
-        } else if (ownershipType != null && ownershipType.equals("Tenant")) {
-            role = "tenant";
+        // 2. Validation
+        if (fullname.isEmpty() || contact.isEmpty() || email.isEmpty() || type == null || pass.isEmpty()) {
+            showAlert(Alert.AlertType.WARNING, "Missing Info", "Please fill in all fields.");
+            return;
         }
-
-        // Validation
-        if (username.isEmpty() || password.isEmpty() || contactNumber.isEmpty() || ownershipType == null) {
-            showAlert(Alert.AlertType.WARNING, "Validation Error", "Please fill in all fields including ownership type.");
+        if (!pass.equals(confirmPass)) {
+            showAlert(Alert.AlertType.ERROR, "Password Error", "Passwords do not match.");
+            return;
+        }
+        if (pass.length() < 3) {
+            showAlert(Alert.AlertType.WARNING, "Security", "Password must be at least 3 characters.");
+            return;
+        }
+        if (!isValidEmail(email)) {
+            showAlert(Alert.AlertType.WARNING, "Invalid Format", "Please enter a valid email address.");
             return;
         }
 
-        if (username.length() < 3) {
-            showAlert(Alert.AlertType.WARNING, "Validation Error", "Username must be at least 3 characters long.");
-            return;
-        }
+        // 3. Determine Role
+        String role = type.equals("Owner") ? "owner" : "tenant";
 
-        if (password.length() < 3) {
-            showAlert(Alert.AlertType.WARNING, "Validation Error", "Password must be at least 3 characters long.");
-            return;
-        }
-
-        // Register user
-        boolean success = SignupService.registerUser(username, password, role, contactNumber);
+        // 4. Register User
+        boolean success = SignupService.registerUser(fullname, email, pass, role, contact);
 
         if (success) {
-            showAlert(Alert.AlertType.INFORMATION, "Success",
-                    "Account created successfully! You can now log in.");
+            showAlert(Alert.AlertType.INFORMATION, "Success", "Account created successfully! Returning to Homepage.");
 
-            redirectToHomepage(event);
-
+            // --- FIX: Redirect to HOMEPAGE instead of Dashboard ---
+            onBack(event);
         } else {
-            showAlert(Alert.AlertType.ERROR, "Registration Failed",
-                    "Username already exists or registration failed. Please try a different username.");
+            showAlert(Alert.AlertType.ERROR, "Error", "Registration failed. Email might already be in use.");
         }
     }
 
-    @FXML
-    private void onBack(ActionEvent event) {
-        redirectToHomepage(event);
-    }
-
-    private void redirectToHomepage(ActionEvent event) {
-        try {
-            if (event != null) {
-                Stage currentStage = (Stage)((Node)event.getSource()).getScene().getWindow();
-                currentStage.close();
-            }
-
-            Stage homepageStage = new Stage();
-            Parent root = FXMLLoader.load(getClass().getResource("Homepage.fxml"));
-            Scene scene = new Scene(root, 1400, 750); // Explicit size to prevent deformation
-            homepageStage.setTitle("StaySmart");
-            // Set application icon
-            try {
-                Image icon = new Image(getClass().getResource("/application/images/homeicon.png").toExternalForm());
-                homepageStage.getIcons().add(icon);
-            } catch (Exception e) {
-                // Icon not found, continue without it
-            }
-            homepageStage.setScene(scene);
-            homepageStage.setResizable(false);
-            homepageStage.show();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Error", "Failed to load homepage: " + e.getMessage());
-        }
-    }
-
-    private void showAlert(Alert.AlertType type, String title, String message) {
-        Platform.runLater(() -> {
-            Alert alert = new Alert(type);
-            alert.setTitle(title);
-            alert.setHeaderText(null);
-            alert.setContentText(message);
-            if (signupButton != null && signupButton.getScene() != null) {
-                alert.initOwner(signupButton.getScene().getWindow());
-            }
-            alert.showAndWait();
-        });
+    private boolean isValidEmail(String email) {
+        String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        return Pattern.compile(emailRegex).matcher(email).matches();
     }
 
     @FXML
     private void onLoginClick(ActionEvent event) {
+        loadPage(event, "Main.fxml", "Login");
+    }
+
+    @FXML
+    private void onBack(ActionEvent event) {
+        loadPage(event, "Homepage.fxml", "StaySmart");
+    }
+
+    private void loadPage(ActionEvent event, String fxml, String title) {
         try {
-            if (event != null) {
-                Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                currentStage.close();
-            }
+            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            currentStage.close();
 
-            Parent root = FXMLLoader.load(getClass().getResource("Main.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource(fxml));
             Stage stage = new Stage();
-            stage.setTitle("Login");
-            // Set application icon
+            stage.setTitle(title);
             try {
-                Image icon = new Image(getClass().getResource("/application/images/homeicon.png").toExternalForm());
-                stage.getIcons().add(icon);
-            } catch (Exception e) {
-                // Icon not found, continue without it
-            }
+                stage.getIcons().add(new Image(getClass().getResource("/application/images/homeicon.png").toExternalForm()));
+            } catch (Exception ignored) {}
             stage.setScene(new Scene(root));
-            stage.setResizable(false);
             stage.show();
-
         } catch (Exception e) {
             e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Error", "Failed to load login page: " + e.getMessage());
         }
     }
 
+    private void showAlert(Alert.AlertType type, String title, String message) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 }
