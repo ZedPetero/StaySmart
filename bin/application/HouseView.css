@@ -126,8 +126,6 @@
     -fx-padding: 0; -fx-cursor: hand;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 3, 0, 1, 1);
 }
-.rural-window-arched { -fx-background-radius: 35 35 0 0; -fx-border-radius: 35 35 0 0; -fx-border-color: #5D4037; -fx-border-width: 4; }
-.rural-window-rect { -fx-background-radius: 2px; -fx-border-color: #5D4037; -fx-border-width: 4; }
 
 /* Occupied = RED */
 .rural-status-occupied {
@@ -186,8 +184,6 @@
     -fx-padding: 0; -fx-cursor: hand;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 2, 0, 1, 1);
 }
-.urban-window-arched { -fx-background-radius: 35 35 0 0; -fx-border-radius: 35 35 0 0; -fx-border-color: #34495E; -fx-border-width: 3; }
-.urban-window-rect { -fx-background-radius: 0; -fx-border-color: #34495E; -fx-border-width: 3; }
 
 /* Occupied = RED */
 .urban-status-occupied {
@@ -220,7 +216,7 @@
    RURAL PATTERNS
    ============================================================================= */
 
-/* 1. TOP FLOOR (Arched) */
+/* 1. TOP FLOOR / 3RD STEP (Arched) */
 .rural-window-arched {
     -fx-background-radius: 35 35 0 0;
     -fx-border-radius: 35 35 0 0;
@@ -228,14 +224,16 @@
     -fx-border-width: 4;
 }
 
-/* 2. MIDDLE FLOORS (Rectangular Window) */
-.rural-window-rect {
-    -fx-background-radius: 2px;
+/* 2. MIDDLE FLOORS / 2ND STEP (Triangle Head - NEW!) */
+.rural-window-triangle {
+    /* Create a 'house' shape for the pointed top */
+    -fx-shape: "M 0 30 L 50 0 L 100 30 L 100 100 L 0 100 Z";
+    -fx-scale-shape: true;
     -fx-border-color: #5D4037;
-    -fx-border-width: 4;
+    -fx-border-width: 2;
 }
 
-/* 3. GROUND FLOOR (Door Style) - NEW! */
+/* 3. GROUND FLOOR / 1ST STEP (Door Style) */
 .rural-window-door {
     -fx-background-radius: 4px 4px 0 0; /* Slightly rounded top */
     -fx-border-color: #5D4037;
@@ -243,12 +241,19 @@
     -fx-min-height: 85px; /* Slightly taller to look like a door */
 }
 
+/* Helper for default/rect if needed */
+.rural-window-rect {
+    -fx-background-radius: 2px;
+    -fx-border-color: #5D4037;
+    -fx-border-width: 4;
+}
+
 
 /* =============================================================================
    URBAN PATTERNS
    ============================================================================= */
 
-/* 1. TOP FLOOR (Arched) */
+/* 1. TOP FLOOR / 3RD STEP (Arched) */
 .urban-window-arched {
     -fx-background-radius: 35 35 0 0;
     -fx-border-radius: 35 35 0 0;
@@ -256,19 +261,28 @@
     -fx-border-width: 3;
 }
 
-/* 2. MIDDLE FLOORS (Rectangular Window) */
-.urban-window-rect {
-    -fx-background-radius: 0;
-    -fx-border-color: #34495E;
-    -fx-border-width: 3;
+/* 2. MIDDLE FLOORS / 2ND STEP (Triangle Head - NEW!) */
+.urban-window-triangle {
+    /* Create a 'house' shape for the pointed top */
+    -fx-shape: "M 0 30 L 50 0 L 100 30 L 100 100 L 0 100 Z";
+    -fx-scale-shape: true;
+    -fx-border-color: #2C3E50;
+    -fx-border-width: 2;
 }
 
-/* 3. GROUND FLOOR (Door Style) - NEW! */
+/* 3. GROUND FLOOR / 1ST STEP (Door Style) */
 .urban-window-door {
     -fx-background-radius: 2px 2px 0 0;
     -fx-border-color: #2C3E50;
     -fx-border-width: 4 4 0 4; /* Thicker frame, NO bottom border */
     -fx-min-height: 90px; /* Taller */
+}
+
+/* Helper for default/rect if needed */
+.urban-window-rect {
+    -fx-background-radius: 0;
+    -fx-border-color: #34495E;
+    -fx-border-width: 3;
 }
 
 /* =============================================================================
@@ -333,4 +347,17 @@
 .room-detail-facility-item {
     -fx-text-fill: #154360;
     -fx-font-size: 13px;
+}
+
+/* Urban Maintenance (Yellow/Orange) */
+.urban-status-maintenance {
+    -fx-background-color: #F1C40F; /* Yellow */
+    -fx-border-color: #D4AC0D;
+    -fx-border-width: 1;
+}
+
+/* Rural Maintenance (Yellow/Orange Wood) */
+.rural-status-maintenance {
+    -fx-background-color: #D4AC0D;
+    -fx-border-color: #7d6608;
 }
