@@ -168,4 +168,54 @@ public class MyPropertiesController {
         List<Floor> floors = temp.fetchFloorsAndRooms(prop.getId());
         controller.setupPropertyData(prop, floors);
     }
+    // Inside MyPropertiesController.java
+
+    public void deleteProperty(Property property) {
+        // 1. Confirm with user
+        javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete Property");
+        alert.setHeaderText("Are you sure you want to delete " + property.getName() + "?");
+        alert.setContentText("This will also remove all associated rooms and floors.");
+
+        if (alert.showAndWait().get() == javafx.scene.control.ButtonType.OK) {
+            String query = "DELETE FROM properties WHERE id = ?"; // Tables 'rooms' and 'property_floors' will cascade
+
+            try (Connection conn = DatabaseHandler.getConnection();
+                 PreparedStatement pstmt = conn.prepareStatement(query)) {
+
+                pstmt.setInt(1, property.getId());
+                pstmt.executeUpdate();
+
+                // 2. Refresh the UI
+                loadPropertiesFromDatabase();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void openEditPropertyDialog(Property property) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("AddPropertyDialog.fxml"));
+            Parent root = loader.load();
+
+            AddPropertyController controller = loader.getController();
+            controller.setExistingPropertyData(property);
+
+            Stage stage = new Stage();
+            stage.setTitle("Edit Property: " + property.getName());
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+
+            // --- FIX: Use showAndWait() to trigger refresh after closing ---
+            stage.showAndWait();
+
+            // Refresh the grid to show updated amenities/data
+            loadPropertiesFromDatabase();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
