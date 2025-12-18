@@ -21,11 +21,20 @@
             </clip>
         </StackPane>
 
-        <Button fx:id="deleteBtn" text="✕"
-                style="-fx-background-color: transparent; -fx-text-fill: black; -fx-font-weight: bold;
-                   -fx-font-size: 14px; -fx-cursor: hand; -fx-padding: 0;">
+        <Button fx:id="btnHeart" text="❤" onAction="#handleHeartClick"
+                style="-fx-background-color: white; -fx-text-fill: #e0e0e0; -fx-background-radius: 50;
+               -fx-font-size: 16px; -fx-cursor: hand; -fx-min-width: 32; -fx-min-height: 32;">
+               -fx-min-width: 32; -fx-min-height: 32; -fx-max-width: 32; -fx-max-height: 32;">
             <StackPane.margin>
-                <Insets top="5" right="10"/>
+                <Insets top="12" right="12"/>
+            </StackPane.margin>
+        </Button>
+
+        <Button fx:id="deleteBtn" text="✕"
+                style="-fx-background-color: rgba(255,255,255,0.8); -fx-text-fill: black; -fx-font-weight: bold;
+               -fx-font-size: 12px; -fx-cursor: hand; -fx-background-radius: 50; -fx-min-width: 25; -fx-min-height: 25;">
+            <StackPane.margin>
+                <Insets top="10" right="10"/>
             </StackPane.margin>
         </Button>
     </StackPane>

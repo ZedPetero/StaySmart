@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox spacing="15" style="-fx-background-color: white; -fx-padding: 25; -fx-background-radius: 15;"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.SavePropertyDialogController">
+
+    <Label text="Save to Collections" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #113970;"/>
+    <Label text="Select all categories that apply:" style="-fx-text-fill: #666;"/>
+
+    <VBox spacing="10">
+        <CheckBox fx:id="checkCampus" text="Near Campus" style="-fx-cursor: hand;"/>
+        <CheckBox fx:id="checkPremium" text="Premium Options" style="-fx-cursor: hand;"/>
+        <CheckBox fx:id="checkBudget" text="Budget Picks" style="-fx-cursor: hand;"/>
+    </VBox>
+
+    <HBox spacing="10" alignment="CENTER_RIGHT">
+        <padding><Insets top="10"/></padding>
+        <Button text="Cancel" onAction="#handleCancel" style="-fx-background-color: #f0f0f0; -fx-cursor: hand;"/>
+        <Button text="Save Selection" onAction="#handleSave"
+                style="-fx-background-color: #113970; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;"/>
+    </HBox>
+</VBox>

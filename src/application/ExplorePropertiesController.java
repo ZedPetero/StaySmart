@@ -71,26 +71,35 @@ public class ExplorePropertiesController {
             while (rs.next()) {
                 hasProperties = true;
 
-                // Construct Property Object matching your Constructor
                 Property p = new Property(
                         rs.getInt("id"),
                         rs.getString("name"),
                         rs.getString("location"),
-                        rs.getDouble("price"), // Database has price column
+                        rs.getDouble("price"),
                         rs.getString("type"),
-                        rs.getString("floors"), // Usually "total_floors" in DB, check your column name
+                        rs.getString("floors"),
                         rs.getString("image_path"),
                         rs.getString("amenities")
                 );
 
-                // Create the Card UI (Mimicking Landlord View)
-                VBox card = createPropertyCard(p);
-                propertiesGrid.add(card, column, row);
+                // FIX: Load the FXML instead of manually creating a VBox
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("PropertyCard.fxml"));
+                    VBox card = loader.load();
 
-                column++;
-                if (column == 3) {
-                    column = 0;
-                    row++;
+                    PropertyCardController controller = loader.getController();
+                    // Passing 'null' as the second argument tells the controller it's a Tenant view
+                    controller.setData(p, null);
+
+                    propertiesGrid.add(card, column, row);
+
+                    column++;
+                    if (column == 3) {
+                        column = 0;
+                        row++;
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
 

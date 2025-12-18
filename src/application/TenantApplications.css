@@ -168,3 +168,11 @@
     -fx-background-radius: 20;
     -fx-font-weight: bold;
 }
+
+.type-badge {
+    -fx-font-size: 10px;
+    -fx-font-family: "Outfit Bold";
+    /* The colors are handled in Java above, but you can put defaults here */
+    -fx-padding: 2 8;
+    -fx-background-radius: 5;
+}

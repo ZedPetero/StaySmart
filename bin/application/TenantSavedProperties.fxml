@@ -6,145 +6,33 @@
 <?import javafx.geometry.Insets?>
 
 <ScrollPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="application.TenantSavedPropertiesController"
             fitToWidth="true"
-            style="-fx-background-color: transparent; -fx-background: transparent; -fx-padding: 0; -fx-background-insets: 0;"
+            style="-fx-background-color: transparent; -fx-background: transparent; -fx-padding: 0;"
             stylesheets="@TenantSavedProperties.css">
 
     <content>
-        <VBox spacing="25" style="-fx-background-color: transparent;">
-
-            <padding><Insets top="0" right="0" bottom="50" left="0"/></padding>
-
-            <Region prefHeight="10" />
+        <VBox spacing="25" style="-fx-background-color: transparent; -fx-padding: 20;">
 
             <HBox alignment="CENTER_LEFT">
                 <VBox spacing="5">
                     <Label text="Saved Properties" styleClass="page-title"/>
-                    <Label text="You have 6 saved properties" styleClass="page-subtitle"/>
+                    <Label fx:id="lblTotalCount" text="You have 0 saved properties" styleClass="page-subtitle"/>
                 </VBox>
                 <Region HBox.hgrow="ALWAYS"/>
                 <Button text="Recently Saved" styleClass="btn-sort"/>
             </HBox>
 
-            <HBox styleClass="tabs-container" alignment="CENTER_LEFT" spacing="5" maxWidth="Infinity">
-                <Button text="All Saved (6)" styleClass="tab-btn, tab-active"/>
-                <Button text="Near Campus (2)" styleClass="tab-btn"/>
-                <Button text="Premium Options (2)" styleClass="tab-btn"/>
-                <Button text="Budget Picks (2)" styleClass="tab-btn"/>
+            <HBox styleClass="tabs-container" alignment="CENTER_LEFT" spacing="5">
+                <Button fx:id="btnAll" text="All Saved" onAction="#handleFilterAll" styleClass="tab-btn, tab-active"/>
+                <Button fx:id="btnCampus" text="Near Campus" onAction="#handleFilterCampus" styleClass="tab-btn"/>
+                <Button fx:id="btnPremium" text="Premium Options" onAction="#handleFilterPremium" styleClass="tab-btn"/>
+                <Button fx:id="btnBudget" text="Budget Picks" onAction="#handleFilterBudget" styleClass="tab-btn"/>
             </HBox>
 
-            <FlowPane hgap="30" vgap="30" prefWrapLength="1200">
-
-                <VBox styleClass="property-card" prefWidth="300">
-                    <StackPane alignment="TOP_LEFT" prefHeight="180" styleClass="image-placeholder">
-                        <ImageView fitWidth="300" fitHeight="180" preserveRatio="false">
-                            <image><Image url="@images/sampleroom1.jpg"/></image>
-                        </ImageView>
-                        <HBox styleClass="badge-available" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity">
-                            <StackPane.margin><Insets top="15" left="15"/></StackPane.margin>
-                            <Label text="Available" styleClass="badge-text"/>
-                        </HBox>
-                        <Button styleClass="btn-remove" maxHeight="-Infinity" maxWidth="-Infinity" StackPane.alignment="TOP_RIGHT">
-                            <StackPane.margin><Insets top="15" right="15"/></StackPane.margin>
-                        </Button>
-                    </StackPane>
-
-                    <VBox spacing="8">
-                        <padding><Insets top="15" right="20" bottom="20" left="20"/></padding>
-                        <HBox alignment="CENTER_LEFT">
-                            <Label text="Budget-Friendly Boarding House" styleClass="card-title" wrapText="true" maxWidth="200"/>
-                            <Region HBox.hgrow="ALWAYS"/>
-                            <Label text="⭐ 4.7" styleClass="rating-text"/>
-                        </HBox>
-                        <Label text="₱5,500/month" styleClass="card-price"/>
-                        <Label text="UM Matina Drive, Davao City" styleClass="card-location"/>
-                        <Label text="Saved on Dec 3, 2025" styleClass="saved-date"/>
-                        <HBox spacing="8">
-                            <Label text="WiFi" styleClass="amenity-pill"/>
-                            <Label text="Aircon" styleClass="amenity-pill"/>
-                            <Label text="Own CR" styleClass="amenity-pill"/>
-                        </HBox>
-                        <Region prefHeight="10"/>
-                        <HBox spacing="10">
-                            <Button text="View Details" styleClass="btn-view-details" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
-                            <Button styleClass="btn-square-secondary"/>
-                        </HBox>
-                    </VBox>
-                </VBox>
-
-                <VBox styleClass="property-card" prefWidth="300">
-                    <StackPane alignment="TOP_LEFT" prefHeight="180" styleClass="image-placeholder">
-                        <ImageView fitWidth="300" fitHeight="180" preserveRatio="false">
-                            <image><Image url="@images/sampleroom2.jpg"/></image>
-                        </ImageView>
-                        <HBox styleClass="badge-available" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity">
-                            <StackPane.margin><Insets top="15" left="15"/></StackPane.margin>
-                            <Label text="Available" styleClass="badge-text"/>
-                        </HBox>
-                        <Button styleClass="btn-remove" maxHeight="-Infinity" maxWidth="-Infinity" StackPane.alignment="TOP_RIGHT">
-                            <StackPane.margin><Insets top="15" right="15"/></StackPane.margin>
-                        </Button>
-                    </StackPane>
-                    <VBox spacing="8">
-                        <padding><Insets top="15" right="20" bottom="20" left="20"/></padding>
-                        <HBox alignment="CENTER_LEFT">
-                            <Label text="Modern Boarding House" styleClass="card-title" wrapText="true" maxWidth="200"/>
-                            <Region HBox.hgrow="ALWAYS"/>
-                            <Label text="⭐ 4.9" styleClass="rating-text"/>
-                        </HBox>
-                        <Label text="₱3,500/month" styleClass="card-price"/>
-                        <Label text="Sandawa, Davao City" styleClass="card-location"/>
-                        <Label text="Saved on Dec 5, 2025" styleClass="saved-date"/>
-                        <HBox spacing="8">
-                            <Label text="WiFi" styleClass="amenity-pill"/>
-                            <Label text="Own Sink" styleClass="amenity-pill"/>
-                            <Label text="Kitchen" styleClass="amenity-pill"/>
-                        </HBox>
-                        <Region prefHeight="10"/>
-                        <HBox spacing="10">
-                            <Button text="View Details" styleClass="btn-view-details" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
-                            <Button styleClass="btn-square-secondary"/>
-                        </HBox>
-                    </VBox>
-                </VBox>
-
-                <VBox styleClass="property-card" prefWidth="300">
-                    <StackPane alignment="TOP_LEFT" prefHeight="180" styleClass="image-placeholder">
-                        <ImageView fitWidth="300" fitHeight="180" preserveRatio="false">
-                            <image><Image url="@images/sampleroom3.jpg"/></image>
-                        </ImageView>
-                        <HBox styleClass="badge-available" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity">
-                            <StackPane.margin><Insets top="15" left="15"/></StackPane.margin>
-                            <Label text="Available" styleClass="badge-text"/>
-                        </HBox>
-                        <Button styleClass="btn-remove" maxHeight="-Infinity" maxWidth="-Infinity" StackPane.alignment="TOP_RIGHT">
-                            <StackPane.margin><Insets top="15" right="15"/></StackPane.margin>
-                        </Button>
-                    </StackPane>
-                    <VBox spacing="8">
-                        <padding><Insets top="15" right="20" bottom="20" left="20"/></padding>
-                        <HBox alignment="CENTER_LEFT">
-                            <Label text="Affordable Studio Type" styleClass="card-title" wrapText="true" maxWidth="200"/>
-                            <Region HBox.hgrow="ALWAYS"/>
-                            <Label text="⭐ 5.2" styleClass="rating-text"/>
-                        </HBox>
-                        <Label text="₱4,200/month" styleClass="card-price"/>
-                        <Label text="Maa Crossing, Davao City" styleClass="card-location"/>
-                        <Label text="Saved on Dec 6, 2025" styleClass="saved-date"/>
-                        <HBox spacing="8">
-                            <Label text="WiFi" styleClass="amenity-pill"/>
-                            <Label text="Kitchen" styleClass="amenity-pill"/>
-                            <Label text="Laundry" styleClass="amenity-pill"/>
-                        </HBox>
-                        <Region prefHeight="10"/>
-                        <HBox spacing="10">
-                            <Button text="View Details" styleClass="btn-view-details" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
-                            <Button styleClass="btn-square-secondary"/>
-                        </HBox>
-                    </VBox>
-                </VBox>
-
+            <FlowPane fx:id="savedPropertiesFlowPane" hgap="30" vgap="30" prefWrapLength="1200">
             </FlowPane>
+
         </VBox>
     </content>
 </ScrollPane>

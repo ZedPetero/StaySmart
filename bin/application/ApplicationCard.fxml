@@ -9,7 +9,10 @@
 <VBox styleClass="application-card" spacing="15" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.ApplicationCardController">
     <HBox alignment="CENTER_LEFT">
         <VBox spacing="2">
-            <Label fx:id="lblPropertyName" text="Property Name" styleClass="app-card-title"/>
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label fx:id="lblPropertyName" text="Property Name" styleClass="app-card-title"/>
+                <Label fx:id="lblType" text="Booking" styleClass="type-badge"/>
+            </HBox>
             <Label fx:id="lblApplyDate" text="Applied on: Just now" styleClass="app-card-subtitle"/>
         </VBox>
         <Region HBox.hgrow="ALWAYS"/>
