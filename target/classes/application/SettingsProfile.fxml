@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+
+<VBox spacing="25.0" styleClass="settings-content-card" stylesheets="@LandlordSettings.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.LandlordProfileController">
+
+    <Label styleClass="card-header" text="Profile Information" />
+
+    <HBox alignment="CENTER_LEFT" spacing="20.0">
+        <ImageView fx:id="profileImage" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@images/user.png" />
+            </image>
+            <clip>
+                <Circle centerX="50.0" centerY="50.0" radius="50.0" />
+            </clip>
+        </ImageView>
+
+        <VBox alignment="CENTER_LEFT" spacing="10.0">
+            <Button onAction="#handleChangePhoto" styleClass="btn-small-blue" text="Change Photo" />
+            <Label styleClass="text-caption" text="JPG, GIF or PNG. Max size of 2MB" />
+        </VBox>
+    </HBox>
+
+    <GridPane hgap="30.0" vgap="20.0">
+        <columnConstraints>
+            <ColumnConstraints hgrow="ALWAYS" percentWidth="50.0" />
+            <ColumnConstraints hgrow="ALWAYS" percentWidth="50.0" />
+        </columnConstraints>
+
+        <VBox spacing="8.0" GridPane.columnIndex="0" GridPane.rowIndex="0">
+            <Label styleClass="input-label" text="Full Name" />
+            <TextField fx:id="txtFullName" promptText="Enter full name" styleClass="input-field" />
+        </VBox>
+
+        <VBox spacing="8.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
+            <Label styleClass="input-label" text="Email Address" />
+            <TextField fx:id="txtEmail" promptText="Enter email address" styleClass="input-field" />
+        </VBox>
+
+        <VBox spacing="8.0" GridPane.columnIndex="0" GridPane.rowIndex="1">
+            <Label styleClass="input-label" text="Phone Number" />
+            <TextField fx:id="txtPhone" promptText="+63 ..." styleClass="input-field" />
+        </VBox>
+
+        <VBox spacing="8.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <Label styleClass="input-label" text="Address" />
+            <TextField fx:id="txtAddress" promptText="Enter your address" styleClass="input-field" />
+        </VBox>
+
+        <VBox spacing="8.0" GridPane.columnIndex="0" GridPane.rowIndex="2">
+            <Label styleClass="input-label" text="Business Name" />
+            <TextField fx:id="txtBusinessName" promptText="Enter business name" styleClass="input-field" />
+        </VBox>
+
+        <VBox spacing="8.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <Label styleClass="input-label" text="Business Type" />
+            <ComboBox fx:id="cmbBusinessType" maxWidth="Infinity" styleClass="input-field">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="Individual Landlord" />
+                        <String fx:value="Property Management Company" />
+                    </FXCollections>
+                </items>
+            </ComboBox>
+        </VBox>
+
+        <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+        </rowConstraints>
+    </GridPane>
+
+    <HBox spacing="15.0" style="-fx-padding: 10 0 0 0;">
+        <Button onAction="#handleSave" styleClass="btn-primary" text="Save Changes" />
+        <Button onAction="#handleCancel" styleClass="btn-secondary" text="Cancel" />
+    </HBox>
+
+</VBox>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<ScrollPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="application.TenantApplicationsController"
+            fitToWidth="true"
+            style="-fx-background-color: transparent; -fx-background: transparent; -fx-padding: 0;"
+            stylesheets="@TenantApplications.css">
+
+    <content>
+        <VBox spacing="25" style="-fx-background-color: transparent; -fx-padding: 20;">
+            <VBox spacing="5">
+                <Label text="My Applications" styleClass="page-title"/>
+                <Label text="Track the status of your rental applications" styleClass="page-subtitle"/>
+            </VBox>
+
+            <HBox spacing="20" alignment="CENTER_LEFT">
+                <VBox styleClass="stat-card" HBox.hgrow="ALWAYS">
+                    <Label text="Total" styleClass="stat-label"/>
+                    <Label fx:id="lblTotal" text="0" styleClass="stat-number"/>
+                </VBox>
+                <VBox styleClass="stat-card" HBox.hgrow="ALWAYS">
+                    <Label text="Pending" styleClass="stat-label"/>
+                    <Label fx:id="lblPending" text="0" styleClass="stat-number"/>
+                </VBox>
+                <VBox styleClass="stat-card" HBox.hgrow="ALWAYS">
+                    <Label text="Approved" styleClass="stat-label"/>
+                    <Label fx:id="lblApproved" text="0" styleClass="stat-number"/>
+                </VBox>
+                <VBox styleClass="stat-card" HBox.hgrow="ALWAYS">
+                    <Label text="Rejected" styleClass="stat-label"/>
+                    <Label fx:id="lblRejected" text="0" styleClass="stat-number"/>
+                </VBox>
+            </HBox>
+
+            <VBox fx:id="applicationsListContainer" spacing="15" />
+        </VBox>
+    </content>
+</ScrollPane>

@@ -4,17 +4,19 @@ import application.model.Room;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 
 public class ApplicationDialogController {
 
-    @FXML private Label lblRoomTitle;
-    @FXML private TextArea txtAppMessage;
-    @FXML private ComboBox<String> comboPayment;
-    @FXML private TextField txtContact;
-    @FXML private TextArea txtTourMessage;
+    @FXML
+    private Label lblRoomTitle;
+    @FXML
+    private TextArea txtAppMessage;
+    @FXML
+    private ComboBox<String> comboPayment;
+    @FXML
+    private TextField txtContact;
+    @FXML
+    private TextArea txtTourMessage;
 
     private Room currentRoom;
 
@@ -47,26 +49,25 @@ public class ApplicationDialogController {
     }
 
     private void saveToDatabase(String type, String message, String payment, String contact) {
-        String sql = "INSERT INTO applications (room_id, tenant_id, property_id, application_type, message, payment_method, contact_number) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        if (LoginController.getCurrentUser() == null) {
+            showAlert("Error", "You must be logged in to apply.");
+            return;
+        }
 
-        try (Connection conn = DatabaseHandler.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        boolean success = DatabaseHandler.saveApplication(
+                currentRoom.getId(),
+                LoginController.getCurrentUser().getId(),
+                currentRoom.getPropertyId(),
+                type,
+                message,
+                payment,
+                contact);
 
-            pstmt.setInt(1, currentRoom.getId()); // Works now with updated Room.java
-            pstmt.setInt(2, LoginController.getCurrentUser().getId());
-            pstmt.setInt(3, currentRoom.getPropertyId());
-            pstmt.setString(4, type);
-            pstmt.setString(5, message);
-            pstmt.setString(6, payment);
-            pstmt.setString(7, contact);
-
-            pstmt.executeUpdate();
+        if (success) {
             showAlert("Success", "Request sent successfully!");
             ((Stage) lblRoomTitle.getScene().getWindow()).close();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            showAlert("Error", "Database error: " + e.getMessage());
+        } else {
+            showAlert("Error", "Failed to send request. Check database connection.");
         }
     }
 

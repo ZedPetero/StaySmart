@@ -1,0 +1,180 @@
+/* RESET SCROLL PANE to prevent layout shifts */
+.scroll-pane {
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+    -fx-background-color: transparent;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+/* --- GLOBAL --- */
+.root {
+    -fx-font-family: 'Outfit', sans-serif;
+}
+
+/* --- TOP BAR --- */
+.top-search-bar {
+    -fx-background-color: #DDEBF7; /* Very light blue */
+    -fx-background-radius: 20;
+    -fx-pref-height: 45;
+}
+
+.transparent-text-field {
+    -fx-background-color: transparent;
+    -fx-prompt-text-fill: #7d8da1;
+    -fx-text-fill: #333;
+    -fx-font-size: 14px;
+}
+
+.icon-btn {
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 3, 0, 0, 2);
+}
+
+/* --- HEADER --- */
+.page-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: black;
+}
+
+.page-subtitle {
+    -fx-font-size: 14px;
+    -fx-text-fill: #666;
+}
+
+.btn-sort {
+    -fx-background-color: #AABBC9;
+    -fx-text-fill: white;
+    -fx-background-radius: 8;
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+}
+
+/* --- FILTER TABS --- */
+.tabs-container {
+    -fx-background-color: rgba(255, 255, 255, 0.5);
+    -fx-background-radius: 30;
+    -fx-padding: 5;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 5, 0, 0, 2);
+}
+
+.tab-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #555;
+    -fx-font-weight: bold;
+    -fx-background-radius: 20;
+    -fx-cursor: hand;
+    -fx-padding: 8 20 8 20;
+}
+
+.tab-active {
+    -fx-background-color: white;
+    -fx-text-fill: black;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 3, 0, 0, 1);
+}
+
+/* --- CARDS --- */
+.property-card {
+    -fx-background-color: rgba(255, 255, 255, 0.45); /* Glass effect */
+    -fx-background-radius: 20;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 10, 0, 0, 5);
+}
+
+.image-placeholder {
+    -fx-background-color: #b8d1e0;
+    -fx-background-radius: 20 20 0 0;
+}
+
+/* "Available" Pill */
+.badge-available {
+    -fx-background-color: #39FF64;
+    -fx-background-radius: 20;
+    -fx-padding: 5 15 5 15;
+}
+.badge-text {
+    -fx-text-fill: #004d1a;
+    -fx-font-weight: bold;
+    -fx-font-size: 11px;
+}
+
+/* Red Remove Button */
+.btn-remove {
+    -fx-background-color: #FF3939; /* Red */
+    -fx-background-radius: 8;
+    -fx-min-width: 35;
+    -fx-min-height: 35;
+    -fx-cursor: hand;
+}
+
+/* Content Text */
+.card-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: black;
+}
+
+.rating-text {
+    -fx-text-fill: #FFB800; /* Gold Star Color */
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+}
+
+.card-price {
+    -fx-text-fill: #3300FF;
+    -fx-font-weight: bold;
+    -fx-font-size: 15px;
+}
+
+.card-location {
+    -fx-text-fill: #777;
+    -fx-font-size: 13px;
+}
+
+.saved-date {
+    -fx-text-fill: #333;
+    -fx-font-size: 12px;
+    -fx-font-style: italic;
+    -fx-padding: 0 0 5 0; /* spacing below */
+}
+
+/* Amenities */
+.amenity-pill {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-padding: 4 10 4 10;
+    -fx-text-fill: #555;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+/* Footer Buttons */
+.btn-view-details {
+    -fx-background-color: #000000; /* Black as per image */
+    -fx-text-fill: white;
+    -fx-background-radius: 8;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-pref-height: 35;
+}
+
+.btn-square-secondary {
+    -fx-background-color: rgba(255,255,255,0.6);
+    -fx-border-color: #ccc;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-min-width: 35;
+    -fx-min-height: 35;
+    -fx-cursor: hand;
+}
+
+.scroll-pane {
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}

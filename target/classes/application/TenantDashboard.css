@@ -1,0 +1,89 @@
+/* --- APP FONTS --- */
+/* Ensure your fonts are loaded in the Controller or Main class */
+.root {
+    -fx-font-family: 'Outfit', sans-serif;
+}
+
+/* --- SIDEBAR CONTAINER --- */
+.sidebar {
+    -fx-background-color: #243845; /* The Dark Blue Background */
+}
+
+/* --- NAVIGATION ITEMS --- */
+.nav-item {
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+    -fx-min-height: 50px;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 0 0 0 40; /* Moves content right, but background fills edge-to-edge */
+}
+
+/* Default (Inactive) Text */
+.nav-text {
+    -fx-text-fill: white; /* Text is white on the dark background */
+    -fx-font-family: 'Outfit';
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+/* --- HOVER STATE --- */
+.nav-item:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.1); /* Slight white tint on hover */
+}
+
+/* --- ACTIVE STATE (Selected Tab) --- */
+.nav-item.active {
+    -fx-background-color: white; /* The "White Box" highlight */
+}
+
+.nav-item.active .nav-text {
+    -fx-text-fill: #243845; /* Text turns Dark Blue inside the white box */
+}
+
+/* --- APP TITLE --- */
+.app-title {
+    -fx-alignment: CENTER_LEFT;
+    /* Maintain the alignment since we removed global sidebar padding */
+    -fx-padding: 0 0 0 40;
+}
+
+.app-name {
+    -fx-font-family: 'Outfit';
+    -fx-font-weight: bold;
+    -fx-font-size: 20px;
+    -fx-text-fill: white;
+}
+
+/* --- MAIN CONTENT BACKGROUND --- */
+.background-gradient {
+    -fx-background-color: linear-gradient(to bottom right, #f4f7f9, #eef2f5);
+}
+
+/* --- TOP BAR --- */
+.top-bar {
+    -fx-background-color: transparent;
+}
+
+.search-container {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-padding: 0 15;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 5, 0, 0, 2);
+}
+
+.search-field {
+    -fx-background-color: transparent;
+    -fx-prompt-text-fill: #9CA3AF;
+    -fx-text-fill: #243845;
+    -fx-font-size: 14px;
+}
+
+/* --- ICONS --- */
+/* Note: Changing PNG icon colors via CSS is limited in JavaFX.
+   This attempts to darken them when the parent .nav-item is active,
+   but it depends on your JavaFX version support for -fx-effect on ImageViews inside specific parents. */
+.nav-item.active ImageView {
+    /* This is a trick to tint the icon to the dark blue color #243845.
+       It creates an inner shadow of that color that overlays the image. */
+    -fx-effect: innershadow(gaussian, #243845, 100, 0, 0, 0);
+}

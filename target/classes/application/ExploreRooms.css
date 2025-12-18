@@ -1,0 +1,101 @@
+/* --- BASE FONT --- */
+.root {
+    -fx-font-family: 'Outfit', sans-serif;
+}
+
+/* --- SEARCH & FILTER SECTION --- */
+.search-bar-container {
+    -fx-background-color: rgba(255, 255, 255, 0.6);
+    -fx-background-radius: 20;
+    -fx-padding: 15;
+}
+
+.search-input {
+    -fx-background-color: #AABBC9;
+    -fx-background-radius: 10;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: #485b6b;
+    -fx-font-size: 16px;
+}
+
+.filter-button {
+    -fx-background-color: #AABBC9;
+    -fx-background-radius: 10;
+    -fx-text-fill: #485b6b;
+    -fx-font-size: 16px;
+    -fx-cursor: hand;
+    -fx-alignment: CENTER;
+}
+
+/* --- ROOM CARD --- */
+.room-card {
+    -fx-background-color: rgba(255, 255, 255, 0.4);
+    -fx-background-radius: 20;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 10, 0, 0, 5);
+}
+
+/* Placeholder background (Shows if image is missing) */
+.room-image-placeholder {
+    -fx-background-color: #b8d1e0;
+    -fx-background-radius: 20 20 0 0; /* Top corners rounded */
+}
+
+/* "Available" Badge (UPDATED) */
+.status-badge {
+    -fx-background-color: #39FF64; /* Bright Green */
+    -fx-background-radius: 20;     /* Fully rounded pill shape */
+    -fx-padding: 5 15 5 15;        /* Padding inside the pill */
+    -fx-min-width: 80px;           /* Optional: ensures they are not too tiny */
+}
+
+.status-text {
+    -fx-text-fill: #004d1a;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+}
+
+/* Texts */
+.room-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: black;
+}
+
+.room-price {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #3300FF;
+}
+
+.room-location {
+    -fx-font-size: 14px;
+    -fx-text-fill: #7d8da1;
+}
+
+/* Amenities Pills */
+.amenity-tag {
+    -fx-background-color: white;
+    -fx-background-radius: 15;
+    -fx-padding: 5 15 5 15;
+    -fx-border-color: transparent;
+}
+
+.amenity-text {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #555;
+}
+
+/* View Details Button */
+.btn-view-details {
+    -fx-background-color: #3300FF;
+    -fx-text-fill: white;
+    -fx-background-radius: 10;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+}
+
+.btn-view-details:hover {
+    -fx-background-color: #2bd;
+}

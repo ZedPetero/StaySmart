@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.Insets?>
+
+<ScrollPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="application.TenantSavedPropertiesController"
+            fitToWidth="true"
+            style="-fx-background-color: transparent; -fx-background: transparent; -fx-padding: 0;"
+            stylesheets="@TenantSavedProperties.css">
+
+    <content>
+        <VBox spacing="25" style="-fx-background-color: transparent; -fx-padding: 20;">
+
+            <HBox alignment="CENTER_LEFT">
+                <VBox spacing="5">
+                    <Label text="Saved Properties" styleClass="page-title"/>
+                    <Label fx:id="lblTotalCount" text="You have 0 saved properties" styleClass="page-subtitle"/>
+                </VBox>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button text="Recently Saved" styleClass="btn-sort"/>
+            </HBox>
+
+            <HBox styleClass="tabs-container" alignment="CENTER_LEFT" spacing="5">
+                <Button fx:id="btnAll" text="All Saved" onAction="#handleFilterAll" styleClass="tab-btn, tab-active"/>
+                <Button fx:id="btnCampus" text="Near Campus" onAction="#handleFilterCampus" styleClass="tab-btn"/>
+                <Button fx:id="btnPremium" text="Premium Options" onAction="#handleFilterPremium" styleClass="tab-btn"/>
+                <Button fx:id="btnBudget" text="Budget Picks" onAction="#handleFilterBudget" styleClass="tab-btn"/>
+            </HBox>
+
+            <FlowPane fx:id="savedPropertiesFlowPane" hgap="30" vgap="30" prefWrapLength="1200">
+            </FlowPane>
+
+        </VBox>
+    </content>
+</ScrollPane>

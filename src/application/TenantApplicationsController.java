@@ -1,9 +1,11 @@
 package application;
 
+import application.model.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.layout.VBox;
 import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,17 +22,16 @@ public class TenantApplicationsController {
     }
 
     public void loadApplications() {
-        // 1. Clear existing cards
         applicationsListContainer.getChildren().clear();
 
         int userId = LoginController.getCurrentUser().getId();
         int total = 0, pending = 0, approved = 0, rejected = 0;
 
-        // 2. Query joins applications with properties and rooms for full details
-        String sql = "SELECT a.*, p.name as property_name, r.room_number " +
+        String sql = "SELECT a.*, p.name as property_name, r.room_number, p.landlord_id, u.fullname as landlord_name " +
                 "FROM applications a " +
                 "JOIN properties p ON a.property_id = p.id " +
                 "JOIN rooms r ON a.room_id = r.id " +
+                "JOIN users u ON p.landlord_id = u.id " +
                 "WHERE a.tenant_id = ? " +
                 "ORDER BY a.apply_date DESC";
 
@@ -44,26 +45,34 @@ public class TenantApplicationsController {
                 total++;
                 String status = rs.getString("status");
 
-                // Update stats counters
                 if (status.equalsIgnoreCase("Pending")) pending++;
                 else if (status.equalsIgnoreCase("Approved")) approved++;
                 else if (status.equalsIgnoreCase("Rejected")) rejected++;
 
-                // 3. Load the Application Card FXML for each row
                 try {
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/ApplicationCard.fxml"));
                     VBox card = loader.load();
 
-                    // 4. Pass data to the card's controller
                     ApplicationCardController cardController = loader.getController();
-                    cardController.setApplicationData(
-                            rs.getString("property_name") + " - Room " + rs.getString("room_number"),
-                            rs.getString("apply_date"),
-                            status,
-                            rs.getString("payment_method"),
+
+                    Application app = new Application(
+                            rs.getInt("id"),
+                            rs.getInt("room_id"),
+                            rs.getInt("tenant_id"),
+                            rs.getInt("property_id"),
+                            rs.getString("application_type"),
                             rs.getString("message"),
-                            rs.getString("application_type")
+                            rs.getString("payment_method"),
+                            rs.getString("contact_number"),
+                            rs.getString("status"),
+                            rs.getTimestamp("apply_date")
                     );
+                    app.setPropertyName(rs.getString("property_name"));
+                    app.setRoomNumber(rs.getString("room_number"));
+                    app.setLandlordId(rs.getInt("landlord_id"));
+                    app.setLandlordName(rs.getString("landlord_name"));
+
+                    cardController.setApplication(app);
 
                     applicationsListContainer.getChildren().add(card);
                 } catch (Exception e) {
@@ -71,7 +80,6 @@ public class TenantApplicationsController {
                 }
             }
 
-            // 5. Update the UI labels
             lblTotal.setText(String.valueOf(total));
             lblPending.setText(String.valueOf(pending));
             lblApproved.setText(String.valueOf(approved));

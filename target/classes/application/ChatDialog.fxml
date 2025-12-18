@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1"
+    spacing="15"
+    style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20;"
+    stylesheets="@ChatDialog.css"
+    fx:controller="application.ChatDialogController">
+
+    <!-- Header -->
+    <HBox alignment="CENTER_LEFT" spacing="10"
+        style="-fx-border-color: transparent transparent #eee transparent;">
+        <padding>
+            <Insets bottom="10" />
+        </padding>
+        <Label fx:id="lblTitle" text="Chat" textFill="#333333">
+            <font>
+                <Font name="System Bold" size="18.0" />
+            </font>
+        </Label>
+    </HBox>
+
+    <!-- Messages Area -->
+    <ScrollPane fx:id="scrollPane" fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED"
+        style="-fx-background-color: transparent; -fx-background: transparent;" VBox.vgrow="ALWAYS">
+        <content>
+            <VBox fx:id="messagesContainer" spacing="10" style="-fx-background-color: transparent;">
+                <padding>
+                    <Insets top="10" bottom="10" left="5" right="5" />
+                </padding>
+                <!-- Messages will be added here dynamically -->
+            </VBox>
+        </content>
+    </ScrollPane>
+
+    <!-- Input Area -->
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <TextArea fx:id="txtMessage" promptText="Type your message..." wrapText="true"
+            HBox.hgrow="ALWAYS"
+            prefRowCount="2" maxHeight="60" styleClass="chat-input" />
+        <Button text="Send" onAction="#handleSend" prefWidth="80" prefHeight="40"
+            styleClass="btn-send" />
+    </HBox>
+
+</VBox>

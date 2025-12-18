@@ -1,0 +1,178 @@
+/* --- RESET SCROLL PANE --- */
+.scroll-pane {
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+    -fx-background-color: transparent;
+}
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+/* --- TEXT FONTS --- */
+.page-title {
+    -fx-font-family: 'Outfit';
+    -fx-font-weight: bold;
+    -fx-font-size: 25px;
+    -fx-text-fill: #000000;
+}
+
+.page-subtitle {
+    -fx-font-family: 'Outfit';
+    -fx-font-size: 16px;
+    -fx-text-fill: #666666;
+}
+
+/* --- STATS CARDS --- */
+.stat-card {
+    -fx-background-color: #D5EBF9;
+    -fx-border-color: #73A2C2;
+    -fx-border-radius: 15;
+    -fx-background-radius: 15;
+    -fx-padding: 15 20;
+    -fx-min-height: 100px;
+}
+
+.stat-label {
+    -fx-font-family: 'Outfit';
+    -fx-font-size: 14px;
+    -fx-text-fill: #000000;
+}
+
+.stat-number {
+    -fx-font-family: 'Outfit';
+    -fx-font-weight: bold;
+    -fx-font-size: 32px;
+    -fx-text-fill: #000000;
+}
+
+/* The Blue Square Icon Placeholder */
+.stat-icon-bg {
+    -fx-background-color: #113970;
+    -fx-min-width: 35px;
+    -fx-min-height: 35px;
+    -fx-max-width: 35px;
+    -fx-max-height: 35px;
+    -fx-background-radius: 5;
+}
+
+/* --- APPLICATION CARD --- */
+.application-card {
+    -fx-background-color: #D5EBF9;
+    -fx-background-radius: 25;
+    -fx-padding: 25;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 10, 0, 0, 5);
+}
+
+.app-card-title {
+    -fx-font-family: 'Outfit';
+    -fx-font-weight: bold;
+    -fx-font-size: 22px;
+    -fx-text-fill: #113970;
+}
+
+.app-card-subtitle {
+    -fx-font-family: 'Outfit';
+    -fx-font-size: 14px;
+    -fx-text-fill: #000000;
+    -fx-opacity: 0.7;
+}
+
+/* --- PENDING BADGE --- */
+.badge-pending {
+    -fx-background-color: #FFC291;
+    -fx-text-fill: #CA4219;
+    -fx-font-family: 'Outfit';
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-padding: 5 20;
+    -fx-background-radius: 30;
+}
+
+/* --- PAYMENT BOX --- */
+.payment-box {
+    -fx-background-color: #B2C8E8;
+    -fx-background-radius: 16;
+    -fx-padding: 15 20;
+    -fx-min-height: 50px;
+}
+
+.payment-text {
+    -fx-font-family: 'Outfit';
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+    -fx-text-fill: #1F57DA;
+}
+
+/* --- MESSAGE BOX --- */
+.message-box {
+    -fx-background-color: #D5EBF9; /* Same as card, but bordered */
+    -fx-border-color: #87ACC4;
+    -fx-border-radius: 16;
+    -fx-background-radius: 16;
+    -fx-padding: 15 20;
+}
+
+.message-label {
+    -fx-font-family: 'Outfit';
+    -fx-font-size: 14px;
+    -fx-text-fill: #4E585F;
+}
+
+.message-text {
+    -fx-font-family: 'Outfit';
+    -fx-font-weight: bold; /* Medium in Figma usually maps to Bold or SemiBold */
+    -fx-font-size: 16px;
+    -fx-text-fill: #000000;
+}
+
+/* --- STATUS FOOTER --- */
+.status-footer {
+    -fx-background-color: #EED3B9;
+    -fx-background-radius: 15;
+    -fx-padding: 15 20;
+}
+
+.status-footer-bold {
+    -fx-font-family: 'Outfit';
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-text-fill: #A3500C;
+}
+
+.status-footer-text {
+    -fx-font-family: 'Outfit';
+    -fx-font-size: 14px;
+    -fx-text-fill: #A3500C;
+}
+
+.badge-pending {
+    -fx-background-color: #fff3cd;
+    -fx-text-fill: #856404;
+    -fx-padding: 5 15;
+    -fx-background-radius: 20;
+    -fx-font-weight: bold;
+}
+
+.badge-approved {
+    -fx-background-color: #d4edda;
+    -fx-text-fill: #155724;
+    -fx-padding: 5 15;
+    -fx-background-radius: 20;
+    -fx-font-weight: bold;
+}
+
+.badge-rejected {
+    -fx-background-color: #f8d7da;
+    -fx-text-fill: #721c24;
+    -fx-padding: 5 15;
+    -fx-background-radius: 20;
+    -fx-font-weight: bold;
+}
+
+.type-badge {
+    -fx-font-size: 10px;
+    -fx-font-family: "Outfit Bold";
+    /* The colors are handled in Java above, but you can put defaults here */
+    -fx-padding: 2 8;
+    -fx-background-radius: 5;
+}

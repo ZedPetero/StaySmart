@@ -1,40 +1,72 @@
 package application;
 
+import application.model.Application;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.scene.image.ImageView; // Add this import
 
 public class ApplicationCardController {
 
-    @FXML private Label lblPropertyName, lblApplyDate, lblStatus, lblPayment, lblMessage;
-    @FXML private HBox boxPayment;
-    @FXML private ImageView imgPaymentIcon; // Add this ID
-    @FXML private Label lblType; // Add this FXML link
+    @FXML
+    private Label lblPropertyName, lblApplyDate, lblStatus, lblPayment, lblMessage, lblType;
+    @FXML
+    private HBox boxPayment;
+    @FXML
+    private ImageView imgPaymentIcon;
+    @FXML
+    private Button btnMessage;
 
-    public void setApplicationData(String title, String date, String status, String payment, String message, String type) {
-        lblPropertyName.setText(title);
-        lblApplyDate.setText("Applied on: " + date);
-        lblStatus.setText(status);
-        lblMessage.setText(message);
-        lblType.setText(type); // "Booking" or "Tour"
+    private Application currentApp;
 
-        if ("Tour".equalsIgnoreCase(type)) {
+    public void setApplication(Application app) {
+        this.currentApp = app;
+        lblPropertyName.setText(app.getPropertyName());
+        lblApplyDate.setText("Applied on: " + (app.getApplyDate() != null ? app.getApplyDate().toString() : "N/A"));
+        lblStatus.setText(app.getStatus());
+        lblMessage.setText(app.getMessage());
+        lblType.setText(app.getType());
+
+        if ("Tour".equalsIgnoreCase(app.getType())) {
             boxPayment.setVisible(false);
             boxPayment.setManaged(false);
-            // Style the Tour badge
-            lblType.setStyle("-fx-background-color: #E3F2FD; -fx-text-fill: #1976D2; -fx-padding: 2 8; -fx-background-radius: 5; -fx-font-size: 11px; -fx-font-weight: bold;");
+            lblType.setStyle(
+                    "-fx-background-color: #E3F2FD; -fx-text-fill: #1976D2; -fx-padding: 2 8; -fx-background-radius: 5; -fx-font-size: 11px; -fx-font-weight: bold;");
             lblType.setText("PROPERTY TOUR");
         } else {
             boxPayment.setVisible(true);
             boxPayment.setManaged(true);
-            lblPayment.setText("Payment Method: " + (payment != null ? payment : "Not specified"));
-            // Style the Booking badge
-            lblType.setStyle("-fx-background-color: #F3E5F5; -fx-text-fill: #7B1FA2; -fx-padding: 2 8; -fx-background-radius: 5; -fx-font-size: 11px; -fx-font-weight: bold;");
+            lblPayment.setText(
+                    "Payment Method: " + (app.getPaymentMethod() != null ? app.getPaymentMethod() : "Not specified"));
+            lblType.setStyle(
+                    "-fx-background-color: #F3E5F5; -fx-text-fill: #7B1FA2; -fx-padding: 2 8; -fx-background-radius: 5; -fx-font-size: 11px; -fx-font-weight: bold;");
             lblType.setText("ROOM BOOKING");
         }
 
-        updateStatusStyle(status);
+        updateStatusStyle(app.getStatus());
+    }
+
+    @FXML
+    private void handleMessage() {
+        if (currentApp == null)
+            return;
+        try {
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("ChatDialog.fxml"));
+            javafx.scene.Parent root = loader.load();
+            ChatDialogController controller = loader.getController();
+
+            // Pass context: Application ID, Landlord ID (receiver), Landlord Name
+            controller.setContext(currentApp.getId(), currentApp.getLandlordId(),
+                    currentApp.getLandlordName() != null ? currentApp.getLandlordName() : "Landlord");
+
+            javafx.stage.Stage stage = new javafx.stage.Stage();
+            stage.setTitle("Chat - " + currentApp.getPropertyName());
+            stage.setScene(new javafx.scene.Scene(root));
+            stage.show();
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void updateStatusStyle(String status) {

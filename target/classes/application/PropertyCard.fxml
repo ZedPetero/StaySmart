@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Rectangle?>
+
+<VBox fx:id="cardContainer"
+      xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="application.PropertyCardController"
+      style="-fx-background-color: white; -fx-background-radius: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5); -fx-cursor: hand;"
+      prefWidth="300" minWidth="280" maxWidth="350">
+
+    <StackPane alignment="TOP_RIGHT">
+        <StackPane prefHeight="160" prefWidth="300" style="-fx-background-color: #f8f9fa; -fx-background-radius: 15 15 0 0;">
+            <ImageView fx:id="propertyImage" fitHeight="160" fitWidth="300" pickOnBounds="true" preserveRatio="false" />
+            <clip>
+                <Rectangle width="300" height="160" arcWidth="30" arcHeight="30"/>
+            </clip>
+        </StackPane>
+
+        <Button fx:id="btnHeart" text="❤" onAction="#handleHeartClick"
+                style="-fx-background-color: white; -fx-text-fill: #e0e0e0; -fx-background-radius: 50;
+               -fx-font-size: 16px; -fx-cursor: hand; -fx-min-width: 32; -fx-min-height: 32;">
+               -fx-min-width: 32; -fx-min-height: 32; -fx-max-width: 32; -fx-max-height: 32;">
+            <StackPane.margin>
+                <Insets top="12" right="12"/>
+            </StackPane.margin>
+        </Button>
+
+        <Button fx:id="deleteBtn" text="✕"
+                style="-fx-background-color: rgba(255,255,255,0.8); -fx-text-fill: black; -fx-font-weight: bold;
+               -fx-font-size: 12px; -fx-cursor: hand; -fx-background-radius: 50; -fx-min-width: 25; -fx-min-height: 25;">
+            <StackPane.margin>
+                <Insets top="10" right="10"/>
+            </StackPane.margin>
+        </Button>
+    </StackPane>
+
+    <VBox spacing="8" VBox.vgrow="ALWAYS">
+        <padding>
+            <Insets top="12" right="15" bottom="15" left="15"/>
+        </padding>
+
+        <HBox alignment="CENTER_LEFT" spacing="10">
+            <VBox HBox.hgrow="ALWAYS">
+                <Label fx:id="nameLabel" text="Property Name" style="-fx-font-family: 'Outfit Bold'; -fx-font-size: 16px; -fx-text-fill: #113970;"/>
+                <Label fx:id="locationLabel" text="Location" style="-fx-font-family: 'Outfit'; -fx-font-size: 12px; -fx-text-fill: #7d8da1;"/>
+            </VBox>
+            <Label fx:id="priceLabel" text="0" style="-fx-font-family: 'Outfit Bold'; -fx-font-size: 16px; -fx-text-fill: #27ae60;"/>
+        </HBox>
+
+        <Region prefHeight="1" style="-fx-background-color: #f0f0f0;" />
+
+        <HBox spacing="10" VBox.vgrow="ALWAYS">
+            <VBox spacing="5" minWidth="80" maxWidth="100">
+                <Label text="DETAILS" style="-fx-font-size: 9px; -fx-font-weight: bold; -fx-text-fill: #a0a0a0;"/>
+                <Label fx:id="typeLabel" text="Type" style="-fx-font-size: 11px; -fx-text-fill: #555;"/>
+                <Label fx:id="floorsLabel" text="Floors" style="-fx-font-size: 11px; -fx-text-fill: #555;"/>
+            </VBox>
+            <Region prefWidth="1" style="-fx-background-color: #f0f0f0;" />
+            <VBox spacing="5" HBox.hgrow="ALWAYS">
+                <Label text="AMENITIES" style="-fx-font-size: 9px; -fx-font-weight: bold; -fx-text-fill: #a0a0a0;"/>
+                <FlowPane fx:id="amenitiesContainer" hgap="5" vgap="5" prefWrapLength="150" />
+            </VBox>
+        </HBox>
+
+        <HBox alignment="CENTER_LEFT" spacing="10">
+            <padding><Insets top="5"/></padding>
+            <Button fx:id="editBtn" text="Edit Property"
+                    style="-fx-background-color: #113970; -fx-text-fill: white; -fx-font-size: 11px; -fx-background-radius: 5; -fx-cursor: hand; -fx-padding: 5 12;"/>
+            <Region HBox.hgrow="ALWAYS" />
+            <HBox fx:id="actionBox" alignment="CENTER_RIGHT">
+                <Label text="View Details" style="-fx-text-fill: #113970; -fx-font-size: 11px; -fx-underline: true;"/>
+            </HBox>
+        </HBox>
+    </VBox>
+</VBox>

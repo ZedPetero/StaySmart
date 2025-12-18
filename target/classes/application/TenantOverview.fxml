@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Font?>
+
+<ScrollPane xmlns:fx="http://javafx.com/fxml/1" fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent;">
+    <content>
+        <VBox spacing="30" style="-fx-background-color: transparent;">
+            <padding><Insets top="20" right="40" bottom="40" left="10"/></padding>
+
+            <VBox spacing="5">
+                <Label fx:id="lblWelcomeName" text="Hello, Shayne!" style="-fx-font-family: 'Outfit'; -fx-font-weight: bold; -fx-font-size: 25px; -fx-text-fill: #000000;"/>
+                <Label text="Here's your boarding house search overview" style="-fx-font-family: 'Outfit'; -fx-font-weight: normal; -fx-font-size: 18px; -fx-text-fill: #5b5656;"/>
+            </VBox>
+
+            <HBox spacing="20" alignment="CENTER_LEFT">
+                <VBox minWidth="200" prefHeight="170" HBox.hgrow="ALWAYS" styleClass="stat-card">
+                    <padding><Insets top="25" right="20" bottom="20" left="25"/></padding>
+                    <Label text="Saved&#10;Properties" wrapText="true" style="-fx-font-size: 21px;"/>
+                    <Region VBox.vgrow="ALWAYS"/>
+                    <Label fx:id="lblSavedCount" text="0" style="-fx-font-weight: bold; -fx-font-size: 40px;"/>
+                </VBox>
+
+                <VBox minWidth="200" prefHeight="170" HBox.hgrow="ALWAYS" styleClass="stat-card">
+                    <padding><Insets top="25" right="20" bottom="20" left="25"/></padding>
+                    <Label text="Active&#10;Applications" wrapText="true" style="-fx-font-size: 21px;"/>
+                    <Region VBox.vgrow="ALWAYS"/>
+                    <Label fx:id="lblAppCount" text="0" style="-fx-font-weight: bold; -fx-font-size: 40px;"/>
+                </VBox>
+
+                <VBox minWidth="200" prefHeight="170" HBox.hgrow="ALWAYS" styleClass="stat-card">
+                    <padding><Insets top="25" right="20" bottom="20" left="25"/></padding>
+                    <Label text="Scheduled&#10;Tours" wrapText="true" style="-fx-font-size: 21px;"/>
+                    <Region VBox.vgrow="ALWAYS"/>
+                    <Label fx:id="lblTourCount" text="0" style="-fx-font-weight: bold; -fx-font-size: 40px;"/>
+                </VBox>
+
+                <VBox minWidth="200" prefHeight="170" HBox.hgrow="ALWAYS" styleClass="stat-card">
+                    <padding><Insets top="25" right="20" bottom="20" left="25"/></padding>
+                    <Label text="Viewed&#10;Properties" wrapText="true" style="-fx-font-size: 21px;"/>
+                    <Region VBox.vgrow="ALWAYS"/>
+                    <Label fx:id="lblViewedCount" text="0" style="-fx-font-weight: bold; -fx-font-size: 40px;"/>
+                </VBox>
+            </HBox>
+
+            <VBox style="-fx-background-color: #b8d1e0; -fx-background-radius: 20;" VBox.vgrow="ALWAYS">
+                <padding><Insets top="25" right="30" bottom="30" left="30"/></padding>
+                <Label text="Upcoming Property Tours" style="-fx-font-family: 'Outfit'; -fx-font-size: 21px; -fx-padding: 0 0 15 0;"/>
+
+                <VBox fx:id="toursContainer" spacing="15" />
+
+                <VBox fx:id="emptyToursBox" alignment="CENTER" spacing="10" visible="false" managed="false">
+                    <Label text="No upcoming property tours scheduled." style="-fx-font-family: 'Outfit'; -fx-font-size: 18px; -fx-text-fill: #5b5656;"/>
+                    <Label text="Start browsing properties to book a tour!" style="-fx-font-family: 'Outfit'; -fx-font-size: 14px; -fx-text-fill: #5b5656;"/>
+                </VBox>
+            </VBox>
+        </VBox>
+    </content>
+</ScrollPane>

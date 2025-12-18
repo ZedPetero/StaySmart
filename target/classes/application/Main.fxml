@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="application.LoginController"
+            prefWidth="1450" prefHeight="750"
+            minWidth="1450" minHeight="750"
+            styleClass="log-in"
+            stylesheets="@login.css">
+
+    <!-- Background rectangles -->
+    <Rectangle styleClass="rectangle" 
+               AnchorPane.topAnchor="-2" 
+               AnchorPane.leftAnchor="727"
+               width="723" height="751" 
+               fill="#125a8b"/>
+    
+    <Rectangle styleClass="div-rectangle" 
+               AnchorPane.topAnchor="-2" 
+               AnchorPane.leftAnchor="0"
+               width="732" height="751" 
+               fill="#ffffff"/>
+
+    <!-- Top left circle (like homepage) -->
+    <Circle fx:id="bgCircle" styleClass="bg-circle"
+            centerX="-200" centerY="-200"
+            radius="640"
+            fill="#125A8B"/>
+
+    <!-- Header: SMART STAY -->
+    <Label text="STAY SMART" styleClass="text-wrapper"
+           layoutX="1149" layoutY="65"/>
+
+    <!-- Logo image (top right) -->
+    <ImageView styleClass="image"
+               fitWidth="52" fitHeight="52"
+               layoutX="1281" layoutY="49">
+        <image>
+            <Image url="@images/homeicon.png"/>
+        </image>
+    </ImageView>
+
+    <!-- Welcome illustration (left side) -->
+    <ImageView styleClass="img"
+               fitWidth="358" fitHeight="358"
+               layoutX="213" layoutY="191">
+        <image>
+            <Image url="@images/Home_Icon.png"/>
+        </image>
+    </ImageView>
+
+    <!-- Hero Section: Welcome back -->
+    <VBox styleClass="HERO" layoutX="853" layoutY="203">
+        <Text text="Welcome back" styleClass="text-wrapper-2"/>
+    </VBox>
+
+    <!-- Subtitle -->
+    <Label text="Welcome back! Please enter your details" styleClass="p"
+           layoutX="866" layoutY="283"/>
+
+    <!-- Login Form -->
+    <VBox styleClass="login-form" layoutX="858" layoutY="321" spacing="20">
+        
+        <!-- Email Field -->
+        <VBox styleClass="form-group" spacing="8">
+            <Label text="Email" styleClass="text-wrapper-3"/>
+            <TextField fx:id="usernameField" 
+                       styleClass="text-wrapper-4"
+                       promptText="Enter your email"
+                       prefWidth="330" prefHeight="33"/>
+        </VBox>
+
+        <!-- Password Field -->
+        <VBox styleClass="form-group" spacing="8">
+            <Label text="Password" styleClass="text-wrapper-6"/>
+            <PasswordField fx:id="passwordField" 
+                          styleClass="text-wrapper-5"
+                          promptText="****************"
+                          prefWidth="330" prefHeight="33"/>
+        </VBox>
+
+        <!-- Form Options: Remember me + Forgot password -->
+        <HBox styleClass="form-options" spacing="10" prefWidth="330">
+            <HBox styleClass="remember-me" spacing="8">
+                <CheckBox fx:id="rememberCheck" styleClass="rectangle-3"/>
+                <Label text="Remember your password" styleClass="text-wrapper-7"/>
+                </HBox>
+                                <Region HBox.hgrow="ALWAYS"/>
+            <Button text="Forgot password" styleClass="text-wrapper-9" onAction="#onForgot"/>
+                        </HBox>
+
+        <!-- Sign in button -->
+        <Button fx:id="loginButton" text="Sign in" styleClass="group-5" onAction="#onLogin"
+                prefWidth="330" prefHeight="34"/>
+
+        <!-- Sign in with Google button -->
+        <Button text="Sign in with Google" styleClass="group-6"
+                prefWidth="330" prefHeight="34"/>
+
+        <!-- Footer: Don't have an account? -->
+        <HBox styleClass="don-t-have-an" spacing="5" alignment="CENTER">
+            <Label text="Don't have an account? " styleClass="span"/>
+            <Hyperlink text="Sign up now" styleClass="text-wrapper-8" onAction="#onSignupClick"/>
+                        </HBox>
+                </VBox>
+
+</AnchorPane>

@@ -14,16 +14,39 @@ import javafx.scene.layout.StackPane;
 
 public class LandlordLayoutController {
 
-    @FXML private BorderPane mainBorderPane;
-    @FXML private StackPane contentArea;
+    @FXML
+    private BorderPane mainBorderPane;
+    @FXML
+    private StackPane contentArea;
 
     // Navigation Buttons
-    @FXML private HBox btnOverview;
-    @FXML private HBox btnProperties;
-    @FXML private HBox btnApplications;
-    @FXML private HBox btnTenants;
-    @FXML private HBox btnMessages;
-    @FXML private HBox btnSettings;
+    @FXML
+    private HBox btnOverview;
+    @FXML
+    private HBox btnProperties;
+    @FXML
+    private HBox btnApplications;
+    @FXML
+    private HBox btnTenants;
+    @FXML
+    private HBox btnMessages;
+    @FXML
+    private HBox btnSettings;
+    @FXML
+    private HBox btnLogout;
+
+    @FXML
+    private void handleLogout() {
+        LoginController.setCurrentUser(null);
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("Main.fxml"));
+            javafx.stage.Stage stage = (javafx.stage.Stage) btnLogout.getScene().getWindow();
+            stage.setScene(new javafx.scene.Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     // TRACKING: We need to know which controller is currently active
     private Object currentController;
@@ -58,32 +81,38 @@ public class LandlordLayoutController {
     // NAVIGATION HANDLERS
     // =========================================================
 
-    @FXML private void handleShowOverview() {
+    @FXML
+    private void handleShowOverview() {
         loadPage("/application/Overview.fxml");
         setActiveButton(btnOverview);
     }
 
-    @FXML private void handleShowProperties() {
+    @FXML
+    private void handleShowProperties() {
         loadPage("/application/My Properties.fxml");
         setActiveButton(btnProperties);
     }
 
-    @FXML private void handleShowApplications() {
+    @FXML
+    private void handleShowApplications() {
         loadPage("/application/LandlordApplications.fxml");
         setActiveButton(btnApplications);
     }
 
-    @FXML private void handleShowTenants() {
+    @FXML
+    private void handleShowTenants() {
         loadPage("/application/LandlordTenants.fxml");
         setActiveButton(btnTenants);
     }
 
-    @FXML private void handleShowMessages() {
+    @FXML
+    private void handleShowMessages() {
         loadPage("/application/LandlordMessages.fxml");
         setActiveButton(btnMessages);
     }
 
-    @FXML private void handleShowSettings() {
+    @FXML
+    private void handleShowSettings() {
         loadPage("/application/LandlordSettingsLayout.fxml");
         setActiveButton(btnSettings);
     }

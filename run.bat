@@ -1,10 +1,19 @@
 @echo off
-echo Running StaySmart Application...
+echo Checking for Maven...
+where mvn >nul 2>nul
+if %errorlevel% neq 0 (
+    echo Error: Maven is not installed or not in your PATH.
+    echo Please install Maven to run this application.
+    pause
+    exit /b
+)
 
-REM Set JavaFX module path (adjust if JavaFX is installed elsewhere)
-set JAVAFX_MODULES=--module-path "C:\Program Files\Java\javafx-sdk-17\lib" --add-modules javafx.controls,javafx.fxml,javafx.graphics
+echo Maven found. Starting StaySmart Application...
+echo This may take a moment to download dependencies on the first run.
 
-REM Run the application
-java %JAVAFX_MODULES% -cp "lib\mysql-connector-j-9.5.0.jar;bin" application.Main
-
-pause
+call mvn clean compile javafx:run
+if %errorlevel% neq 0 (
+    echo.
+    echo An error occurred while running the application.
+    pause
+)
