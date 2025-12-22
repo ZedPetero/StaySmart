@@ -9,67 +9,78 @@
 
 <VBox spacing="0" alignment="TOP_LEFT" styleClass="main-content"
       xmlns="http://javafx.com/javafx/17"
-      xmlns:fx="http://javafx.com/fxml/1">
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="application.LandlordOverviewController">
 
     <VBox spacing="10" styleClass="welcome-message-vbox">
         <padding>
-            <Insets top="50" right="50" bottom="10" left="50"/>
+            <Insets top="50" right="50" bottom="10" left="50" />
         </padding>
-        <Label text="Hello Landlord!" styleClass="welcome-title"/>
-        <Label text="Here's what's happening with your properties today." styleClass="welcome-subtitle"/>
+        <Label text="Hello Landlord!" styleClass="welcome-title" />
+        <Label text="Here's what's happening with your properties today."
+               styleClass="welcome-subtitle" />
     </VBox>
 
-    <HBox spacing="20" alignment="CENTER_LEFT" styleClass="cards-row" style="-fx-padding: 30 50 0 50;">
+    <HBox spacing="20" alignment="CENTER_LEFT" styleClass="cards-row"
+          style="-fx-padding: 30 50 0 50;">
 
         <VBox styleClass="stat-card" spacing="15">
             <StackPane styleClass="icon-bg-blue">
                 <ImageView fitWidth="30" fitHeight="30" preserveRatio="true">
-                    <image> <Image url="@images/building.png"/> </image>
+                    <image>
+                        <Image url="@images/building.png" />
+                    </image>
                 </ImageView>
             </StackPane>
             <VBox spacing="5">
-                <Label text="8" styleClass="stat-value"/>
-                <Label text="Total Properties" styleClass="stat-label"/>
-                <Label text="+2 this month" styleClass="stat-change"/>
+                <Label fx:id="lblTotalProperties" text="-" styleClass="stat-value" />
+                <Label text="Total Properties" styleClass="stat-label" />
+                <Label text="+2 this month" styleClass="stat-change" />
             </VBox>
         </VBox>
 
         <VBox styleClass="stat-card" spacing="15">
             <StackPane styleClass="icon-bg-blue">
                 <ImageView fitWidth="30" fitHeight="30" preserveRatio="true">
-                    <image> <Image url="@images/users.png"/> </image>
+                    <image>
+                        <Image url="@images/users.png" />
+                    </image>
                 </ImageView>
             </StackPane>
             <VBox spacing="5">
-                <Label text="24" styleClass="stat-value"/>
-                <Label text="Active Tenants" styleClass="stat-label"/>
-                <Label text="89% occupancy" styleClass="stat-change-positive"/>
+                <Label fx:id="lblActiveTenants" text="-" styleClass="stat-value" />
+                <Label text="Active Tenants" styleClass="stat-label" />
+                <Label text="89% occupancy" styleClass="stat-change-positive" />
             </VBox>
         </VBox>
 
         <VBox styleClass="stat-card" spacing="15">
             <StackPane styleClass="icon-bg-blue">
                 <ImageView fitWidth="30" fitHeight="30" preserveRatio="true">
-                    <image> <Image url="@images/coins.png"/> </image>
+                    <image>
+                        <Image url="@images/coins.png" />
+                    </image>
                 </ImageView>
             </StackPane>
             <VBox spacing="5">
-                <Label text="₱84,600" styleClass="stat-value"/>
-                <Label text="Monthly Revenue" styleClass="stat-label"/>
-                <Label text="+12% from last month" styleClass="stat-change-positive"/>
+                <Label fx:id="lblMonthlyRevenue" text="-" styleClass="stat-value" />
+                <Label text="Monthly Revenue" styleClass="stat-label" />
+                <Label text="+12% from last month" styleClass="stat-change-positive" />
             </VBox>
         </VBox>
 
         <VBox styleClass="stat-card" spacing="15">
             <StackPane styleClass="icon-bg-orange">
                 <ImageView fitWidth="30" fitHeight="30" preserveRatio="true">
-                    <image> <Image url="@images/chat-arrow-grow.png"/> </image>
+                    <image>
+                        <Image url="@images/chat-arrow-grow.png" />
+                    </image>
                 </ImageView>
             </StackPane>
             <VBox spacing="5">
-                <Label text="5" styleClass="stat-value"/>
-                <Label text="Pending Applications" styleClass="stat-label"/>
-                <Label text="3 new today" styleClass="stat-change"/>
+                <Label fx:id="lblPendingApps" text="-" styleClass="stat-value" />
+                <Label text="Pending Applications" styleClass="stat-label" />
+                <Label text="3 new today" styleClass="stat-change" />
             </VBox>
         </VBox>
     </HBox>
@@ -77,76 +88,91 @@
     <HBox spacing="20" styleClass="bottom-panels" style="-fx-padding: 30 50 50 50;">
 
         <VBox spacing="15" prefWidth="550" styleClass="panel-activity">
-            <Label text="Recent Activity" styleClass="panel-title"/>
+            <Label text="Recent Activity" styleClass="panel-title" />
             <VBox spacing="10">
                 <HBox alignment="CENTER_LEFT" spacing="15" styleClass="activity-card">
                     <StackPane styleClass="icon-bg-blue">
                         <ImageView fitWidth="30" fitHeight="30" preserveRatio="true">
-                            <image> <Image url="@images/document-signed.png"/> </image>
+                            <image>
+                                <Image url="@images/document-signed.png" />
+                            </image>
                         </ImageView>
                     </StackPane>
                     <VBox HBox.hgrow="ALWAYS" alignment="CENTER_LEFT">
-                        <Label text="New Application from Shayne Digo" styleClass="activity-main-text"/>
-                        <Label text="Cozy Student Room" styleClass="activity-sub-text"/>
+                        <Label text="New Application from Shayne Digo"
+                               styleClass="activity-main-text" />
+                        <Label text="Cozy Student Room" styleClass="activity-sub-text" />
                     </VBox>
-                    <Label text="2 hours ago" styleClass="activity-time-text"/>
+                    <Label text="2 hours ago" styleClass="activity-time-text" />
                 </HBox>
 
                 <HBox alignment="CENTER_LEFT" spacing="15" styleClass="activity-card">
                     <StackPane styleClass="icon-bg-green">
-                        <ImageView fitWidth="30" fitHeight="30" preserveRatio="true" styleClass="icon-payment">
-                            <image> <Image url="@images/coins.png"/> </image>
+                        <ImageView fitWidth="30" fitHeight="30" preserveRatio="true"
+                                   styleClass="icon-payment">
+                            <image>
+                                <Image url="@images/coins.png" />
+                            </image>
                         </ImageView>
                     </StackPane>
                     <VBox HBox.hgrow="ALWAYS" alignment="CENTER_LEFT">
-                        <Label text="Payment received from Pete Petero" styleClass="activity-main-text"/>
-                        <Label text="Modern Boarding House" styleClass="activity-sub-text"/>
+                        <Label text="Payment received from Pete Petero"
+                               styleClass="activity-main-text" />
+                        <Label text="Modern Boarding House" styleClass="activity-sub-text" />
                     </VBox>
-                    <Label text="6 hours ago" styleClass="activity-time-text"/>
+                    <Label text="6 hours ago" styleClass="activity-time-text" />
                 </HBox>
             </VBox>
         </VBox>
 
         <VBox spacing="15" HBox.hgrow="ALWAYS" styleClass="panel-status">
             <HBox alignment="CENTER_LEFT">
-                <Label text="Property Status" styleClass="panel-title"/>
-                <Region HBox.hgrow="ALWAYS" /> <Label text="View all" styleClass="view-all-link"/>
+                <Label text="Property Status" styleClass="panel-title" />
+                <Region HBox.hgrow="ALWAYS" />
+                <Label text="View all" styleClass="view-all-link" />
             </HBox>
 
             <VBox spacing="10">
                 <HBox alignment="CENTER_LEFT" styleClass="status-card" spacing="10">
                     <VBox HBox.hgrow="ALWAYS" alignment="CENTER_LEFT">
-                        <Label text="Cozy Student Room" styleClass="property-name"/>
-                        <Label text="Tenant: Aljon Macunte" styleClass="property-tenant"/>
+                        <Label text="Cozy Student Room" styleClass="property-name" />
+                        <Label text="Tenant: Aljon Macunte" styleClass="property-tenant" />
                     </VBox>
 
                     <VBox alignment="CENTER_RIGHT" spacing="5">
-                        <Label text="₱2,800/mo" styleClass="property-price"/>
-                        <StackPane prefWidth="80" prefHeight="25" styleClass="occupied-tag-container">
-                            <Label text="Occupied" styleClass="occupied-tag-text"/>
+                        <Label text="₱2,800/mo" styleClass="property-price" />
+                        <StackPane prefWidth="80" prefHeight="25"
+                                   styleClass="occupied-tag-container">
+                            <Label text="Occupied" styleClass="occupied-tag-text" />
                         </StackPane>
                     </VBox>
 
-                    <ImageView fitWidth="24" fitHeight="24" preserveRatio="true" styleClass="icon-more">
-                        <image> <Image url="@images/ellipsis.png"/> </image>
+                    <ImageView fitWidth="24" fitHeight="24" preserveRatio="true"
+                               styleClass="icon-more">
+                        <image>
+                            <Image url="@images/ellipsis.png" />
+                        </image>
                     </ImageView>
                 </HBox>
 
                 <HBox alignment="CENTER_LEFT" styleClass="status-card" spacing="10">
                     <VBox HBox.hgrow="ALWAYS" alignment="CENTER_LEFT">
-                        <Label text="Affordable Studio" styleClass="property-name"/>
-                        <Label text="Available for rent" styleClass="property-tenant-vacant"/>
+                        <Label text="Affordable Studio" styleClass="property-name" />
+                        <Label text="Available for rent" styleClass="property-tenant-vacant" />
                     </VBox>
 
                     <VBox alignment="CENTER_RIGHT" spacing="5">
-                        <Label text="₱4,200/mo" styleClass="property-price"/>
+                        <Label text="₱4,200/mo" styleClass="property-price" />
                         <StackPane prefWidth="80" prefHeight="25" styleClass="vacant-tag-container">
-                            <Label text="Vacant" styleClass="vacant-tag-text"/>
+                            <Label text="Vacant" styleClass="vacant-tag-text" />
                         </StackPane>
                     </VBox>
 
-                    <ImageView fitWidth="24" fitHeight="24" preserveRatio="true" styleClass="icon-more">
-                        <image> <Image url="@images/ellipsis.png"/> </image>
+                    <ImageView fitWidth="24" fitHeight="24" preserveRatio="true"
+                               styleClass="icon-more">
+                        <image>
+                            <Image url="@images/ellipsis.png" />
+                        </image>
                     </ImageView>
                 </HBox>
             </VBox>
@@ -154,6 +180,6 @@
     </HBox>
 
     <padding>
-        <Insets top="0" right="0" bottom="50" left="0"/>
+        <Insets top="0" right="0" bottom="50" left="0" />
     </padding>
 </VBox>

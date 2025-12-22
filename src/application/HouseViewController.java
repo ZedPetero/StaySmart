@@ -31,9 +31,12 @@ import java.io.File;
 
 public class HouseViewController {
 
-    @FXML private StackPane rootStackPane;
-    @FXML private Label propertyNameLabel;
-    @FXML private VBox houseContainer;
+    @FXML
+    private StackPane rootStackPane;
+    @FXML
+    private Label propertyNameLabel;
+    @FXML
+    private VBox houseContainer;
 
     private Property currentProperty;
     private boolean isTenantMode = false;
@@ -56,7 +59,6 @@ public class HouseViewController {
         propertyNameLabel.setText(property.getName());
         ensureRoomsExistInDatabase(dbFloors);
 
-        // KEEPING THIS: Forces the window to be wide enough so the layout doesn't break
         forceWindowDimensions();
 
         refreshHouseData();
@@ -78,28 +80,25 @@ public class HouseViewController {
     private void buildHouseVisuals(List<Floor> floors) {
         houseContainer.getChildren().clear();
 
-        // 1. Structure Container
         VBox buildingVBox = new VBox();
         buildingVBox.setAlignment(Pos.BOTTOM_CENTER);
         buildingVBox.setMaxWidth(Double.MAX_VALUE);
 
-        // A. Roof
         StackPane roof = new StackPane();
         String roofClass = currentProperty.getType().equalsIgnoreCase("Rural") ? "rural-roof" : "urban-roof";
         roof.getStyleClass().add(roofClass);
         buildingVBox.getChildren().add(roof);
 
-        // B. Floors
         String type = currentProperty.getType().equalsIgnoreCase("Rural") ? "rural" : "urban";
         for (Floor f : floors) {
             buildingVBox.getChildren().add(createFloorContainer(f.getLevel(), floors.size(), floors, type));
         }
 
-        // C. Base
         Pane base = new Pane();
         String baseClass = currentProperty.getType().equalsIgnoreCase("Rural") ? "rural-base" : "urban-base";
         base.getStyleClass().add(baseClass);
-        base.setMinHeight(25); base.setMaxHeight(25);
+        base.setMinHeight(25);
+        base.setMaxHeight(25);
         base.setMaxWidth(Double.MAX_VALUE);
         buildingVBox.getChildren().add(base);
 
@@ -122,8 +121,10 @@ public class HouseViewController {
 
         // D. Background
         int totalRooms = 0;
-        for(Floor f : floors) totalRooms += f.getRoomCount();
-        if(totalRooms == 0) totalRooms = calculateTotalRooms(floors);
+        for (Floor f : floors)
+            totalRooms += f.getRoomCount();
+        if (totalRooms == 0)
+            totalRooms = calculateTotalRooms(floors);
 
         setDynamicBackground(currentProperty.getType(), totalRooms);
     }
@@ -133,8 +134,11 @@ public class HouseViewController {
         List<Room> existingRooms = floorData.map(Floor::getRooms).orElse(new ArrayList<>());
 
         existingRooms.sort(Comparator.comparingInt(r -> {
-            try { return Integer.parseInt(r.getRoomNumber()); }
-            catch (NumberFormatException e) { return 9999; }
+            try {
+                return Integer.parseInt(r.getRoomNumber());
+            } catch (NumberFormatException e) {
+                return 9999;
+            }
         }));
 
         VBox floorContainer = new VBox();
@@ -162,8 +166,7 @@ public class HouseViewController {
                     0.0,
                     "Unconfigured",
                     "Pending",
-                    null
-            );
+                    null);
             roomBox.getChildren().add(createRoomNode(newRoomPlaceholder, floorLevel, existingRooms.size() + 1, type));
         }
 
@@ -177,7 +180,8 @@ public class HouseViewController {
         floorScroll.setPannable(true);
 
         floorScroll.addEventFilter(javafx.scene.input.ScrollEvent.SCROLL, event -> {
-            if (event.getDeltaY() != 0) event.consume();
+            if (event.getDeltaY() != 0)
+                event.consume();
         });
 
         // Fixed Widths
@@ -199,9 +203,15 @@ public class HouseViewController {
 
         int patternIndex = (floorLevel - 1) % 3;
         switch (patternIndex) {
-            case 0: roomPane.getStyleClass().add(stylePrefix + "-window-door"); break;
-            case 1: roomPane.getStyleClass().add(stylePrefix + "-window-triangle"); break;
-            case 2: roomPane.getStyleClass().add(stylePrefix + "-window-arched"); break;
+            case 0:
+                roomPane.getStyleClass().add(stylePrefix + "-window-door");
+                break;
+            case 1:
+                roomPane.getStyleClass().add(stylePrefix + "-window-triangle");
+                break;
+            case 2:
+                roomPane.getStyleClass().add(stylePrefix + "-window-arched");
+                break;
         }
 
         String displayRoomNum = room.getRoomNumber().equals("+") ? "+" : room.getRoomNumber();
@@ -230,8 +240,7 @@ public class HouseViewController {
     private void setupRoomStatus(Room room, StackPane pane, Label lbl, String type) {
         pane.getStyleClass().removeAll(
                 type + "-status-new", type + "-status-placeholder",
-                type + "-status-occupied", type + "-status-vacant", type + "-status-maintenance"
-        );
+                type + "-status-occupied", type + "-status-vacant", type + "-status-maintenance");
         pane.setBackground(Background.EMPTY);
         pane.setStyle("");
 
@@ -248,16 +257,20 @@ public class HouseViewController {
                 pane.getChildren().add(lbl);
             } else {
                 String status = room.getStatus();
-                if (status.equalsIgnoreCase("Occupied")) pane.getStyleClass().add(type + "-status-occupied");
-                else if (status.equalsIgnoreCase("Maintenance")) pane.getStyleClass().add(type + "-status-maintenance");
-                else pane.getStyleClass().add(type + "-status-vacant");
+                if (status.equalsIgnoreCase("Occupied"))
+                    pane.getStyleClass().add(type + "-status-occupied");
+                else if (status.equalsIgnoreCase("Maintenance"))
+                    pane.getStyleClass().add(type + "-status-maintenance");
+                else
+                    pane.getStyleClass().add(type + "-status-vacant");
 
                 StackPane.setAlignment(lbl, Pos.CENTER);
                 pane.getChildren().add(lbl);
 
                 Tooltip tooltip = new Tooltip();
                 tooltip.setGraphic(createRoomDetailHoverView(room));
-                tooltip.setStyle("-fx-background-color: transparent; -fx-padding: 0; -fx-background-radius: 0; -fx-effect: null;");
+                tooltip.setStyle(
+                        "-fx-background-color: transparent; -fx-padding: 0; -fx-background-radius: 0; -fx-effect: null;");
                 tooltip.setShowDelay(javafx.util.Duration.millis(100));
                 Tooltip.install(pane, tooltip);
             }
@@ -275,18 +288,23 @@ public class HouseViewController {
             pstmt.setInt(1, currentProperty.getId());
             pstmt.setInt(2, floorLevel);
             ResultSet rs = pstmt.executeQuery();
-            while(rs.next()) {
+            while (rs.next()) {
                 try {
                     int rNum = Integer.parseInt(rs.getString("room_number"));
-                    if (rNum > maxRoom) maxRoom = rNum;
-                } catch (NumberFormatException ignored) {}
+                    if (rNum > maxRoom)
+                        maxRoom = rNum;
+                } catch (NumberFormatException ignored) {
+                }
             }
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return (maxRoom == 0) ? defaultBase + 1 : maxRoom + 1;
     }
 
     private void openApplicationDialog(Room room) {
-        if (room.getStatus().equalsIgnoreCase("Unconfigured") || room.getStatus().equals("New")) return;
+        if (room.getStatus().equalsIgnoreCase("Unconfigured") || room.getStatus().equals("New"))
+            return;
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("ApplicationDialog.fxml"));
             Parent root = loader.load();
@@ -297,7 +315,9 @@ public class HouseViewController {
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
-        } catch (IOException e) { e.printStackTrace(); }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void openRoomEditor(int floorLevel, Room room) {
@@ -323,8 +343,11 @@ public class HouseViewController {
                 controller.setRoomData(room);
             }
             dialogStage.showAndWait();
-            if (controller.isSaveClicked()) refreshHouseData();
-        } catch (IOException e) { e.printStackTrace(); }
+            if (controller.isSaveClicked())
+                refreshHouseData();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void refreshHouseData() {
@@ -344,7 +367,9 @@ public class HouseViewController {
                 f.setRooms(fetchRoomsForFloor(currentProperty.getId(), level));
                 freshFloors.add(f);
             }
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         buildHouseVisuals(freshFloors);
     }
 
@@ -363,17 +388,19 @@ public class HouseViewController {
             while (rs.next()) {
                 // 2. Pass 8 arguments to the constructor
                 rooms.add(new Room(
-                        rs.getInt("id"),             // Arg 1: int id
-                        rs.getInt("property_id"),    // Arg 2: int propertyId
+                        rs.getInt("id"), // Arg 1: int id
+                        rs.getInt("property_id"), // Arg 2: int propertyId
                         rs.getString("room_number"), // Arg 3: String
-                        rs.getString("status"),      // Arg 4: String
-                        rs.getDouble("price"),       // Arg 5: Double
-                        rs.getString("facilities"),  // Arg 6: String
+                        rs.getString("status"), // Arg 4: String
+                        rs.getDouble("price"), // Arg 5: Double
+                        rs.getString("facilities"), // Arg 6: String
                         rs.getString("payment_status"), // Arg 7: String
-                        rs.getString("image_path")   // Arg 8: String
+                        rs.getString("image_path") // Arg 8: String
                 ));
             }
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return rooms;
     }
 
@@ -389,7 +416,8 @@ public class HouseViewController {
                     checkStmt.setInt(1, currentProperty.getId());
                     checkStmt.setInt(2, floor.getLevel());
                     ResultSet rs = checkStmt.executeQuery();
-                    if (rs.next()) existingCount = rs.getInt(1);
+                    if (rs.next())
+                        existingCount = rs.getInt(1);
                 }
                 if (existingCount == 0 && floor.getRoomCount() > 0) {
                     for (int i = 1; i <= floor.getRoomCount(); i++) {
@@ -405,8 +433,11 @@ public class HouseViewController {
                     }
                 }
             }
-            if (needsUpdate) pstmt.executeBatch();
-        } catch (Exception e) { e.printStackTrace(); }
+            if (needsUpdate)
+                pstmt.executeBatch();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void setDynamicBackground(String type, int totalRooms) {
@@ -423,11 +454,15 @@ public class HouseViewController {
                 baseName = "rural3"; // 6 floors and above
             }
         } else {
-            // Keep Urban logic based on density/rooms if you prefer, or change to floors too.
+            // Keep Urban logic based on density/rooms if you prefer, or change to floors
+            // too.
             // Currently keeping your old Urban logic:
-            if (totalRooms <= 3) baseName = "urban1";
-            else if (totalRooms <= 6) baseName = "urban2";
-            else baseName = "urban3";
+            if (totalRooms <= 3)
+                baseName = "urban1";
+            else if (totalRooms <= 6)
+                baseName = "urban2";
+            else
+                baseName = "urban3";
         }
         String[] paths = { "/images/", "/application/images/", "images/", "/" };
         String[] extensions = { ".jpg", ".png", ".jpeg" };
@@ -453,7 +488,8 @@ public class HouseViewController {
         if (foundImage != null) {
             BackgroundSize bgSize = new BackgroundSize(1.0, 1.0, true, true, false, false);
             BackgroundPosition bgPos = new BackgroundPosition(Side.LEFT, 0.5, true, Side.BOTTOM, 0.0, true);
-            BackgroundImage bgImg = new BackgroundImage(foundImage, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, bgPos, bgSize);
+            BackgroundImage bgImg = new BackgroundImage(foundImage, BackgroundRepeat.NO_REPEAT,
+                    BackgroundRepeat.NO_REPEAT, bgPos, bgSize);
             Background finalBackground = new Background(bgImg);
             if (rootStackPane != null) {
                 rootStackPane.setBackground(finalBackground);
@@ -468,8 +504,10 @@ public class HouseViewController {
         for (int i = 1; i <= floorCount; i++) {
             int currentLevel = i;
             Optional<Floor> f = dbFloors.stream().filter(fl -> fl.getLevel() == currentLevel).findFirst();
-            if (f.isPresent()) total += f.get().getRoomCount();
-            else total += fetchRoomCountForFloor(currentProperty.getId(), currentLevel);
+            if (f.isPresent())
+                total += f.get().getRoomCount();
+            else
+                total += fetchRoomCountForFloor(currentProperty.getId(), currentLevel);
         }
         return total;
     }
@@ -481,8 +519,11 @@ public class HouseViewController {
             pstmt.setInt(1, propertyId);
             pstmt.setInt(2, floorNumber);
             ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) return rs.getInt("room_count");
-        } catch (Exception e) { e.printStackTrace(); }
+            if (rs.next())
+                return rs.getInt("room_count");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return 0;
     }
 
@@ -491,7 +532,8 @@ public class HouseViewController {
         try {
             String fStr = currentProperty.getFloors().toLowerCase().replace(" floors", "").replace(" floor", "").trim();
             totalFloors = Integer.parseInt(fStr);
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {
+        }
         return totalFloors;
     }
 
@@ -507,11 +549,13 @@ public class HouseViewController {
                     iv.setFitHeight(150);
                     iv.setPreserveRatio(true);
                     Rectangle clip = new Rectangle(230, 150);
-                    clip.setArcWidth(10); clip.setArcHeight(10);
+                    clip.setArcWidth(10);
+                    clip.setArcHeight(10);
                     iv.setClip(clip);
                     card.getChildren().add(iv);
                 }
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) {
+            }
         }
         Label title = new Label("Room " + room.getRoomNumber());
         title.setStyle("-fx-font-weight: bold; -fx-font-size: 16px; -fx-text-fill: #113970;");
@@ -522,8 +566,12 @@ public class HouseViewController {
         HBox pills = new HBox(8);
         Label statusLbl = new Label(room.getStatus());
         statusLbl.getStyleClass().add("status-pill");
-        if(room.getStatus().equalsIgnoreCase("Occupied")) statusLbl.setStyle("-fx-background-color: #ffcdd2; -fx-text-fill: #c62828; -fx-padding: 3 8; -fx-background-radius: 10;");
-        else statusLbl.setStyle("-fx-background-color: #c8e6c9; -fx-text-fill: #2e7d32; -fx-padding: 3 8; -fx-background-radius: 10;");
+        if (room.getStatus().equalsIgnoreCase("Occupied"))
+            statusLbl.setStyle(
+                    "-fx-background-color: #ffcdd2; -fx-text-fill: #c62828; -fx-padding: 3 8; -fx-background-radius: 10;");
+        else
+            statusLbl.setStyle(
+                    "-fx-background-color: #c8e6c9; -fx-text-fill: #2e7d32; -fx-padding: 3 8; -fx-background-radius: 10;");
         pills.getChildren().add(statusLbl);
         card.getChildren().add(pills);
         Label facHeader = new Label("Amenities:");

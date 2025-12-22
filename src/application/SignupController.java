@@ -14,13 +14,20 @@ import java.util.regex.Pattern;
 
 public class SignupController {
 
-    @FXML private TextField fullNameField;
-    @FXML private TextField contactField;
-    @FXML private TextField emailField;
-    @FXML private ComboBox<String> ownershipCombo;
-    @FXML private PasswordField passwordField;
-    @FXML private PasswordField confirmPasswordField;
-    @FXML private Button signupButton;
+    @FXML
+    private TextField fullNameField;
+    @FXML
+    private TextField contactField;
+    @FXML
+    private TextField emailField;
+    @FXML
+    private ComboBox<String> ownershipCombo;
+    @FXML
+    private PasswordField passwordField;
+    @FXML
+    private PasswordField confirmPasswordField;
+    @FXML
+    private Button signupButton;
 
     @FXML
     private void initialize() {
@@ -30,7 +37,7 @@ public class SignupController {
 
     @FXML
     private void onSignup(ActionEvent event) {
-        // 1. Get Inputs
+
         String fullname = fullNameField.getText().trim();
         String contact = contactField.getText().trim();
         String email = emailField.getText().trim();
@@ -38,7 +45,6 @@ public class SignupController {
         String pass = passwordField.getText();
         String confirmPass = confirmPasswordField.getText();
 
-        // 2. Validation
         if (fullname.isEmpty() || contact.isEmpty() || email.isEmpty() || type == null || pass.isEmpty()) {
             showAlert(Alert.AlertType.WARNING, "Missing Info", "Please fill in all fields.");
             return;
@@ -56,16 +62,13 @@ public class SignupController {
             return;
         }
 
-        // 3. Determine Role
         String role = type.equals("Owner") ? "owner" : "tenant";
 
-        // 4. Register User
         boolean success = SignupService.registerUser(fullname, email, pass, role, contact);
 
         if (success) {
             showAlert(Alert.AlertType.INFORMATION, "Success", "Account created successfully! Returning to Homepage.");
 
-            // --- FIX: Redirect to HOMEPAGE instead of Dashboard ---
             onBack(event);
         } else {
             showAlert(Alert.AlertType.ERROR, "Error", "Registration failed. Email might already be in use.");
@@ -96,8 +99,10 @@ public class SignupController {
             Stage stage = new Stage();
             stage.setTitle(title);
             try {
-                stage.getIcons().add(new Image(getClass().getResource("/application/images/homeicon.png").toExternalForm()));
-            } catch (Exception ignored) {}
+                stage.getIcons()
+                        .add(new Image(getClass().getResource("/application/images/homeicon.png").toExternalForm()));
+            } catch (Exception ignored) {
+            }
             stage.setScene(new Scene(root));
             stage.show();
         } catch (Exception e) {

@@ -11,7 +11,8 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 
-<ScrollPane fitToWidth="true" styleClass="main-scroll" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<ScrollPane fitToWidth="true" styleClass="main-scroll" xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.LandlordTenantsController">
     <content>
         <VBox spacing="30.0" styleClass="main-content-background" stylesheets="@LandlordTenants.css">
             <padding>
@@ -26,95 +27,24 @@
             <HBox spacing="20.0">
                 <VBox styleClass="stat-card" HBox.hgrow="ALWAYS">
                     <Label styleClass="stat-title" text="Total Tenants" />
-                    <Label styleClass="stat-number" text="4" />
+                    <Label fx:id="lblTotalTenants" styleClass="stat-number" text="0" />
                 </VBox>
                 <VBox styleClass="stat-card" HBox.hgrow="ALWAYS">
                     <Label styleClass="stat-title" text="Paid This Month" />
-                    <Label styleClass="stat-number, text-green" text="2" />
+                    <Label fx:id="lblPaidMonth" styleClass="stat-number, text-green" text="0" />
                 </VBox>
                 <VBox styleClass="stat-card" HBox.hgrow="ALWAYS">
                     <Label styleClass="stat-title" text="Pending Payment" />
-                    <Label styleClass="stat-number, text-red" text="1" />
+                    <Label fx:id="lblPendingPayment" styleClass="stat-number, text-red" text="0" />
                 </VBox>
                 <VBox styleClass="stat-card" HBox.hgrow="ALWAYS">
                     <Label styleClass="stat-title" text="Overdue" />
-                    <Label styleClass="stat-number, text-red" text="1" />
+                    <Label fx:id="lblOverdue" styleClass="stat-number, text-red" text="0" />
                 </VBox>
             </HBox>
-            <VBox spacing="20.0">
 
-                <VBox styleClass="tenant-card">
-
-                    <HBox alignment="CENTER_LEFT" spacing="20.0">
-
-                        <ImageView fitHeight="70.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@images/profile.png" />
-                            </image>
-                            <clip>
-                                <Circle centerX="35.0" centerY="35.0" radius="35.0" />
-                            </clip>
-                        </ImageView>
-
-                        <VBox alignment="CENTER_LEFT" spacing="2.0">
-                            <Label styleClass="tenant-name" text="Shayne Digo" />
-                            <Label styleClass="tenant-email" text="shaynedigo31@gmail.com" />
-                            <Label styleClass="tenant-phone" text="+63 0951 382 4834" />
-                        </VBox>
-
-                        <Pane HBox.hgrow="ALWAYS" />
-                        <Label styleClass="menu-dots" text="⋮" />
-                    </HBox>
-
-                    <HBox spacing="20.0">
-
-                        <VBox styleClass="info-box" HBox.hgrow="ALWAYS">
-                            <HBox alignment="CENTER_LEFT" spacing="8.0">
-                                <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@images/icon-location.png" />
-                                    </image>
-                                </ImageView>
-                                <Label styleClass="info-label" text="Property" />
-                            </HBox>
-                            <Label styleClass="info-value" text="Cozy Student Room" />
-                        </VBox>
-
-                        <VBox styleClass="info-box" HBox.hgrow="ALWAYS">
-                            <HBox alignment="CENTER_LEFT" spacing="8.0">
-                                <ImageView fitHeight="18.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
-                                    <image>
-                                        <Image url="@images/icon-calendar.png" />
-                                    </image>
-                                </ImageView>
-                                <Label styleClass="info-label" text="Move-in Date" />
-                            </HBox>
-                            <Label styleClass="info-value" text="Jan 15, 2025" />
-                        </VBox>
-                    </HBox>
-
-                    <HBox styleClass="payment-box">
-                        <VBox alignment="CENTER_LEFT">
-                            <Label styleClass="rent-label" text="Monthly Rent" />
-                            <Label styleClass="rent-value" text="₱2,800" />
-                        </VBox>
-
-                        <Pane HBox.hgrow="ALWAYS" />
-
-                        <VBox alignment="CENTER_RIGHT" spacing="5.0">
-                            <Label styleClass="rent-label" text="Next Payment" />
-                            <Label styleClass="rent-date" text="Feb 15, 2025" />
-                            <Label styleClass="status-badge, status-paid" text="Paid" />
-                        </VBox>
-                    </HBox>
-
-                    <HBox spacing="20.0">
-                        <Button maxWidth="Infinity" styleClass="btn-outline" text="Contact Tenant" HBox.hgrow="ALWAYS" />
-                        <Button maxWidth="Infinity" styleClass="btn-filled" text="View Details" HBox.hgrow="ALWAYS" />
-                    </HBox>
-
-                </VBox>
-
+            <VBox fx:id="tenantsContainer" spacing="20.0">
+                <!-- Tenants will be added dynamically here -->
             </VBox>
         </VBox>
     </content>

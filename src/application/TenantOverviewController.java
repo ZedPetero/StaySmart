@@ -1,107 +1,88 @@
 package application;
 
+import application.model.Application;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import java.io.IOException;
-import java.sql.*;
+import javafx.scene.layout.HBox;
+import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.Map;
 
 public class TenantOverviewController {
 
-    @FXML private Label lblWelcomeName, lblSavedCount, lblAppCount, lblTourCount, lblViewedCount;
-    @FXML private VBox toursContainer, emptyToursBox;
+    @FXML
+    private Label lblWelcomeName;
+    @FXML
+    private Label lblSavedCount;
+    @FXML
+    private Label lblAppCount;
+    @FXML
+    private Label lblTourCount;
+    @FXML
+    private Label lblViewedCount;
+    @FXML
+    private VBox toursContainer;
+    @FXML
+    private VBox emptyToursBox;
+
+    private SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy - hh:mm a");
 
     @FXML
     public void initialize() {
-        User user = LoginController.getCurrentUser();
-        if (user != null) {
-            // Greets using the full name defined in your User class
-            lblWelcomeName.setText("Hello, " + user.getFullname() + "!");
-            loadStatistics(user.getId());
-            loadUpcomingTours(user.getId());
+        if (LoginController.getCurrentUser() != null) {
+            String fullName = LoginController.getCurrentUser().getFullname();
+            lblWelcomeName.setText("Hello, " + fullName + "!");
+
+            loadStats();
+            loadUpcomingTours();
         }
     }
 
-    private void loadStatistics(int userId) {
-        try (Connection conn = DatabaseHandler.getConnection()) {
-            // 1. Saved Properties (Unique count)
-            lblSavedCount.setText(String.valueOf(getCount(conn,
-                    "SELECT COUNT(DISTINCT property_id) FROM saved_properties WHERE tenant_id = ?", userId)));
+    private void loadStats() {
+        int userId = LoginController.getCurrentUser().getId();
+        Map<String, Integer> stats = DatabaseHandler.getDashboardStats(userId, "tenant");
 
-            // 2. Active Applications (Booking type)
-            lblAppCount.setText(String.valueOf(getCount(conn,
-                    "SELECT COUNT(*) FROM applications WHERE tenant_id = ? AND application_type = 'Booking' AND status = 'Pending'", userId)));
-
-            // 3. Scheduled Tours (Pending tours)
-            lblTourCount.setText(String.valueOf(getCount(conn,
-                    "SELECT COUNT(*) FROM applications WHERE tenant_id = ? AND application_type = 'Tour' AND status = 'Pending'", userId)));
-
-            // 4. Viewed Properties (Unique properties ever applied for or saved)
-            lblViewedCount.setText(String.valueOf(getCount(conn,
-                    "SELECT COUNT(DISTINCT property_id) FROM applications WHERE tenant_id = ?", userId)));
-
-        } catch (SQLException e) { e.printStackTrace(); }
+        lblSavedCount.setText(String.valueOf(stats.getOrDefault("savedProperties", 0)));
+        lblAppCount.setText(String.valueOf(stats.getOrDefault("activeApps", 0)));
+        lblTourCount.setText(String.valueOf(stats.getOrDefault("activeTours", 0)));
+        lblViewedCount.setText(String.valueOf(stats.getOrDefault("viewedProperties", 0)));
     }
 
-    private void loadUpcomingTours(int userId) {
+    private void loadUpcomingTours() {
+        int userId = LoginController.getCurrentUser().getId();
+        List<Application> tours = DatabaseHandler.getUpcomingTours(userId);
+
         toursContainer.getChildren().clear();
 
-        // JOIN query to get Property info and Landlord's FULL name
-        String sql = "SELECT a.*, p.name as prop_name, p.location, u.fullname as host_name " +
-                "FROM applications a " +
-                "JOIN properties p ON a.property_id = p.id " +
-                "JOIN users u ON p.landlord_id = u.id " +
-                "WHERE a.tenant_id = ? AND a.application_type = 'Tour' " +
-                "ORDER BY a.apply_date DESC";
+        if (tours.isEmpty()) {
+            emptyToursBox.setVisible(true);
+            emptyToursBox.setManaged(true);
+        } else {
+            emptyToursBox.setVisible(false);
+            emptyToursBox.setManaged(false);
 
-        try (Connection conn = DatabaseHandler.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setInt(1, userId);
-            ResultSet rs = pstmt.executeQuery();
-
-            boolean hasTours = false;
-            while (rs.next()) {
-                hasTours = true;
-                addTourItem(
-                        rs.getString("prop_name"),
-                        rs.getString("apply_date"),
-                        rs.getString("location"),
-                        rs.getString("host_name")
-                );
+            for (Application tour : tours) {
+                toursContainer.getChildren().add(createTourItem(tour));
             }
-
-            // Logic for "If no upcoming property tours, just say there are no upcoming ones"
-            emptyToursBox.setVisible(!hasTours);
-            emptyToursBox.setManaged(!hasTours);
-            toursContainer.setVisible(hasTours);
-            toursContainer.setManaged(hasTours);
-
-        } catch (SQLException e) { e.printStackTrace(); }
-    }
-
-    private void addTourItem(String name, String date, String loc, String host) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("OverviewTourItem.fxml"));
-            HBox item = loader.load();
-
-            // Mapping database results to the FXML labels
-            ((Label) item.lookup("#lblPropertyName")).setText(name);
-            ((Label) item.lookup("#lblDate")).setText(date);
-            ((Label) item.lookup("#lblLocation")).setText(loc);
-            ((Label) item.lookup("#lblHost")).setText("Host: " + host);
-
-            toursContainer.getChildren().add(item);
-        } catch (IOException e) { e.printStackTrace(); }
-    }
-
-    private int getCount(Connection conn, String sql, int userId) throws SQLException {
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, userId);
-            ResultSet rs = pstmt.executeQuery();
-            return rs.next() ? rs.getInt(1) : 0;
         }
+    }
+
+    private HBox createTourItem(Application tour) {
+        HBox item = new HBox(15);
+        item.setStyle(
+                "-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 5, 0, 0, 2);");
+        item.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+
+        VBox info = new VBox(5);
+        Label title = new Label(tour.getPropertyName() + " - Room " + tour.getRoomNumber());
+        title.setStyle("-fx-font-weight: bold; -fx-font-size: 16px;");
+        Label date = new Label("Scheduled: " + sdf.format(tour.getApplyDate())); // Using applyDate as schedule for now
+        date.setStyle("-fx-text-fill: #666;");
+
+        info.getChildren().addAll(title, date);
+        item.getChildren().add(info);
+
+        return item;
     }
 }

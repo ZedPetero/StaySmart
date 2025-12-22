@@ -12,14 +12,38 @@ import java.net.URL;
 
 public class TenantDashboardController {
 
-    @FXML private StackPane contentArea;
+    @FXML
+    private StackPane contentArea;
 
-    @FXML private HBox btnDashboard;
-    @FXML private HBox btnExplore;
-    @FXML private HBox btnSaved;
-    @FXML private HBox btnApplications;
-    @FXML private HBox btnProfile;
-    @FXML private HBox btnSettings;
+    @FXML
+    private HBox btnDashboard;
+    @FXML
+    private HBox btnExplore;
+    @FXML
+    private HBox btnSaved;
+    @FXML
+    private HBox btnApplications;
+    @FXML
+    private HBox btnMessages;
+    @FXML
+    private HBox btnProfile;
+    @FXML
+    private HBox btnSettings;
+    @FXML
+    private HBox btnLogout;
+
+    @FXML
+    private void handleLogout() {
+        LoginController.setCurrentUser(null);
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("Main.fxml"));
+            javafx.stage.Stage stage = (javafx.stage.Stage) btnLogout.getScene().getWindow();
+            stage.setScene(new javafx.scene.Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     @FXML
     public void initialize() {
@@ -27,32 +51,44 @@ public class TenantDashboardController {
         handleShowDashboard();
     }
 
-    @FXML private void handleShowDashboard() {
+    @FXML
+    private void handleShowDashboard() {
         loadPage("TenantOverview.fxml");
         highlightButton(btnDashboard);
     }
 
-    @FXML private void handleShowExplore() {
+    @FXML
+    private void handleShowExplore() {
         loadPage("ExploreProperties.fxml");
         highlightButton(btnExplore);
     }
 
-    @FXML private void handleShowSaved() {
+    @FXML
+    private void handleShowSaved() {
         loadPage("TenantSavedProperties.fxml");
         highlightButton(btnSaved);
     }
 
-    @FXML private void handleShowApplications() {
-         loadPage("TenantApplications.fxml");
+    @FXML
+    private void handleShowApplications() {
+        loadPage("TenantApplications.fxml");
         highlightButton(btnApplications);
     }
 
-    @FXML private void handleShowProfile() {
-         loadPage("TenantProfile.fxml");
+    @FXML
+    private void handleShowMessages() {
+        loadPage("TenantMessages.fxml");
+        highlightButton(btnMessages);
+    }
+
+    @FXML
+    private void handleShowProfile() {
+        loadPage("TenantProfile.fxml");
         highlightButton(btnProfile);
     }
 
-    @FXML private void handleShowSettings() {
+    @FXML
+    private void handleShowSettings() {
         loadPage("TenantSettings.fxml");
         highlightButton(btnSettings);
     }
@@ -77,6 +113,7 @@ public class TenantDashboardController {
         resetButtonVisuals(btnExplore);
         resetButtonVisuals(btnSaved);
         resetButtonVisuals(btnApplications);
+        resetButtonVisuals(btnMessages);
         resetButtonVisuals(btnProfile);
         resetButtonVisuals(btnSettings);
 

@@ -23,13 +23,18 @@ import java.util.regex.Pattern;
 
 public class LoginController {
 
-    @FXML private TextField usernameField;
-    @FXML private PasswordField passwordField;
-    @FXML private CheckBox rememberCheck;
-    @FXML private Button loginButton;
-    @FXML private Circle bgCircle;
+    @FXML
+    private TextField usernameField;
+    @FXML
+    private PasswordField passwordField;
+    @FXML
+    private CheckBox rememberCheck;
+    @FXML
+    private Button loginButton;
+    @FXML
+    private Circle bgCircle;
 
-    // --- STORE USER SESSION HERE ---
+    // ====== ( User Session ) =========
     private static User currentUser;
 
     public static User getCurrentUser() {
@@ -48,12 +53,13 @@ public class LoginController {
             RadialGradient gradient = new RadialGradient(
                     0, 0, 0.5, 0.5, 0.5, true, CycleMethod.NO_CYCLE,
                     new Stop(0.0, Color.web("#125A8B")),
-                    new Stop(1.0, Color.web("#125A8B", 0.0))
-            );
+                    new Stop(1.0, Color.web("#125A8B", 0.0)));
             bgCircle.setFill(gradient);
             bgCircle.setRadius(640);
             BoxBlur noise = new BoxBlur();
-            noise.setWidth(2); noise.setHeight(2); noise.setIterations(1);
+            noise.setWidth(2);
+            noise.setHeight(2);
+            noise.setIterations(1);
             GaussianBlur blur = new GaussianBlur();
             blur.setRadius(80);
             blur.setInput(noise);
@@ -102,7 +108,7 @@ public class LoginController {
 
     @FXML
     private void onCancel(ActionEvent event) {
-        Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.close();
     }
 
@@ -124,7 +130,8 @@ public class LoginController {
             try {
                 Image icon = new Image(getClass().getResource("/application/images/homeicon.png").toExternalForm());
                 signupStage.getIcons().add(icon);
-            } catch (Exception e) {}
+            } catch (Exception e) {
+            }
             signupStage.setScene(scene);
             signupStage.setResizable(false);
             signupStage.show();
@@ -145,7 +152,8 @@ public class LoginController {
                 Font.loadFont(getClass().getResourceAsStream("/fonts/Outfit-Medium.ttf"), 10);
                 Font.loadFont(getClass().getResourceAsStream("/fonts/Outfit-SemiBold.ttf"), 10);
                 Font.loadFont(getClass().getResourceAsStream("/fonts/Outfit-Bold.ttf"), 10);
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) {
+            }
 
             String fxmlPath;
             String windowTitle;
@@ -168,7 +176,8 @@ public class LoginController {
             try {
                 Image icon = new Image(getClass().getResource("/application/images/homeicon.png").toExternalForm());
                 mainStage.getIcons().add(icon);
-            } catch (Exception e) {}
+            } catch (Exception e) {
+            }
 
             mainStage.setScene(scene);
             mainStage.show();
