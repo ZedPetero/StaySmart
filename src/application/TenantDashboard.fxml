@@ -61,6 +61,14 @@
                     <Label text="Applications" styleClass="nav-text" />
                 </HBox>
 
+                <HBox fx:id="btnMessages" onMouseClicked="#handleShowMessages"
+                    styleClass="nav-item" spacing="15" alignment="CENTER_LEFT">
+                    <ImageView fitWidth="24" fitHeight="24" styleClass="nav-icon">
+                        <Image url="@images/bubble-discussion.png" />
+                    </ImageView>
+                    <Label text="Messages" styleClass="nav-text" />
+                </HBox>
+
                 <HBox fx:id="btnProfile" onMouseClicked="#handleShowProfile" styleClass="nav-item"
                     spacing="15" alignment="CENTER_LEFT">
                     <ImageView fitWidth="24" fitHeight="24" styleClass="nav-icon">

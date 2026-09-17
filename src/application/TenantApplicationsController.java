@@ -31,7 +31,7 @@ public class TenantApplicationsController {
                 "FROM applications a " +
                 "JOIN properties p ON a.property_id = p.id " +
                 "JOIN rooms r ON a.room_id = r.id " +
-                "JOIN users u ON p.landlord_id = u.id " +
+                "LEFT JOIN users u ON p.landlord_id = u.id " +
                 "WHERE a.tenant_id = ? " +
                 "ORDER BY a.apply_date DESC";
 
@@ -43,7 +43,7 @@ public class TenantApplicationsController {
 
             while (rs.next()) {
                 total++;
-                String status = rs.getString("status");
+                String status = rs.getString("status") != null ? rs.getString("status") : "Pending";
 
                 if (status.equalsIgnoreCase("Pending")) pending++;
                 else if (status.equalsIgnoreCase("Approved")) approved++;
@@ -77,6 +77,7 @@ public class TenantApplicationsController {
                     applicationsListContainer.getChildren().add(card);
                 } catch (Exception e) {
                     System.err.println("Error loading application card: " + e.getMessage());
+                    e.printStackTrace();
                 }
             }
 

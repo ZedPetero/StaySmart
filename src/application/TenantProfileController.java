@@ -55,8 +55,10 @@ public class TenantProfileController {
         viewEmergency.setVisible(false);
 
         // Update Button Styles (Active/Inactive)
-        btnTabPersonal.getStyleClass().add("tab-active-right");
         btnTabEmergency.getStyleClass().remove("tab-active-right");
+        if (!btnTabPersonal.getStyleClass().contains("tab-active-right")) {
+            btnTabPersonal.getStyleClass().add("tab-active-right");
+        }
     }
 
     @FXML
@@ -64,8 +66,10 @@ public class TenantProfileController {
         viewPersonal.setVisible(false);
         viewEmergency.setVisible(true);
 
-        btnTabEmergency.getStyleClass().add("tab-active-right");
         btnTabPersonal.getStyleClass().remove("tab-active-right");
+        if (!btnTabEmergency.getStyleClass().contains("tab-active-right")) {
+            btnTabEmergency.getStyleClass().add("tab-active-right");
+        }
     }
 
     // --- Data Loading ---
@@ -87,8 +91,9 @@ public class TenantProfileController {
                 setTextSafe(txtEmail, rs.getString("email"));
                 setTextSafe(txtPhone, rs.getString("contact_number"));
                 setTextSafe(txtAddress, rs.getString("address"));
-                txtAboutMe.setText(rs.getString("about_me"));
-                lblSideName.setText(rs.getString("fullname"));
+                setTextSafe(txtAboutMe, rs.getString("about_me"));
+                String fullname = rs.getString("fullname");
+                lblSideName.setText(fullname != null && !fullname.isEmpty() ? fullname : LoginController.getCurrentUser().getUsername());
 
                 // Emergency
                 setTextSafe(txtEmName, rs.getString("emergency_contact_name"));
@@ -134,6 +139,12 @@ public class TenantProfileController {
             pstmt.setInt(7, currentUserId);
 
             if (pstmt.executeUpdate() > 0) {
+                User currentUser = LoginController.getCurrentUser();
+                if (currentUser != null) {
+                    currentUser.setFullname(txtFullName.getText());
+                    currentUser.setEmail(txtEmail.getText());
+                    currentUser.setContactNumber(txtPhone.getText());
+                }
                 showAlert("Success", "Personal info updated!");
                 setPersonalEditable(false);
                 btnEdit.setText("Edit Profile");

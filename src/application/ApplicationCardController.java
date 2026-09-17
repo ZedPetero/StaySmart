@@ -24,8 +24,9 @@ public class ApplicationCardController {
         this.currentApp = app;
         lblPropertyName.setText(app.getPropertyName());
         lblApplyDate.setText("Applied on: " + (app.getApplyDate() != null ? app.getApplyDate().toString() : "N/A"));
-        lblStatus.setText(app.getStatus());
-        lblMessage.setText(app.getMessage());
+        String status = app.getStatus() != null ? app.getStatus() : "Pending";
+        lblStatus.setText(status);
+        lblMessage.setText(app.getMessage() != null && !app.getMessage().isEmpty() ? app.getMessage() : "No message provided.");
         lblType.setText(app.getType());
 
         if ("Tour".equalsIgnoreCase(app.getType())) {
@@ -44,7 +45,7 @@ public class ApplicationCardController {
             lblType.setText("ROOM BOOKING");
         }
 
-        updateStatusStyle(app.getStatus());
+        updateStatusStyle(status);
     }
 
     @FXML
@@ -60,10 +61,7 @@ public class ApplicationCardController {
             controller.setContext(currentApp.getId(), currentApp.getLandlordId(),
                     currentApp.getLandlordName() != null ? currentApp.getLandlordName() : "Landlord");
 
-            javafx.stage.Stage stage = new javafx.stage.Stage();
-            stage.setTitle("Chat - " + currentApp.getPropertyName());
-            stage.setScene(new javafx.scene.Scene(root));
-            stage.show();
+            AppWindow.show(new javafx.stage.Stage(), root, "Chat - " + currentApp.getPropertyName());
         } catch (java.io.IOException e) {
             e.printStackTrace();
         }
@@ -71,7 +69,7 @@ public class ApplicationCardController {
 
     private void updateStatusStyle(String status) {
         lblStatus.getStyleClass().removeAll("badge-pending", "badge-approved", "badge-rejected");
-        if (status.equalsIgnoreCase("Pending")) {
+        if (status == null || status.equalsIgnoreCase("Pending")) {
             lblStatus.getStyleClass().add("badge-pending");
         } else if (status.equalsIgnoreCase("Approved")) {
             lblStatus.getStyleClass().add("badge-approved");

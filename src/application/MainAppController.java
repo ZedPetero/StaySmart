@@ -54,7 +54,7 @@ public class MainAppController implements Initializable {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("About");
         alert.setHeaderText("JavaFX Application");
-        alert.setContentText("Role-based login system with JavaFX and MySQL");
+        alert.setContentText("Role-based login system with JavaFX and SQLite");
         alert.showAndWait();
     }
 

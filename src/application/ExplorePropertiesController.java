@@ -25,7 +25,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.TreeMap;
 import java.util.List;
 import java.util.Map;
 
@@ -187,16 +187,13 @@ public class ExplorePropertiesController {
 
             HouseViewController houseController = loader.getController();
 
-            // 1. Set Data
-            houseController.setupPropertyData(property, floors);
-
-            // 2. ENABLE TENANT MODE (This hides the "+" buttons and enables applying)
+            // 1. ENABLE TENANT MODE first (hides the "+" buttons and enables applying)
             houseController.setTenantMode(true);
 
-            Stage stage = new Stage();
-            stage.setTitle(property.getName());
-            stage.setScene(new Scene(root));
-            stage.show();
+            // 2. Set Data
+            houseController.setupPropertyData(property, floors);
+
+            AppWindow.show(new Stage(), root, property.getName());
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -205,8 +202,8 @@ public class ExplorePropertiesController {
 
     // --- Helper to fetch Room Data (Copy of logic from MyPropertiesController) ---
     private List<Floor> fetchFloorsAndRooms(int propertyId) {
-        Map<Integer, Floor> floorMap = new HashMap<>();
-        String query = "SELECT * FROM rooms WHERE property_id = ? ORDER BY floor_level ASC, room_number ASC";
+        Map<Integer, Floor> floorMap = new TreeMap<>();
+        String query = "SELECT * FROM rooms WHERE property_id = ? ORDER BY floor_level ASC, CAST(room_number AS INTEGER) ASC";
 
         try (Connection conn = DatabaseHandler.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {

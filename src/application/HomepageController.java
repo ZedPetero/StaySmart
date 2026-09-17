@@ -3,7 +3,6 @@ package application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.BoxBlur;
@@ -286,20 +285,8 @@ public class HomepageController {
             Stage currentStage = (Stage) loginButton.getScene().getWindow();
             currentStage.close();
 
-            Stage loginStage = new Stage();
             Parent root = FXMLLoader.load(getClass().getResource("Main.fxml"));
-            Scene scene = new Scene(root);
-            loginStage.setTitle("Login System");
-            // Set application icon
-            try {
-                Image icon = new Image(getClass().getResource("/application/images/homeicon.png").toExternalForm());
-                loginStage.getIcons().add(icon);
-            } catch (Exception e) {
-                // Icon not found, continue without it
-            }
-            loginStage.setScene(scene);
-            loginStage.setResizable(false);
-            loginStage.show();
+            AppWindow.showFixed(new Stage(), root, "Login System", AppWindow.LOGIN_WIDTH, AppWindow.LOGIN_HEIGHT);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -312,20 +299,8 @@ public class HomepageController {
             Stage currentStage = (Stage) signupButton.getScene().getWindow();
             currentStage.close();
 
-            Stage signupStage = new Stage();
             Parent root = FXMLLoader.load(getClass().getResource("Signup.fxml"));
-            Scene scene = new Scene(root);
-            signupStage.setTitle("Sign Up");
-            // Set application icon
-            try {
-                Image icon = new Image(getClass().getResource("/application/images/homeicon.png").toExternalForm());
-                signupStage.getIcons().add(icon);
-            } catch (Exception e) {
-                // Icon not found, continue without it
-            }
-            signupStage.setScene(scene);
-            signupStage.setResizable(false);
-            signupStage.show();
+            AppWindow.showFixed(new Stage(), root, "Sign Up", AppWindow.SIGNUP_WIDTH, AppWindow.SIGNUP_HEIGHT);
 
         } catch (Exception e) {
             e.printStackTrace();

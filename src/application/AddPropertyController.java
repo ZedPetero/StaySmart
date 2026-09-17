@@ -73,8 +73,8 @@ public class AddPropertyController {
         dynamicRoomContainer.getChildren().clear();
         roomInputs.clear();
         try {
-            int floors = Integer.parseInt(floorCountStr);
-            if (floors > 20) return;
+            int floors = Integer.parseInt(floorCountStr == null ? "" : floorCountStr.trim());
+            if (floors < 1 || floors > 20) return;
 
             for (int i = 1; i <= floors; i++) {
                 VBox row = new VBox(5);
@@ -102,9 +102,49 @@ public class AddPropertyController {
         }
     }
 
+    private boolean validateInputs() {
+        StringBuilder errors = new StringBuilder();
+        if (txtName.getText() == null || txtName.getText().trim().isEmpty()) errors.append("Property name is required.\n");
+        if (txtLocation.getText() == null || txtLocation.getText().trim().isEmpty()) errors.append("Location is required.\n");
+
+        String price = txtPrice.getText() == null ? "" : txtPrice.getText().trim().replace(",", "");
+        if (price.isEmpty()) {
+            errors.append("Price is required.\n");
+        } else {
+            try {
+                if (Double.parseDouble(price) < 0) errors.append("Price cannot be negative.\n");
+            } catch (NumberFormatException e) {
+                errors.append("Price must be a number.\n");
+            }
+        }
+
+        String floors = txtFloors.getText() == null ? "" : txtFloors.getText().trim();
+        try {
+            int f = Integer.parseInt(floors);
+            if (f < 1 || f > 20) errors.append("Number of floors must be between 1 and 20.\n");
+        } catch (NumberFormatException e) {
+            errors.append("Number of floors must be a whole number.\n");
+        }
+
+        if (errors.length() == 0) return true;
+        showAlert(Alert.AlertType.WARNING, "Missing or invalid information", errors.toString().trim());
+        return false;
+    }
+
+    private void showAlert(Alert.AlertType type, String title, String content) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        if (txtName.getScene() != null) alert.initOwner(txtName.getScene().getWindow());
+        alert.showAndWait();
+    }
+
     @FXML
     private void handleSave() {
-        if (txtName.getText().isEmpty() || txtLocation.getText().isEmpty() || txtPrice.getText().isEmpty()) return;
+        if (!validateInputs()) return;
+        String floorsText = txtFloors.getText().trim();
+        double priceValue = Double.parseDouble(txtPrice.getText().trim().replace(",", ""));
 
         // --- 1. COLLECT AMENITIES ---
         StringBuilder amenitiesBuilder = new StringBuilder();
@@ -125,11 +165,11 @@ public class AddPropertyController {
                 String sql = "UPDATE properties SET name=?, location=?, price=?, type=?, floors=?, image_path=?, amenities=? WHERE id=?";
                 PreparedStatement pstmt = conn.prepareStatement(sql);
 
-                pstmt.setString(1, txtName.getText());
-                pstmt.setString(2, txtLocation.getText());
-                pstmt.setDouble(3, Double.parseDouble(txtPrice.getText().replace(",", "")));
+                pstmt.setString(1, txtName.getText().trim());
+                pstmt.setString(2, txtLocation.getText().trim());
+                pstmt.setDouble(3, priceValue);
                 pstmt.setString(4, cmbType.getValue());
-                pstmt.setString(5, txtFloors.getText());
+                pstmt.setString(5, floorsText);
 
                 // Handle image path correctly
                 String path = (selectedImageFile != null) ? selectedImageFile.getAbsolutePath() : existingProperty.getImagePath();
@@ -138,24 +178,42 @@ public class AddPropertyController {
                 pstmt.setString(7, amenitiesString); // Parameter 7
                 pstmt.setInt(8, existingProperty.getId()); // Parameter 8
 
-                int rowsAffected = pstmt.executeUpdate();
-                System.out.println("Rows updated: " + rowsAffected);
+                pstmt.executeUpdate();
 
-                // Re-sync floors/rooms if floor count changed
-                if (!existingProperty.getFloors().equals(txtFloors.getText())) {
-                    deleteOldRoomsAndFloors(existingProperty.getId());
-                    saveFloors(existingProperty.getId());
-                    createInitialRooms(existingProperty.getId());
+                String oldFloors = existingProperty.getFloors() == null ? "" : existingProperty.getFloors().trim();
+                if (!oldFloors.equals(floorsText)) {
+                    // Floor count changed: rooms are rebuilt, which also drops their applications.
+                    Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+                    confirm.setTitle("Rebuild rooms?");
+                    confirm.setHeaderText("The number of floors changed from " + oldFloors + " to " + floorsText + ".");
+                    confirm.setContentText("All existing rooms of this property (and any applications for them) will be removed and recreated. Continue?");
+                    if (confirm.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
+                        deleteOldRoomsAndFloors(existingProperty.getId());
+                        saveFloors(existingProperty.getId());
+                        createInitialRooms(existingProperty.getId());
+                    } else {
+                        // Keep the old floor count consistent with the rooms we kept
+                        try (PreparedStatement revert = conn.prepareStatement("UPDATE properties SET floors = ? WHERE id = ?")) {
+                            revert.setString(1, oldFloors.isEmpty() ? "1" : oldFloors);
+                            revert.setInt(2, existingProperty.getId());
+                            revert.executeUpdate();
+                        }
+                    }
+                } else {
+                    // Same floor count: just update the per-floor room counts and add missing rooms
+                    updateFloorRoomCounts(existingProperty.getId());
+                    addMissingRooms(existingProperty.getId());
                 }
             } else {
                 // INSERT LOGIC (Remains the same as your working version)
-                String sql = "INSERT INTO properties (name, location, price, type, floors, image_path, landlord_id, amenities) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                String sql = "INSERT INTO properties (name, location, price, type, floors, image_path, landlord_id, amenities, created_at) " +
+                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, datetime('now', 'localtime'))";
                 PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-                pstmt.setString(1, txtName.getText());
-                pstmt.setString(2, txtLocation.getText());
-                pstmt.setDouble(3, Double.parseDouble(txtPrice.getText().replace(",", "")));
+                pstmt.setString(1, txtName.getText().trim());
+                pstmt.setString(2, txtLocation.getText().trim());
+                pstmt.setDouble(3, priceValue);
                 pstmt.setString(4, cmbType.getValue());
-                pstmt.setString(5, txtFloors.getText());
+                pstmt.setString(5, floorsText);
                 pstmt.setString(6, selectedImageFile != null ? selectedImageFile.getAbsolutePath() : null);
                 pstmt.setInt(7, LoginController.getCurrentUser().getId());
                 pstmt.setString(8, amenitiesString);
@@ -173,6 +231,67 @@ public class AddPropertyController {
             closeWindow();
         } catch (Exception e) {
             e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Save failed", "Could not save the property: " + e.getMessage());
+        }
+    }
+
+    // Edit mode, same floor count: keep property_floors.room_count in step with the inputs
+    private void updateFloorRoomCounts(int propertyId) {
+        String update = "UPDATE property_floors SET room_count = ? WHERE property_id = ? AND floor_number = ?";
+        String insert = "INSERT INTO property_floors (property_id, floor_number, room_count) VALUES (?, ?, ?)";
+        try (Connection conn = DatabaseHandler.getConnection();
+             PreparedStatement up = conn.prepareStatement(update);
+             PreparedStatement ins = conn.prepareStatement(insert)) {
+            for (int i = 0; i < roomInputs.size(); i++) {
+                int rooms = parseRoomCount(roomInputs.get(i));
+                up.setInt(1, rooms);
+                up.setInt(2, propertyId);
+                up.setInt(3, i + 1);
+                if (up.executeUpdate() == 0) {
+                    ins.setInt(1, propertyId);
+                    ins.setInt(2, i + 1);
+                    ins.setInt(3, rooms);
+                    ins.executeUpdate();
+                }
+            }
+        } catch (Exception e) { e.printStackTrace(); }
+    }
+
+    // Edit mode, same floor count: create rooms only where a floor now has more rooms than before
+    private void addMissingRooms(int propertyId) {
+        String countSql = "SELECT COUNT(*) FROM rooms WHERE property_id = ? AND floor_level = ?";
+        String insertSql = "INSERT INTO rooms (property_id, floor_level, room_number, price, status, payment_status) VALUES (?, ?, ?, ?, ?, ?)";
+        try (Connection conn = DatabaseHandler.getConnection();
+             PreparedStatement count = conn.prepareStatement(countSql);
+             PreparedStatement insert = conn.prepareStatement(insertSql)) {
+            for (int i = 0; i < roomInputs.size(); i++) {
+                int floorLevel = i + 1;
+                int wanted = parseRoomCount(roomInputs.get(i));
+
+                count.setInt(1, propertyId);
+                count.setInt(2, floorLevel);
+                ResultSet rs = count.executeQuery();
+                int existing = rs.next() ? rs.getInt(1) : 0;
+
+                for (int r = existing + 1; r <= wanted; r++) {
+                    insert.setInt(1, propertyId);
+                    insert.setInt(2, floorLevel);
+                    insert.setString(3, String.format("%d%02d", floorLevel, r));
+                    insert.setDouble(4, 0.0);
+                    insert.setString(5, "Available");
+                    insert.setString(6, "Pending");
+                    insert.addBatch();
+                }
+            }
+            insert.executeBatch();
+        } catch (Exception e) { e.printStackTrace(); }
+    }
+
+    private int parseRoomCount(TextField input) {
+        try {
+            return Math.max(0, Integer.parseInt(input.getText().trim()));
+        } catch (Exception e) {
+            return 0;
         }
     }
 
@@ -183,8 +302,7 @@ public class AddPropertyController {
 
             for (int i = 0; i < roomInputs.size(); i++) {
                 TextField input = roomInputs.get(i);
-                int rooms = 0;
-                try { rooms = Integer.parseInt(input.getText()); } catch(Exception e){}
+                int rooms = parseRoomCount(input);
 
                 pstmt.setInt(1, propertyId);
                 pstmt.setInt(2, i + 1);
@@ -202,8 +320,7 @@ public class AddPropertyController {
 
             for (int i = 0; i < roomInputs.size(); i++) {
                 int floorLevel = i + 1;
-                int roomCount = 0;
-                try { roomCount = Integer.parseInt(roomInputs.get(i).getText()); } catch(Exception e){}
+                int roomCount = parseRoomCount(roomInputs.get(i));
 
                 for (int r = 1; r <= roomCount; r++) {
                     String roomNum = String.format("%d%02d", floorLevel, r);
@@ -236,8 +353,10 @@ public class AddPropertyController {
         txtName.setText(property.getName());
         txtLocation.setText(property.getLocation());
         txtPrice.setText(String.format("%.0f", property.getPrice()));
-        txtFloors.setText(property.getFloors());
-        cmbType.setValue(property.getType());
+        txtFloors.setText(property.getFloors() != null ? property.getFloors().trim() : "1");
+        if (property.getType() != null && cmbType.getItems().contains(property.getType())) {
+            cmbType.setValue(property.getType());
+        }
 
         // Reset all checkboxes first
         for (CheckBox cb : amenityCheckBoxes) cb.setSelected(false);
@@ -254,12 +373,30 @@ public class AddPropertyController {
             }
         }
 
-        if (property.getImagePath() != null) {
-            selectedImageFile = new File(property.getImagePath());
-            lblImageName.setText(selectedImageFile.getName());
+        if (property.getImagePath() != null && !property.getImagePath().isEmpty()) {
+            File img = new File(property.getImagePath());
+            lblImageName.setText(img.getName());
+            // Only keep it as the "selected" file if it still exists; otherwise the old path is preserved on save
+            if (img.exists()) selectedImageFile = img;
         }
 
         generateRoomInputs(property.getFloors());
+        prefillRoomCounts(property.getId());
+    }
+
+    private void prefillRoomCounts(int propertyId) {
+        String sql = "SELECT floor_number, room_count FROM property_floors WHERE property_id = ?";
+        try (Connection conn = DatabaseHandler.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, propertyId);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                int idx = rs.getInt("floor_number") - 1;
+                if (idx >= 0 && idx < roomInputs.size()) {
+                    roomInputs.get(idx).setText(String.valueOf(rs.getInt("room_count")));
+                }
+            }
+        } catch (Exception e) { e.printStackTrace(); }
     }
     // Helper for Edit Mode
     private void deleteOldRoomsAndFloors(int propertyId) {

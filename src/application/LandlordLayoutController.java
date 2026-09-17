@@ -38,11 +38,15 @@ public class LandlordLayoutController {
     @FXML
     private void handleLogout() {
         LoginController.setCurrentUser(null);
+        UserSession.cleanUserSession();
         try {
+            // Close the maximized dashboard and open the fixed-size login window fresh,
+            // the same way the homepage does, instead of squeezing the login form into a maximized stage.
+            javafx.stage.Stage current = (javafx.stage.Stage) btnLogout.getScene().getWindow();
+            current.close();
+
             Parent root = FXMLLoader.load(getClass().getResource("Main.fxml"));
-            javafx.stage.Stage stage = (javafx.stage.Stage) btnLogout.getScene().getWindow();
-            stage.setScene(new javafx.scene.Scene(root));
-            stage.show();
+            AppWindow.showFixed(new javafx.stage.Stage(), root, "Login System", AppWindow.LOGIN_WIDTH, AppWindow.LOGIN_HEIGHT);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -51,8 +55,20 @@ public class LandlordLayoutController {
     // TRACKING: We need to know which controller is currently active
     private Object currentController;
 
+    private static LandlordLayoutController instance;
+
+    /** The layout currently on screen, so child pages can switch tabs (e.g. "View all"). */
+    public static LandlordLayoutController getInstance() {
+        return instance;
+    }
+
+    public void showProperties() {
+        handleShowProperties();
+    }
+
     @FXML
     public void initialize() {
+        instance = this;
         // 1. Load the default page
         loadPage("/application/Overview.fxml");
 
@@ -130,7 +146,9 @@ public class LandlordLayoutController {
         resetButtonStyle(btnSettings);
 
         activeButton.getStyleClass().removeAll("menu-item");
-        activeButton.getStyleClass().add("menu-item-active");
+        if (!activeButton.getStyleClass().contains("menu-item-active")) {
+            activeButton.getStyleClass().add("menu-item-active");
+        }
 
         if (activeButton.getChildren().get(0) instanceof ImageView) {
             ImageView icon = (ImageView) activeButton.getChildren().get(0);

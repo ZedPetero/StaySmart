@@ -17,6 +17,7 @@ public class LandlordSettingsController {
     @FXML
     public void initialize() {
         // Load Profile by default when page opens
+        setActiveState(btnProfile);
         loadView("SettingsProfile.fxml");
     }
 
@@ -54,6 +55,8 @@ public class LandlordSettingsController {
         btnPayment.getStyleClass().remove("menu-active");
 
         // Add 'menu-active' to the clicked button
-        activeBox.getStyleClass().add("menu-active");
+        if (!activeBox.getStyleClass().contains("menu-active")) {
+            activeBox.getStyleClass().add("menu-active");
+        }
     }
 }

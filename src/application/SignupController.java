@@ -3,9 +3,7 @@ package application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.event.ActionEvent;
 import javafx.stage.Stage;
 import javafx.scene.Node;
@@ -14,13 +12,20 @@ import java.util.regex.Pattern;
 
 public class SignupController {
 
-    @FXML private TextField fullNameField;
-    @FXML private TextField contactField;
-    @FXML private TextField emailField;
-    @FXML private ComboBox<String> ownershipCombo;
-    @FXML private PasswordField passwordField;
-    @FXML private PasswordField confirmPasswordField;
-    @FXML private Button signupButton;
+    @FXML
+    private TextField fullNameField;
+    @FXML
+    private TextField contactField;
+    @FXML
+    private TextField emailField;
+    @FXML
+    private ComboBox<String> ownershipCombo;
+    @FXML
+    private PasswordField passwordField;
+    @FXML
+    private PasswordField confirmPasswordField;
+    @FXML
+    private Button signupButton;
 
     @FXML
     private void initialize() {
@@ -30,7 +35,7 @@ public class SignupController {
 
     @FXML
     private void onSignup(ActionEvent event) {
-        // 1. Get Inputs
+
         String fullname = fullNameField.getText().trim();
         String contact = contactField.getText().trim();
         String email = emailField.getText().trim();
@@ -38,7 +43,6 @@ public class SignupController {
         String pass = passwordField.getText();
         String confirmPass = confirmPasswordField.getText();
 
-        // 2. Validation
         if (fullname.isEmpty() || contact.isEmpty() || email.isEmpty() || type == null || pass.isEmpty()) {
             showAlert(Alert.AlertType.WARNING, "Missing Info", "Please fill in all fields.");
             return;
@@ -56,19 +60,29 @@ public class SignupController {
             return;
         }
 
-        // 3. Determine Role
+        if (!LoginController.isValidPhoneNumber(contact)) {
+            showAlert(Alert.AlertType.WARNING, "Invalid Format", "Contact number must contain digits only (at least 7).");
+            return;
+        }
+        if (!DatabaseHandler.isDatabaseReachable()) {
+            showAlert(Alert.AlertType.ERROR, "Database Unavailable", DatabaseHandler.DB_UNREACHABLE_MESSAGE);
+            return;
+        }
+        if (SignupService.emailExists(email)) {
+            showAlert(Alert.AlertType.ERROR, "Email in use", "An account with this email already exists. Please log in instead.");
+            return;
+        }
+
         String role = type.equals("Owner") ? "owner" : "tenant";
 
-        // 4. Register User
         boolean success = SignupService.registerUser(fullname, email, pass, role, contact);
 
         if (success) {
             showAlert(Alert.AlertType.INFORMATION, "Success", "Account created successfully! Returning to Homepage.");
 
-            // --- FIX: Redirect to HOMEPAGE instead of Dashboard ---
             onBack(event);
         } else {
-            showAlert(Alert.AlertType.ERROR, "Error", "Registration failed. Email might already be in use.");
+            showAlert(Alert.AlertType.ERROR, "Error", "Registration failed. Please check the database connection and try again.");
         }
     }
 
@@ -79,27 +93,23 @@ public class SignupController {
 
     @FXML
     private void onLoginClick(ActionEvent event) {
-        loadPage(event, "Main.fxml", "Login");
+        loadPage(event, "Main.fxml", "Login System", AppWindow.LOGIN_WIDTH, AppWindow.LOGIN_HEIGHT);
     }
 
     @FXML
     private void onBack(ActionEvent event) {
-        loadPage(event, "Homepage.fxml", "StaySmart");
+        loadPage(event, "Homepage.fxml", "StaySmart", AppWindow.HOMEPAGE_WIDTH, AppWindow.HOMEPAGE_HEIGHT);
     }
 
-    private void loadPage(ActionEvent event, String fxml, String title) {
+    private void loadPage(ActionEvent event, String fxml, String title, double width, double height) {
         try {
             Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             currentStage.close();
 
             Parent root = FXMLLoader.load(getClass().getResource(fxml));
-            Stage stage = new Stage();
-            stage.setTitle(title);
-            try {
-                stage.getIcons().add(new Image(getClass().getResource("/application/images/homeicon.png").toExternalForm()));
-            } catch (Exception ignored) {}
-            stage.setScene(new Scene(root));
-            stage.show();
+            // Fixed design size: without it the homepage's off-canvas elements inflate the window
+            // past the screen edge and the title bar ends up unreachable.
+            AppWindow.showFixed(new Stage(), root, title, width, height);
         } catch (Exception e) {
             e.printStackTrace();
         }

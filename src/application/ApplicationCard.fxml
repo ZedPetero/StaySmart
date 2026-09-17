@@ -20,6 +20,11 @@
         <Label fx:id="lblStatus" text="Pending" styleClass="badge-pending" />
     </HBox>
 
+    <VBox styleClass="message-box" spacing="4">
+        <Label text="Your message:" styleClass="message-label" />
+        <Label fx:id="lblMessage" text="" styleClass="message-text" wrapText="true" />
+    </VBox>
+
     <HBox fx:id="boxPayment" styleClass="payment-box" alignment="CENTER_LEFT" spacing="15">
         <ImageView fx:id="imgPaymentIcon" fitHeight="20" fitWidth="20" pickOnBounds="true"
             preserveRatio="true">

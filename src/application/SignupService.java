@@ -6,6 +6,20 @@ import java.sql.SQLException;
 
 public class SignupService {
 
+    /** True when an account already uses this email (the users table has no unique key on it). */
+    public static boolean emailExists(String email) {
+        String sql = "SELECT COUNT(*) FROM users WHERE LOWER(email) = LOWER(?)";
+        try (Connection conn = DatabaseHandler.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, email);
+            java.sql.ResultSet rs = pstmt.executeQuery();
+            return rs.next() && rs.getInt(1) > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public static boolean registerUser(String fullname, String email, String password, String role, String contactNumber) {
         String username = email.contains("@") ? email.split("@")[0] : email;
 

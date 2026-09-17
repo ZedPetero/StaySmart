@@ -14,8 +14,7 @@
             "type": "java",
             "name": "Main",
             "request": "launch",
-            "mainClass": "application.Main",
-            "projectName": "HelloFX"
+            "mainClass": "application.Launcher"
         }
     ]
 }

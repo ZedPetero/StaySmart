@@ -7,7 +7,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
@@ -19,7 +18,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
+import java.util.TreeMap;
 
 public class MyPropertiesController {
 
@@ -100,11 +99,7 @@ public class MyPropertiesController {
             stage.setTitle("Add New Property");
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
-
-            try {
-                stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/homeicon.png")));
-            } catch (Exception ignored) {}
-
+            AppWindow.applyIcon(stage);
             stage.showAndWait();
 
             // Refresh grid after closing dialog
@@ -127,6 +122,7 @@ public class MyPropertiesController {
 
             Stage stage = new Stage();
             stage.setTitle(property.getName() + " - Visual View");
+            AppWindow.applyIcon(stage);
             stage.setScene(new Scene(root, 900, 700));
             stage.show();
 
@@ -136,10 +132,10 @@ public class MyPropertiesController {
     }
 
     private List<Floor> fetchFloorsAndRooms(int propertyId) {
-        Map<Integer, Floor> floorMap = new HashMap<>();
+        Map<Integer, Floor> floorMap = new TreeMap<>();
         // 1. Updated SQL to include 'id' and 'property_id'
-        String query = "SELECT id, property_id, room_number, status, price, image_path, facilities, payment_status " +
-                "FROM rooms WHERE property_id = ? ORDER BY floor_level ASC, room_number ASC";
+        String query = "SELECT id, property_id, floor_level, room_number, status, price, image_path, facilities, payment_status " +
+                "FROM rooms WHERE property_id = ? ORDER BY floor_level ASC, CAST(room_number AS INTEGER) ASC";
 
         try (Connection conn = DatabaseHandler.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
@@ -183,14 +179,30 @@ public class MyPropertiesController {
         alert.setHeaderText("Are you sure you want to delete " + property.getName() + "?");
         alert.setContentText("This will also remove all associated rooms and floors.");
 
-        if (alert.showAndWait().get() == javafx.scene.control.ButtonType.OK) {
-            String query = "DELETE FROM properties WHERE id = ?"; // Tables 'rooms' and 'property_floors' will cascade
+        if (alert.showAndWait().orElse(null) == javafx.scene.control.ButtonType.OK) {
+            // 'property_floors' cascades from properties, but 'rooms' and 'saved_properties' have no
+            // foreign key to properties, so they are removed explicitly. Deleting rooms cascades to
+            // applications and their messages.
+            String[] queries = {
+                    "DELETE FROM saved_properties WHERE property_id = ?",
+                    "DELETE FROM rooms WHERE property_id = ?",
+                    "DELETE FROM properties WHERE id = ?"
+            };
 
-            try (Connection conn = DatabaseHandler.getConnection();
-                 PreparedStatement pstmt = conn.prepareStatement(query)) {
-
-                pstmt.setInt(1, property.getId());
-                pstmt.executeUpdate();
+            try (Connection conn = DatabaseHandler.getConnection()) {
+                conn.setAutoCommit(false);
+                try {
+                    for (String query : queries) {
+                        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+                            pstmt.setInt(1, property.getId());
+                            pstmt.executeUpdate();
+                        }
+                    }
+                    conn.commit();
+                } catch (Exception e) {
+                    conn.rollback();
+                    throw e;
+                }
 
                 // 2. Refresh the UI
                 loadPropertiesFromDatabase();
@@ -213,6 +225,7 @@ public class MyPropertiesController {
             stage.setTitle("Edit Property: " + property.getName());
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
+            AppWindow.applyIcon(stage);
 
             // --- FIX: Use showAndWait() to trigger refresh after closing ---
             stage.showAndWait();

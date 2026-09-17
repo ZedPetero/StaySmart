@@ -20,6 +20,9 @@ public class Application {
     private String roomNumber;
     private int landlordId;
     private String landlordName;
+    private String tenantEmail;
+    private String tenantContact;
+    private String roomPaymentStatus;
 
     public Application(int id, int roomId, int tenantId, int propertyId, String type, String message,
             String paymentMethod, String contactNumber, String status, Timestamp applyDate) {
@@ -114,5 +117,29 @@ public class Application {
 
     public void setLandlordName(String landlordName) {
         this.landlordName = landlordName;
+    }
+
+    public String getTenantEmail() {
+        return tenantEmail;
+    }
+
+    public void setTenantEmail(String tenantEmail) {
+        this.tenantEmail = tenantEmail;
+    }
+
+    public String getTenantContact() {
+        return tenantContact;
+    }
+
+    public void setTenantContact(String tenantContact) {
+        this.tenantContact = tenantContact;
+    }
+
+    public String getRoomPaymentStatus() {
+        return roomPaymentStatus;
+    }
+
+    public void setRoomPaymentStatus(String roomPaymentStatus) {
+        this.roomPaymentStatus = roomPaymentStatus;
     }
 }

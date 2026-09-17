@@ -90,7 +90,7 @@
           text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut"/>
 
     <!-- Get Started Button -->
-    <Button fx:id="getStartedButton" text="GET STARTED TODAY" 
+    <Button fx:id="getStartedButton" onAction="#onSignupButtonClick" text="GET STARTED TODAY" 
             styleClass="landing-page-button3"
             layoutX="191"
             layoutY="480"/>

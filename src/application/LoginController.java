@@ -4,15 +4,11 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.effect.BoxBlur;
 import javafx.scene.effect.GaussianBlur;
-import javafx.scene.image.Image;
 import javafx.event.ActionEvent;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.scene.Node;
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.RadialGradient;
 import javafx.scene.paint.Stop;
@@ -23,13 +19,18 @@ import java.util.regex.Pattern;
 
 public class LoginController {
 
-    @FXML private TextField usernameField;
-    @FXML private PasswordField passwordField;
-    @FXML private CheckBox rememberCheck;
-    @FXML private Button loginButton;
-    @FXML private Circle bgCircle;
+    @FXML
+    private TextField usernameField;
+    @FXML
+    private PasswordField passwordField;
+    @FXML
+    private CheckBox rememberCheck;
+    @FXML
+    private Button loginButton;
+    @FXML
+    private Circle bgCircle;
 
-    // --- STORE USER SESSION HERE ---
+    // ====== ( User Session ) =========
     private static User currentUser;
 
     public static User getCurrentUser() {
@@ -48,12 +49,13 @@ public class LoginController {
             RadialGradient gradient = new RadialGradient(
                     0, 0, 0.5, 0.5, 0.5, true, CycleMethod.NO_CYCLE,
                     new Stop(0.0, Color.web("#125A8B")),
-                    new Stop(1.0, Color.web("#125A8B", 0.0))
-            );
+                    new Stop(1.0, Color.web("#125A8B", 0.0)));
             bgCircle.setFill(gradient);
             bgCircle.setRadius(640);
             BoxBlur noise = new BoxBlur();
-            noise.setWidth(2); noise.setHeight(2); noise.setIterations(1);
+            noise.setWidth(2);
+            noise.setHeight(2);
+            noise.setIterations(1);
             GaussianBlur blur = new GaussianBlur();
             blur.setRadius(80);
             blur.setInput(noise);
@@ -76,11 +78,17 @@ public class LoginController {
             return;
         }
 
+        if (!DatabaseHandler.isDatabaseReachable()) {
+            showAlert(Alert.AlertType.ERROR, "Database Unavailable", DatabaseHandler.DB_UNREACHABLE_MESSAGE);
+            return;
+        }
+
         User user = AuthService.authenticate(emailInput, password);
 
         if (user != null) {
             currentUser = user; // SAVE THE USER
-            System.out.println("DEBUG: User role is: '" + user.getRole() + "'");
+            UserSession.cleanUserSession();
+            UserSession.getInstance(user.getId(), user.getUsername(), user.getRole());
             showAlert(Alert.AlertType.INFORMATION, "Login Successful",
                     "Welcome, " + user.getFullname() + "!");
 
@@ -102,7 +110,7 @@ public class LoginController {
 
     @FXML
     private void onCancel(ActionEvent event) {
-        Stage stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.close();
     }
 
@@ -117,17 +125,8 @@ public class LoginController {
             Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             currentStage.close();
 
-            Stage signupStage = new Stage();
             Parent root = FXMLLoader.load(getClass().getResource("Signup.fxml"));
-            Scene scene = new Scene(root);
-            signupStage.setTitle("Sign Up");
-            try {
-                Image icon = new Image(getClass().getResource("/application/images/homeicon.png").toExternalForm());
-                signupStage.getIcons().add(icon);
-            } catch (Exception e) {}
-            signupStage.setScene(scene);
-            signupStage.setResizable(false);
-            signupStage.show();
+            AppWindow.showFixed(new Stage(), root, "Sign Up", AppWindow.SIGNUP_WIDTH, AppWindow.SIGNUP_HEIGHT);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -139,13 +138,6 @@ public class LoginController {
         try {
             Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             currentStage.close();
-
-            try {
-                Font.loadFont(getClass().getResourceAsStream("/fonts/Outfit-Regular.ttf"), 10);
-                Font.loadFont(getClass().getResourceAsStream("/fonts/Outfit-Medium.ttf"), 10);
-                Font.loadFont(getClass().getResourceAsStream("/fonts/Outfit-SemiBold.ttf"), 10);
-                Font.loadFont(getClass().getResourceAsStream("/fonts/Outfit-Bold.ttf"), 10);
-            } catch (Exception ignored) {}
 
             String fxmlPath;
             String windowTitle;
@@ -159,19 +151,10 @@ public class LoginController {
             }
 
             Parent root = FXMLLoader.load(getClass().getResource(fxmlPath));
-            Scene scene = new Scene(root);
             Stage mainStage = new Stage();
-            mainStage.setTitle(windowTitle);
             mainStage.setResizable(true);
             mainStage.setMaximized(true);
-
-            try {
-                Image icon = new Image(getClass().getResource("/application/images/homeicon.png").toExternalForm());
-                mainStage.getIcons().add(icon);
-            } catch (Exception e) {}
-
-            mainStage.setScene(scene);
-            mainStage.show();
+            AppWindow.show(mainStage, root, windowTitle);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -180,13 +163,17 @@ public class LoginController {
     }
 
     private void showAlert(Alert.AlertType type, String title, String message) {
-        Platform.runLater(() -> {
-            Alert alert = new Alert(type);
-            alert.setTitle(title);
-            alert.setHeaderText(null);
-            alert.setContentText(message);
+        // Shown synchronously: the caller may close the login window right after this,
+        // and a deferred alert would otherwise pop up owned by an already-closed window.
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        if (loginButton != null && loginButton.getScene() != null
+                && loginButton.getScene().getWindow() != null
+                && loginButton.getScene().getWindow().isShowing()) {
             alert.initOwner(loginButton.getScene().getWindow());
-            alert.showAndWait();
-        });
+        }
+        alert.showAndWait();
     }
 }

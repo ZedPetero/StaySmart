@@ -24,7 +24,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.TreeMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,6 +39,12 @@ public class PropertyCardController {
 
     private Property property;
     private MyPropertiesController parentController;
+    private Runnable savedListener;
+
+    /** Called after the tenant saves/removes this property from their collections. */
+    public void setOnSavedChanged(Runnable listener) {
+        this.savedListener = listener;
+    }
 
     public void setData(Property property, MyPropertiesController parentController) {
         this.property = property;
@@ -49,7 +55,9 @@ public class PropertyCardController {
         locationLabel.setText(property.getLocation());
         priceLabel.setText("₱ " + String.format("%,.0f", property.getPrice()));
         typeLabel.setText(property.getType());
-        floorsLabel.setText(property.getFloors() + (property.getFloors().equals("1") ? " Floor" : " Floors"));
+        String floors = (property.getFloors() == null || property.getFloors().isBlank()) ? "1" : property.getFloors().trim();
+        floorsLabel.setText(floors + (floors.equals("1") ? " Floor" : " Floors"));
+        typeLabel.setText(property.getType() != null ? property.getType() : "Property");
 
         // Load and center image
         if (property.getImagePath() != null && !property.getImagePath().isEmpty()) {
@@ -67,10 +75,9 @@ public class PropertyCardController {
             // Landlord Mode
             deleteBtn.setVisible(true);
             editBtn.setVisible(true);
-            btnHeart.setVisible(true);
-            btnHeart.setManaged(true);
-            btnHeart.setStyle("-fx-background-color: white; -fx-text-fill: #e0e0e0; -fx-background-radius: 50;");
             deleteBtn.setManaged(true);
+            btnHeart.setVisible(false);
+            btnHeart.setManaged(false);
 
             deleteBtn.setOnAction(event -> {
                 event.consume();
@@ -87,9 +94,11 @@ public class PropertyCardController {
             // Tenant Mode
             deleteBtn.setVisible(false);
             editBtn.setVisible(false);
-            btnHeart.setVisible(true);
+            editBtn.setManaged(false);
             deleteBtn.setManaged(false);
+            btnHeart.setVisible(true);
             btnHeart.setManaged(true);
+            btnHeart.setStyle("-fx-background-color: white; -fx-text-fill: #e0e0e0; -fx-background-radius: 50;");
 
             // Opens details with setTenantMode(true)
             cardContainer.setOnMouseClicked(e -> openHouseView(true));
@@ -106,21 +115,19 @@ public class PropertyCardController {
             Parent root = loader.load();
 
             HouseViewController houseController = loader.getController();
-            houseController.setupPropertyData(property, floors);
+            // Set the mode first so the house is only built once
             houseController.setTenantMode(isTenant);
+            houseController.setupPropertyData(property, floors);
 
-            Stage stage = new Stage();
-            stage.setTitle(property.getName());
-            stage.setScene(new Scene(root));
-            stage.show();
+            AppWindow.show(new Stage(), root, property.getName());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     private List<Floor> fetchFloorsAndRooms(int propertyId) {
-        Map<Integer, Floor> floorMap = new HashMap<>();
-        String query = "SELECT * FROM rooms WHERE property_id = ? ORDER BY floor_level ASC, room_number ASC";
+        Map<Integer, Floor> floorMap = new TreeMap<>();
+        String query = "SELECT * FROM rooms WHERE property_id = ? ORDER BY floor_level ASC, CAST(room_number AS INTEGER) ASC";
 
         try (Connection conn = DatabaseHandler.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(query)) {
@@ -158,11 +165,15 @@ public class PropertyCardController {
 
             Stage stage = new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle("Save Property");
+            AppWindow.applyIcon(stage);
             stage.setScene(new Scene(root));
             stage.showAndWait();
 
             if (controller.isSaved()) {
-                btnHeart.setStyle("-fx-text-fill: #e74c3c;");
+                String color = controller.isCurrentlySaved() ? "#e74c3c" : "#e0e0e0";
+                btnHeart.setStyle("-fx-background-color: white; -fx-text-fill: " + color + "; -fx-background-radius: 50;");
+                if (savedListener != null) savedListener.run();
             }
         } catch (Exception e) {
             e.printStackTrace();

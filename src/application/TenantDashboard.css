@@ -87,3 +87,14 @@
        It creates an inner shadow of that color that overlays the image. */
     -fx-effect: innershadow(gaussian, #243845, 100, 0, 0, 0);
 }
+/* --- DASHBOARD STAT CARDS (TenantOverview) --- */
+.stat-card {
+    -fx-background-color: #b8d1e0;
+    -fx-background-radius: 20;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 8, 0, 0, 2);
+}
+
+.stat-card .label {
+    -fx-font-family: 'Outfit';
+    -fx-text-fill: #113970;
+}

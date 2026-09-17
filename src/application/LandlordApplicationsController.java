@@ -135,7 +135,7 @@ public class LandlordApplicationsController {
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
 
-        Label dateLbl = new Label(app.getApplyDate().toString());
+        Label dateLbl = new Label(app.getApplyDate() != null ? app.getApplyDate().toString() : "");
         dateLbl.getStyleClass().add("timestamp-text");
 
         header.getChildren().addAll(profileImg, nameBox, spacer, dateLbl);
@@ -145,7 +145,8 @@ public class LandlordApplicationsController {
         details.setAlignment(Pos.BASELINE_LEFT);
         Label appliedLbl = new Label("Applied for: ");
         appliedLbl.getStyleClass().add("label-gray");
-        Label propertyLbl = new Label(app.getPropertyName() + " - Room " + app.getRoomNumber());
+        String kind = "Tour".equalsIgnoreCase(app.getType()) ? " (Tour request)" : " (Booking)";
+        Label propertyLbl = new Label(app.getPropertyName() + " - Room " + app.getRoomNumber() + kind);
         propertyLbl.getStyleClass().add("link-purple");
         details.getChildren().addAll(appliedLbl, propertyLbl);
 
@@ -154,7 +155,7 @@ public class LandlordApplicationsController {
         msgBox.getStyleClass().add("message-box");
         Label msgTitle = new Label("Message:");
         msgTitle.getStyleClass().add("label-gray");
-        Label msgText = new Label(app.getMessage());
+        Label msgText = new Label(app.getMessage() != null && !app.getMessage().isEmpty() ? app.getMessage() : "No message provided.");
         msgText.getStyleClass().add("message-text");
         msgText.setWrapText(true);
         msgBox.getChildren().addAll(msgTitle, msgText);

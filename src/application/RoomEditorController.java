@@ -56,8 +56,13 @@ public class RoomEditorController {
     public void setRoomData(Room room) {
         this.existingRoom = room;
         txtRoomNumber.setText(room.getRoomNumber());
-        txtPrice.setText(String.valueOf(room.getPrice()));
-        comboStatus.setValue(room.getStatus());
+        txtRoomNumber.setEditable(false); // the room number identifies the row; the update keeps it
+        txtPrice.setText(room.getPrice() != null ? String.format("%.2f", room.getPrice()) : "0.00");
+        if (room.getStatus() != null && comboStatus.getItems().contains(room.getStatus())) {
+            comboStatus.setValue(room.getStatus());
+        } else {
+            comboStatus.getSelectionModel().selectFirst();
+        }
 
         // --- LOAD FACILITIES FROM STRING TO CHECKBOXES ---
         String facs = room.getFacilities();
@@ -117,8 +122,7 @@ public class RoomEditorController {
 
     @FXML
     private void handleSave() {
-        if (isInputValid()) {
-            saveToDatabase();
+        if (isInputValid() && saveToDatabase()) {
             saveClicked = true;
             dialogStage.close();
         }
@@ -127,10 +131,36 @@ public class RoomEditorController {
     @FXML private void handleCancel() { dialogStage.close(); }
 
     private boolean isInputValid() {
-        return !txtPrice.getText().isEmpty();
+        StringBuilder errors = new StringBuilder();
+        if (txtRoomNumber.getText() == null || txtRoomNumber.getText().trim().isEmpty()) {
+            errors.append("Room number is required.\n");
+        }
+        String price = txtPrice.getText() == null ? "" : txtPrice.getText().trim().replace(",", "");
+        if (price.isEmpty()) {
+            errors.append("Price is required.\n");
+        } else {
+            try {
+                if (Double.parseDouble(price) < 0) errors.append("Price cannot be negative.\n");
+            } catch (NumberFormatException e) {
+                errors.append("Price must be a number.\n");
+            }
+        }
+        if (errors.length() == 0) return true;
+
+        showAlert(Alert.AlertType.WARNING, "Invalid input", errors.toString().trim());
+        return false;
     }
 
-    private void saveToDatabase() {
+    private void showAlert(Alert.AlertType type, String title, String content) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        if (dialogStage != null) alert.initOwner(dialogStage);
+        alert.showAndWait();
+    }
+
+    private boolean saveToDatabase() {
         try (Connection conn = DatabaseHandler.getConnection()) {
             String paymentStatus = chkPaid.isSelected() ? "Paid" : "Pending";
 
@@ -151,32 +181,53 @@ public class RoomEditorController {
             String facilitiesString = String.join(", ", facList);
             // -------------------------------------
 
+            double price = Double.parseDouble(txtPrice.getText().trim().replace(",", ""));
+            String roomNumber = txtRoomNumber.getText().trim();
+            String status = comboStatus.getValue() != null ? comboStatus.getValue() : "Available";
+
             if (existingRoom == null) {
+                // Refuse duplicate room numbers within the same property
+                String checkSql = "SELECT COUNT(*) FROM rooms WHERE property_id = ? AND room_number = ?";
+                try (PreparedStatement check = conn.prepareStatement(checkSql)) {
+                    check.setInt(1, propertyId);
+                    check.setString(2, roomNumber);
+                    java.sql.ResultSet rs = check.executeQuery();
+                    if (rs.next() && rs.getInt(1) > 0) {
+                        showAlert(Alert.AlertType.WARNING, "Duplicate room",
+                                "Room " + roomNumber + " already exists in this property.");
+                        return false;
+                    }
+                }
+
                 String query = "INSERT INTO rooms (property_id, floor_level, room_number, price, status, facilities, image_path, payment_status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-                PreparedStatement pstmt = conn.prepareStatement(query);
-                pstmt.setInt(1, propertyId);
-                pstmt.setInt(2, floorLevel);
-                pstmt.setString(3, txtRoomNumber.getText());
-                pstmt.setDouble(4, Double.parseDouble(txtPrice.getText()));
-                pstmt.setString(5, comboStatus.getValue());
-                pstmt.setString(6, facilitiesString); // Saved as comma-separated string
-                pstmt.setString(7, selectedImagePath);
-                pstmt.setString(8, paymentStatus);
-                pstmt.executeUpdate();
+                try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+                    pstmt.setInt(1, propertyId);
+                    pstmt.setInt(2, floorLevel);
+                    pstmt.setString(3, roomNumber);
+                    pstmt.setDouble(4, price);
+                    pstmt.setString(5, status);
+                    pstmt.setString(6, facilitiesString); // Saved as comma-separated string
+                    pstmt.setString(7, selectedImagePath);
+                    pstmt.setString(8, paymentStatus);
+                    pstmt.executeUpdate();
+                }
             } else {
-                String query = "UPDATE rooms SET price = ?, status = ?, facilities = ?, image_path = ?, payment_status = ? WHERE room_number = ? AND property_id = ?";
-                PreparedStatement pstmt = conn.prepareStatement(query);
-                pstmt.setDouble(1, Double.parseDouble(txtPrice.getText()));
-                pstmt.setString(2, comboStatus.getValue());
-                pstmt.setString(3, facilitiesString); // Saved as comma-separated string
-                pstmt.setString(4, selectedImagePath);
-                pstmt.setString(5, paymentStatus);
-                pstmt.setString(6, existingRoom.getRoomNumber());
-                pstmt.setInt(7, propertyId);
-                pstmt.executeUpdate();
+                String query = "UPDATE rooms SET price = ?, status = ?, facilities = ?, image_path = ?, payment_status = ? WHERE id = ?";
+                try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+                    pstmt.setDouble(1, price);
+                    pstmt.setString(2, status);
+                    pstmt.setString(3, facilitiesString); // Saved as comma-separated string
+                    pstmt.setString(4, selectedImagePath);
+                    pstmt.setString(5, paymentStatus);
+                    pstmt.setInt(6, existingRoom.getId());
+                    pstmt.executeUpdate();
+                }
             }
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Save failed", "Could not save the room: " + e.getMessage());
+            return false;
         }
     }
 }

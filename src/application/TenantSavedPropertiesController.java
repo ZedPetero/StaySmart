@@ -27,7 +27,10 @@ public class TenantSavedPropertiesController {
     @FXML private void handleFilterPremium() { updateTabStyling(btnPremium); loadSavedProperties("Premium Options"); }
     @FXML private void handleFilterBudget() { updateTabStyling(btnBudget); loadSavedProperties("Budget Picks"); }
 
+    private String currentCategory = "All";
+
     private void loadSavedProperties(String category) {
+        currentCategory = category;
         savedPropertiesFlowPane.getChildren().clear();
         int userId = LoginController.getCurrentUser().getId();
         int count = 0;
@@ -77,11 +80,19 @@ public class TenantSavedPropertiesController {
                 // Assuming you have a TenantPropertyCardController or similar
                 PropertyCardController controller = loader.getController();
                 controller.setData(p, null); // Link to details view
+                controller.setOnSavedChanged(() -> {
+                    updatePropertyCount();
+                    loadSavedProperties(currentCategory);
+                });
 
                 savedPropertiesFlowPane.getChildren().add(card);
             }
 
-            lblTotalCount.setText("You have " + count + " saved properties");
+            if (category.equals("All")) {
+                lblTotalCount.setText("You have " + count + " saved properties");
+            } else {
+                lblTotalCount.setText(count + " saved in " + category);
+            }
 
         } catch (Exception e) {
             e.printStackTrace();

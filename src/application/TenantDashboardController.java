@@ -24,6 +24,8 @@ public class TenantDashboardController {
     @FXML
     private HBox btnApplications;
     @FXML
+    private HBox btnMessages;
+    @FXML
     private HBox btnProfile;
     @FXML
     private HBox btnSettings;
@@ -33,11 +35,15 @@ public class TenantDashboardController {
     @FXML
     private void handleLogout() {
         LoginController.setCurrentUser(null);
+        UserSession.cleanUserSession();
         try {
+            // Close the maximized dashboard and open the fixed-size login window fresh,
+            // the same way the homepage does, instead of squeezing the login form into a maximized stage.
+            javafx.stage.Stage current = (javafx.stage.Stage) btnLogout.getScene().getWindow();
+            current.close();
+
             Parent root = FXMLLoader.load(getClass().getResource("Main.fxml"));
-            javafx.stage.Stage stage = (javafx.stage.Stage) btnLogout.getScene().getWindow();
-            stage.setScene(new javafx.scene.Scene(root));
-            stage.show();
+            AppWindow.showFixed(new javafx.stage.Stage(), root, "Login System", AppWindow.LOGIN_WIDTH, AppWindow.LOGIN_HEIGHT);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -74,6 +80,12 @@ public class TenantDashboardController {
     }
 
     @FXML
+    private void handleShowMessages() {
+        loadPage("TenantMessages.fxml");
+        highlightButton(btnMessages);
+    }
+
+    @FXML
     private void handleShowProfile() {
         loadPage("TenantProfile.fxml");
         highlightButton(btnProfile);
@@ -105,11 +117,15 @@ public class TenantDashboardController {
         resetButtonVisuals(btnExplore);
         resetButtonVisuals(btnSaved);
         resetButtonVisuals(btnApplications);
+        resetButtonVisuals(btnMessages);
         resetButtonVisuals(btnProfile);
         resetButtonVisuals(btnSettings);
+        resetButtonVisuals(btnLogout); // never "active", but its icon must be white on the dark sidebar too
 
         // 2. Set the Clicked Button to Active State
-        activeBox.getStyleClass().add("active");
+        if (!activeBox.getStyleClass().contains("active")) {
+            activeBox.getStyleClass().add("active");
+        }
 
         // 3. Make the Icon Dark Blue (Original Color)
         // Assuming your PNGs are naturally black/dark blue.
